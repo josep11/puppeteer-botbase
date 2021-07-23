@@ -1,4 +1,3 @@
-const { RefusedConnectionMilanuncios } = require('./CustomErrors')
 const Helper = require('./helper');
 const helper = new Helper();
 
@@ -19,7 +18,7 @@ class HelperPuppeteer {
         await page.waitForTimeout(1500);
     }
 
-    static async scrollToBottom () { //Will be evaluated in browser context, so constant goes here
+    static async scrollToBottom() { //Will be evaluated in browser context, so constant goes here
         const DISTANCE_SCROLL = Math.floor(Math.random() * (100 - 65 + 1)) + 65; //pseudo randomising distance_scroll bw 65 and 100
         await new Promise(resolve => {
             const distance = DISTANCE_SCROLL; // should be less than or equal to window.innerHeight

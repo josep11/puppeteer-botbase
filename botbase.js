@@ -59,7 +59,7 @@ class BotBase {
 
         await this.page.goto('https://bot.sannysoft.com', { waitUntil: 'networkidle2' });
 
-        await HelperPuppeteer.scrollToBottom();
+        await this.page.evaluate(HelperPuppeteer.scrollToBottom);
     }
 }
 
