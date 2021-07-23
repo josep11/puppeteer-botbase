@@ -1,0 +1,15 @@
+
+class BotBase {
+    page = null;
+
+    async initialize() {
+        console.log('init bot base');
+        this.page = 1;
+    }
+
+    async isLoggedIn() {
+        console.log(`page = ${this.page}`);
+    }
+}
+
+module.exports = BotBase;

@@ -1,0 +1,14 @@
+node_modules/
+apify_storage/
+
+.vscode/
+
+config/user.json
+
+logs/
+!logs/.gitkeep
+
+screenshots/*
+!screenshots/.gitkeep
+
+db/*

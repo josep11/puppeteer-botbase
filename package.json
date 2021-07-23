@@ -1,0 +1,22 @@
+{
+  "name": "BotBase",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Josep Alsina",
+  "license": "ISC",
+  "dependencies": {
+    "child-process-async": "^1.0.1",
+    "colors": "^1.4.0",
+    "fs": "0.0.1-security",
+    "moment": "^2.29.1",
+    "puppeteer": "^10.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.20.0"
+  }
+}
