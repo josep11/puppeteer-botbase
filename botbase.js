@@ -85,6 +85,10 @@ class BotBase {
         var pjson = require('./package.json');
         return pjson.version;
     }
+
+    async shutDown() {
+        this.browser.close();
+    }
     
 }
 
