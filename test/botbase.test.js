@@ -40,6 +40,11 @@ describe('Botbase Tests', () => {
         const myChildCls = new ExampleChild(__dirname);
         const enabled = myChildCls.enabled();
         assert.strictEqual(enabled, false);
+        const config = myChildCls.getConfig();
+        const errMsg = 'it didnt override config properties rather delete the previous ones';
+        assert.ok(config, errMsg);
+        assert.ok(config.settings, errMsg);
+        assert.ok(config.settings.width, errMsg);
     });
 
     it('should get a sample website with puppeteer', async () => {

@@ -1,4 +1,5 @@
 /*global __dirname, process */
+const deepmerge = require('deepmerge');
 const puppeteer = require('puppeteer');
 
 const helper = require('./helper');
@@ -19,7 +20,7 @@ class BotBase {
     constructor(basePath, configChild={}) {
         this.basePath = basePath;
         //merging config options prioritising upcoming ones
-        config = { ...config, ...configChild };
+        config = deepmerge(config, configChild );
     }
 
     async initialize() {
@@ -43,8 +44,6 @@ class BotBase {
             height: config.settings.height + helper.getRandBetween(1, 100)
         })
     }
-
-
 
     async isLoggedIn() {
         throw 'not implemented';

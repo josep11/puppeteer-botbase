@@ -1,11 +1,11 @@
 {
   "name": "botbase",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "botbase.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha --timeout 25000 --exit"
+    "test": "mocha --timeout 25000 --exit --bail" 
   },
   "author": "Josep Alsina",
   "license": "ISC",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "child-process-async": "^1.0.1",
+    "deepmerge": "^4.2.2",
     "fs": "0.0.1-security",
     "moment": "^2.29.1",
     "puppeteer": "^10.1.0"
