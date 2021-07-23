@@ -126,7 +126,7 @@ class Helper {
     }
    
     async logJSONdebug(jsonStr, basePath=__dirname) {
-        const dir = path.resolve(basePath, `../logs/dataset`);
+        const dir = path.resolve(basePath, `./logs/dataset`);
         this.createDirIfNotExists(dir);
         const filenameFullPath = path.resolve(dir, `data_${this.dateFormatForLog()}.json`);
         try {
@@ -170,19 +170,6 @@ class Helper {
         // });
         // return userAgent;
     }
-
-
-    /*  async logHTMLdebug(html, filename) {
-        const dir = path.resolve(__dirname, `../logs/html`);
-        this.createDirIfNotExists(dir);
-        const filenameFullPath = path.resolve(dir, `${filename}.html`);
-        try {
-            await fs.writeFile(filenameFullPath, html);
-        }
-        catch (err) {
-            console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);
-        }
-    } */
 }
 
 
