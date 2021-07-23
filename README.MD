@@ -1,6 +1,18 @@
-# BOTBASE
+# BOT BASE
 
 Utilities to reuse codebase for Scraping with Puppeteer
+
+## Install
+
+```bash
+npm i git+https://github.com/josep11/puppeteer-botbase.git
+```
+
+To install a specific version run:
+
+```bash
+npm i git+https://github.com/josep11/puppeteer-botbase.git#0.1.3
+```
 
 ## Config
 

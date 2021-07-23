@@ -21,9 +21,12 @@ class BotBase {
         this.basePath = basePath;
         //merging config options prioritising upcoming ones
         config = deepmerge(config, configChild );
+
+        this.cookiesFile = path.resolve(basePath, './res/cookies.json');
+        this.screenshotBasepath = path.resolve(basePath, './screenshots');
     }
 
-    async initialize() {
+    async initialize(opts = {}) {
         var pjson = require('./package.json');
         console.log(`init bot base v${pjson.version}`);
         if (this.browser != null) {
@@ -31,7 +34,7 @@ class BotBase {
             this.page = null;
         }
         this.browser = await puppeteer.launch({
-
+            ...opts
         });
         this.page = await this.browser.newPage();
 
@@ -88,6 +91,10 @@ class BotBase {
 
     async shutDown() {
         this.browser.close();
+    }
+    
+    appName(){
+        return "SHOULD OVERRIDE ¯\_(ツ)_/¯ SHOULD OVERRIDE";
     }
     
 }
