@@ -1,9 +1,14 @@
 const { fail } = require('assert');
 const assert = require('assert');
-const helper = require('../src/helper');
-// var expect = require("chai").expect;
+const Helper = require('../src/helper');
+var expect = require("chai").expect;
 
 describe('Module Helper Tests', () => {
+    let helper;
+
+    before(()=>{
+        helper = new Helper(__dirname);
+    });
 
     it('should be 0 hours difference', () => {
         const res = helper.getDiferenceInHours(helper.getNow());
@@ -36,9 +41,9 @@ describe('Module Helper Tests', () => {
     });
 
     it('should write the ip address to a file', async () => {
-        await helper.writeIPToFile('0.0.0.0', helper.dateFormatForLog());
+        let resp = await helper.writeIPToFile('0.0.0.0', helper.dateFormatForLog());
 
-        console.log('should check ip file');
+        expect(resp).to.be.undefined;
     });
 
 });

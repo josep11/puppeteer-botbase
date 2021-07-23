@@ -1,10 +1,21 @@
 /*global __dirname, process */
-const helper = require('./src/helper');
+const Helper = require('./src/Helper');
 const puppeteer = require('puppeteer');
+const helper = new Helper();
 
 class BotBase {
     browser = null;
     page = null;
+
+    basePath = null;
+
+    /**
+     * 
+     * @param {string} basePath the dirname basePath
+     */
+    constructor(basePath) {
+        this.basePath = basePath;
+    }
 
     async initialize() {
         var pjson = require('./package.json');
@@ -26,13 +37,13 @@ class BotBase {
     async logIP() {
         await this.page.goto('http://checkip.amazonaws.com/');
         let current_ip_address = await this.page.evaluate(() => document.body.textContent.trim());
-        await helper.writeIPToFile(current_ip_address, helper.dateFormatForLog());
+        await helper.writeIPToFile(current_ip_address, helper.dateFormatForLog(), this.basePath);
         console.log(current_ip_address);
         return current_ip_address
     }
 
 
-    async _testSampleWebsite () {
+    async _testSampleWebsite() {
         this.browser = await puppeteer.launch({
             // args: [...argsTor], //TODO: reactivar tor
             headless: false,
