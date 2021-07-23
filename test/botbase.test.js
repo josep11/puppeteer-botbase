@@ -1,11 +1,11 @@
 const { fail } = require('assert');
 const assert = require('assert');
 const BotBase = require('../botbase');
-const helper = require('../helper');
 // var expect = require("chai").expect;
 
 describe('Botbase Tests', () => {
     let botbase = null;
+    
     it('should intantiate BotBase', () => {
         botbase = new BotBase();
         assert.ok(botbase);

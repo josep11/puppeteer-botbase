@@ -9,7 +9,7 @@ const moment = require('moment');
 class Helper {
 
     printDate(channel = console.log) {
-        let day = helper.getNow();
+        let day = this.getNow();
         // console.log('---------------------------------------');
         channel('----------' + day + '----------');
         // console.log('---------------------------------------');
@@ -106,7 +106,7 @@ class Helper {
         return content;
     }
     async emptyFile(filename) {
-        return await helper.writeFile(filename, '');
+        return await this.writeFile(filename, '');
     }
     async readJsonFile(cookiesFile) {
         try {
@@ -125,10 +125,10 @@ class Helper {
         }
     }
    
-    async logJSONdebug(jsonStr) {
+    async logJSONdebug(jsonStr, basePath=__dirname) {
         const dir = path.resolve(__dirname, `../logs/dataset`);
-        helper.createDirIfNotExists(dir);
-        const filenameFullPath = path.resolve(dir, `data_${helper.dateFormatForLog()}.json`);
+        this.createDirIfNotExists(dir);
+        const filenameFullPath = path.resolve(dir, `data_${this.dateFormatForLog()}.json`);
         try {
             await fs.writeFile(filenameFullPath, jsonStr);
             console.error(`file written successfully to ${filenameFullPath}`);
@@ -174,7 +174,7 @@ class Helper {
 
     /*  async logHTMLdebug(html, filename) {
         const dir = path.resolve(__dirname, `../logs/html`);
-        helper.createDirIfNotExists(dir);
+        this.createDirIfNotExists(dir);
         const filenameFullPath = path.resolve(dir, `${filename}.html`);
         try {
             await fs.writeFile(filenameFullPath, html);
