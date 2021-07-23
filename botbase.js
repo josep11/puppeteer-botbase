@@ -1,6 +1,7 @@
 /*global __dirname, process */
 const deepmerge = require('deepmerge');
 const puppeteer = require('puppeteer');
+const path = require('path');
 
 const helper = require('./helper');
 
