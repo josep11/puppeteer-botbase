@@ -5,6 +5,7 @@ const Helper = require('./helper');
 const helper = new Helper();
 
 const HelperPuppeteer = require('./helper_puppeteer');
+let config = require('./config/config.json');
 
 class BotBase {
     browser = null;
@@ -16,8 +17,10 @@ class BotBase {
      * 
      * @param {string} basePath the dirname basePath
      */
-    constructor(basePath) {
+    constructor(basePath, configChild={}) {
         this.basePath = basePath;
+        //merging config options prioritising upcoming ones
+        config = { ...config, ...configChild };
     }
 
     async initialize() {
@@ -31,7 +34,18 @@ class BotBase {
 
         });
         this.page = await this.browser.newPage();
+
+        await this.semiRandomiseViewPort();
     }
+
+    async semiRandomiseViewPort(){
+        await this.page.setViewport({
+            width: config.settings.width + helper.getRandBetween(1, 100),
+            height: config.settings.height + helper.getRandBetween(1, 100)
+        })
+    }
+
+
 
     async isLoggedIn() {
         // console.log(`page = ${this.page}`);
@@ -44,7 +58,6 @@ class BotBase {
         console.log(current_ip_address);
         return current_ip_address
     }
-
 
     async _testSampleWebsite() {
         this.browser = await puppeteer.launch({
@@ -61,6 +74,20 @@ class BotBase {
 
         await this.page.evaluate(HelperPuppeteer.scrollToBottom);
     }
+
+    enabled(){
+        return config.settings.enabled;
+    }
+
+    getConfig(){
+        return config;
+    }
+
+    getVersion(){
+        var pjson = require('./package.json');
+        return pjson.version;
+    }
+    
 }
 
 module.exports = BotBase;
