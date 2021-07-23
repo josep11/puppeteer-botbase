@@ -1,7 +1,10 @@
 /*global __dirname, process */
-const Helper = require('./helper');
 const puppeteer = require('puppeteer');
+
+const Helper = require('./helper');
 const helper = new Helper();
+
+const HelperPuppeteer = require('./helper_puppeteer');
 
 class BotBase {
     browser = null;
@@ -55,6 +58,8 @@ class BotBase {
         this.page = await this.browser.newPage();
 
         await this.page.goto('https://bot.sannysoft.com', { waitUntil: 'networkidle2' });
+
+        await HelperPuppeteer.scrollToBottom();
     }
 }
 
