@@ -1,6 +1,6 @@
 {
   "name": "botbase",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "botbase.js",
   "scripts": {
@@ -14,15 +14,14 @@
     "url": "git+https://github.com/josep11/puppeteer-botbase.git"
   },
   "dependencies": {
-    "chai": "^4.3.4",
     "child-process-async": "^1.0.1",
-    "colors": "^1.4.0",
     "fs": "0.0.1-security",
     "moment": "^2.29.1",
     "puppeteer": "^10.1.0"
   },
   "devDependencies": {
     "eslint": "^7.20.0",
-    "mocha": "^9.0.2"
+    "mocha": "^9.0.2",
+    "chai": "^4.3.4"
   }
 }

@@ -1,5 +1,5 @@
 /*global __dirname, process */
-const Helper = require('./src/Helper');
+const Helper = require('./helper');
 const puppeteer = require('puppeteer');
 const helper = new Helper();
 

@@ -83,7 +83,7 @@ class Helper {
      * @returns undefined if no error happened or string with error message otherwise
      */
     async writeIPToFile(ip, date, basePath=__dirname) {
-        const ip_file = path.resolve(basePath, "../logs/ip.txt");
+        const ip_file = path.resolve(basePath, "./logs/ip.txt");
         try {
             await fs.appendFile(ip_file, `Data: ${date}\nIP: ${ip}\n\n`);
         }
@@ -124,17 +124,7 @@ class Helper {
             fs.mkdirSync(dir);
         }
     }
-    async logHTMLdebug(html, filename) {
-        const dir = path.resolve(__dirname, `../logs/html`);
-        helper.createDirIfNotExists(dir);
-        const filenameFullPath = path.resolve(dir, `${filename}.html`);
-        try {
-            await fs.writeFile(filenameFullPath, html);
-        }
-        catch (err) {
-            console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);
-        }
-    }
+   
     async logJSONdebug(jsonStr) {
         const dir = path.resolve(__dirname, `../logs/dataset`);
         helper.createDirIfNotExists(dir);
@@ -180,6 +170,19 @@ class Helper {
         // });
         // return userAgent;
     }
+
+
+    /*  async logHTMLdebug(html, filename) {
+        const dir = path.resolve(__dirname, `../logs/html`);
+        helper.createDirIfNotExists(dir);
+        const filenameFullPath = path.resolve(dir, `${filename}.html`);
+        try {
+            await fs.writeFile(filenameFullPath, html);
+        }
+        catch (err) {
+            console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);
+        }
+    } */
 }
 
 
