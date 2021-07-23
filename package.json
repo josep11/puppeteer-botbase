@@ -1,11 +1,11 @@
 {
   "name": "botbase",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "botbase.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha"
+    "test": "mocha --timeout 25000 --exit"
   },
   "author": "Josep Alsina",
   "license": "ISC",

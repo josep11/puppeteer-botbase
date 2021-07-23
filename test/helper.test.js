@@ -28,7 +28,7 @@ describe('Module Helper Tests', () => {
 
     it('should get the ip address', async () => {
         let ip = await helper.getIp();
-        console.log(`ip: ${ip}`);
+        // console.log(`ip: ${ip}`);
 
         assert.ok(ip);
         assert.match(ip, /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
