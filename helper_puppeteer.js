@@ -1,5 +1,4 @@
-const Helper = require('./helper');
-const helper = new Helper();
+const helper = require('./helper');
 
 class HelperPuppeteer {
 

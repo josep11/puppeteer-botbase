@@ -1,14 +1,9 @@
 const { fail } = require('assert');
 const assert = require('assert');
-const Helper = require('../helper');
-var expect = require("chai").expect;
+const helper = require('../helper');
+const expect = require("chai").expect;
 
 describe('Module Helper Tests', () => {
-    let helper;
-
-    before(() => {
-        helper = new Helper();
-    });
 
     it('should be 0 hours difference', () => {
         const res = helper.getDiferenceInHours(helper.getNow());

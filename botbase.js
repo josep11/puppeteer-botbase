@@ -1,8 +1,7 @@
 /*global __dirname, process */
 const puppeteer = require('puppeteer');
 
-const Helper = require('./helper');
-const helper = new Helper();
+const helper = require('./helper');
 
 const HelperPuppeteer = require('./helper_puppeteer');
 let config = require('./config/config.json');
@@ -48,7 +47,7 @@ class BotBase {
 
 
     async isLoggedIn() {
-        // console.log(`page = ${this.page}`);
+        throw 'not implemented';
     }
 
     async logIP() {

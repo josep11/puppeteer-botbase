@@ -18,8 +18,7 @@ To use and import the BotBase import like so:
 To use the helper class import:
 
 ```js
-const Helper = require('botbase/helper');
-const helper = new Helper();
+const helper = require('botbase/helper');
 ```
 
 To use the Puppeteer Helper class import like so (all methods are static - as of version 0.1.0):
