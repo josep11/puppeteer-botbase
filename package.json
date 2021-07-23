@@ -1,6 +1,6 @@
 {
-  "name": "BotBase",
-  "version": "0.0.1",
+  "name": "botbase",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,10 @@
   },
   "author": "Josep Alsina",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josep11/puppeteer-botbase.git"
+  },
   "dependencies": {
     "child-process-async": "^1.0.1",
     "colors": "^1.4.0",

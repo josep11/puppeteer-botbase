@@ -3,7 +3,7 @@ class BotBase {
     page = null;
 
     async initialize() {
-        console.log('init bot base');
+        console.log('init bot base v0.0.2');
         this.page = 1;
     }
 
