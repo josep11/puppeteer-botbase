@@ -126,7 +126,7 @@ class Helper {
     }
    
     async logJSONdebug(jsonStr, basePath=__dirname) {
-        const dir = path.resolve(__dirname, `../logs/dataset`);
+        const dir = path.resolve(basePath, `../logs/dataset`);
         this.createDirIfNotExists(dir);
         const filenameFullPath = path.resolve(dir, `data_${this.dateFormatForLog()}.json`);
         try {
