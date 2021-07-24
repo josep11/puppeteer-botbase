@@ -5,7 +5,7 @@ const BotBase = require('../botbase');
 
 class ExampleChild extends BotBase {
     constructor(basePath) {
-        super(basePath, {
+        super(basePath, 'fake url', {
             settings: {
                 enabled: false
             }
@@ -18,8 +18,17 @@ describe('Botbase Tests', () => {
 
     it('should intantiate BotBase', () => {
         const path = require('path');
-        botbase = new BotBase(path.resolve(__dirname, '../'));
+        botbase = new BotBase(path.resolve(__dirname, '../') , 'http://sampleurl.com');
         assert.ok(botbase);
+    });
+    it('should throw on instantiation BotBase', () => {
+        const path = require('path');
+        let mainUrl = {};
+        
+        assert.throws(()=>{
+            let botbase2 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
+        }, 'botbase constructor not checking mainUrl type parameter');
+
     });
     it('should call successfully initialise', async () => {
 
@@ -49,7 +58,9 @@ describe('Botbase Tests', () => {
     });
 
     it('should get a sample website with puppeteer', async () => {
-        assert.doesNotThrow(await botbase._testSampleWebsite());
+
+        await botbase._testSampleWebsite();
+
     });
 
 });
