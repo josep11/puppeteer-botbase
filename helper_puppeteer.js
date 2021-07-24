@@ -17,6 +17,20 @@ class HelperPuppeteer {
         await page.waitForTimeout(1500);
     }
 
+    /**
+     * Finds texts (ignoring case) on page text or throws Exception
+     * @param {*} page Puppeteer Page
+     * @param {*} text Text to find
+     */
+    static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
+        let options = ignoreCase ? 'gi' : 'g';
+        const innerText = await page.evaluate(() => document.body.innerText);
+        const regex = new RegExp(text, options);
+        if (!regex.test(innerText)) {
+            throw new Error(`Text "${text}" is not found in document body on ${page.url()}`);
+        }
+    }
+
     static async scrollToBottom() { //Will be evaluated in browser context, so constant goes here
         const DISTANCE_SCROLL = Math.floor(Math.random() * (100 - 65 + 1)) + 65; //pseudo randomising distance_scroll bw 65 and 100
         await new Promise(resolve => {
