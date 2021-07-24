@@ -132,6 +132,7 @@ class Helper {
         try {
             await fs.writeFile(filenameFullPath, jsonStr);
             console.error(`file written successfully to ${filenameFullPath}`);
+            return filenameFullPath;
         }
         catch (err) {
             console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);

@@ -18,10 +18,13 @@ class BotBase {
      * 
      * @param {string} basePath the dirname basePath
      */
-    constructor(basePath, configChild={}) {
+    constructor(basePath, configChild = {}) {
+        if (!basePath) {
+            throw new Error('Developer fix this: basePath is undefined');
+        }
         this.basePath = basePath;
         //merging config options prioritising upcoming ones
-        config = deepmerge(config, configChild );
+        config = deepmerge(config, configChild);
 
         this.cookiesFile = path.resolve(basePath, './res/cookies.json');
         this.screenshotBasepath = path.resolve(basePath, './screenshots');
@@ -42,7 +45,7 @@ class BotBase {
         await this.semiRandomiseViewPort();
     }
 
-    async semiRandomiseViewPort(){
+    async semiRandomiseViewPort() {
         await this.page.setViewport({
             width: config.settings.width + helper.getRandBetween(1, 100),
             height: config.settings.height + helper.getRandBetween(1, 100)
@@ -74,18 +77,18 @@ class BotBase {
 
         await this.page.goto('https://bot.sannysoft.com', { waitUntil: 'networkidle2' });
 
-        await this.page.evaluate(HelperPuppeteer.scrollToBottom);
+        // await this.page.evaluate(HelperPuppeteer.scrollToBottom);
     }
 
-    enabled(){
+    enabled() {
         return config.settings.enabled;
     }
 
-    getConfig(){
+    getConfig() {
         return config;
     }
 
-    getVersion(){
+    getVersion() {
         var pjson = require('./package.json');
         return pjson.version;
     }
@@ -93,11 +96,11 @@ class BotBase {
     async shutDown() {
         this.browser.close();
     }
-    
-    appName(){
+
+    appName() {
         return "SHOULD OVERRIDE ¯\_(ツ)_/¯ SHOULD OVERRIDE";
     }
-    
+
 }
 
 module.exports = BotBase;

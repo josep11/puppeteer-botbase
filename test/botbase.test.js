@@ -17,7 +17,8 @@ describe('Botbase Tests', () => {
     let botbase = null;
 
     it('should intantiate BotBase', () => {
-        botbase = new BotBase();
+        const path = require('path');
+        botbase = new BotBase(path.resolve(__dirname, '../'));
         assert.ok(botbase);
     });
     it('should call successfully initialise', async () => {
@@ -48,7 +49,7 @@ describe('Botbase Tests', () => {
     });
 
     it('should get a sample website with puppeteer', async () => {
-        await botbase._testSampleWebsite();
+        assert.doesNotThrow(await botbase._testSampleWebsite());
     });
 
 });
