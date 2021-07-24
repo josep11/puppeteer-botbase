@@ -115,7 +115,6 @@ class BotBase {
                 await this.loginWithSession(cookies, this.mainUrl).catch(async (error) => {
                     console.error(`Unable to login using session: ${error}`);
                     if (error.name.indexOf('TimeoutError') != -1) { throw error }
-                    await HelperPuppeteer.checkForErrorsAfterRequest(this.page, config.milanuncios.errorText);
                     await this.loginWithCredentials(username, password);
                 });
             } else {
