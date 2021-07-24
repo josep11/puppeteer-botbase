@@ -25,13 +25,11 @@ describe('Module Helper Puppeteer Tests', () => {
         const url = "https://es.wikipedia.org/wiki/Wikipedia:Portada";
         let textsTofind = ["Portal de la comunidad", "MediaWiki"];
 
-        await page.goto(url, {waitUntil: 'networkidle0'});
+        await page.goto(url, { waitUntil: 'networkidle0' });
 
         for (const textTofind of textsTofind) {
-            try {
-                await HelperPuppeteer.isTextPresentOnWebpage(page, textTofind);
-            } catch (error) {
-                assert.fail(error.message);
+            if (! await HelperPuppeteer.isTextPresentOnWebpage(page, textTofind)) {
+                assert.fail("Text not found " + textTofind);
             }
         }
 

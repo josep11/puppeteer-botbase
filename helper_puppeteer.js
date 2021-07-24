@@ -18,17 +18,20 @@ class HelperPuppeteer {
     }
 
     /**
-     * Finds texts (ignoring case) on page text or throws Exception
+     * Finds texts (ignoring case) on page text
      * @param {*} page Puppeteer Page
      * @param {*} text Text to find
+     * @returns true or false
      */
     static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
         let options = ignoreCase ? 'gi' : 'g';
         const innerText = await page.evaluate(() => document.body.innerText);
         const regex = new RegExp(text, options);
-        if (!regex.test(innerText)) {
-            throw new Error(`Text "${text}" is not found in document body on ${page.url()}`);
+        if (regex.test(innerText)) {
+            return true;
         }
+        console.error(`Text "${text}" is not found in document body on ${page.url()}`);
+        return false;
     }
 
     static async scrollToBottom() { //Will be evaluated in browser context, so constant goes here
