@@ -25,7 +25,7 @@ class BotBase {
         if (!basePath) {
             throw new Error('Developer fix this: basePath is undefined');
         }
-        if (!mainUrl || typeof mainUrl != "string"){
+        if (!mainUrl || typeof mainUrl != "string") {
             throw new Error('Developer fix this: mainUrl is undefined or not string. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js');
         }
         this.basePath = basePath;
@@ -84,7 +84,7 @@ class BotBase {
      * @param {string} mainUrl the url to check the login 
      */
     async loginWithSession(cookies) {
-        if (!this.mainUrl){
+        if (!this.mainUrl) {
             throw new Error('loginWithSession: mainUrl param is not set');
         }
         console.log(`Logging into ${this.appName()} using cookies`);
@@ -153,6 +153,21 @@ class BotBase {
     /* ******************* */
     /* END LOGIN FUNCTIONS */
     /* ******************* */
+
+    /**
+     * Will take screenshot and append the date before the desired filename
+     * @param {string} filename just the name of the file without extension
+     * @returns {string} screenshotLocation full screenshot location
+     */
+    async takeScreenshot(filename) {
+        const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.png`;
+        console.log(`Before taking screenshot: ${screenshotLocation}`);
+        await this.page.screenshot({
+            path: screenshotLocation,
+            fullPage: true
+        });
+        return screenshotLocation;
+    }
 
     async logIP() {
         await this.page.goto('http://checkip.amazonaws.com/');
