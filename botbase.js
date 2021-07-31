@@ -207,7 +207,9 @@ class BotBase {
     }
 
     async shutDown() {
-        this.browser.close();
+        if (this.browser) {
+            this.browser.close();
+        }
     }
 
     appName() {
