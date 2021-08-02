@@ -131,7 +131,7 @@ class Helper {
         const filenameFullPath = path.resolve(dir, `data_${this.dateFormatForLog()}.json`);
         try {
             await fs.writeFile(filenameFullPath, jsonStr);
-            console.error(`file written successfully to ${filenameFullPath}`);
+            console.log(`file written successfully to ${filenameFullPath}`);
             return filenameFullPath;
         }
         catch (err) {
