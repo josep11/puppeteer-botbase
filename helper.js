@@ -75,6 +75,12 @@ class Helper {
         }
         return stdout.trim();
     }
+
+
+    /*****************************************/
+    /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
+    /*****************************************/
+
     /**
      * 
      * @param {string} ip 
@@ -138,6 +144,12 @@ class Helper {
             console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);
         }
     }
+
+    /***************************************/
+    /* END I/O FUNCTIONS TO THE FILESYSTEM */
+    /***************************************/
+
+
     /**
      * This function is deprecated with the RenewManager no need to run this function in the browser context
      * @param {*} timeStr 
