@@ -3,6 +3,7 @@ const assert = require('assert');
 const BotBase = require('../botbase');
 // var expect = require("chai").expect;
 const path = require('path');
+const puppeteer = require('puppeteer');
 
 class ExampleChild extends BotBase {
     constructor(basePath) {
@@ -37,9 +38,9 @@ describe('Botbase Tests', () => {
         }, 'botbase constructor not checking mainUrl type parameter');
 
     });
-    it('should call successfully initialise', async () => {
+    it('should call successfully initialise with puppeteer', async () => {
 
-        await botbase.initialize();
+        await botbase.initialize({ puppeteer });
 
     });
     it('should log ip to text file', async () => {
@@ -66,7 +67,7 @@ describe('Botbase Tests', () => {
 
     it('should get a sample website with puppeteer', async () => {
 
-        await botbase._testSampleWebsite();
+        await botbase._testSampleWebsite(puppeteer);
 
     });
 

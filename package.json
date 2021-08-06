@@ -1,6 +1,6 @@
 {
   "name": "botbase",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "botbase.js",
   "scripts": {
@@ -17,12 +17,14 @@
     "child-process-async": "^1.0.1",
     "deepmerge": "^4.2.2",
     "fs": "0.0.1-security",
-    "moment": "^2.29.1",
-    "puppeteer": "^10.1.0"
+    "moment": "^2.29.1"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
     "eslint": "^7.20.0",
     "mocha": "^9.0.2",
-    "chai": "^4.3.4"
+    "puppeteer": "^10.1.0",
+    "chrome-aws-lambda": "^10.1.0",
+    "puppeteer-core": "^10.2.0"
   }
 }
