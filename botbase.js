@@ -1,4 +1,5 @@
 const deepmerge = require('deepmerge');
+const puppeteer = require('puppeteer');
 const path = require('path');
 
 const helper = require('./helper');
@@ -27,7 +28,7 @@ class BotBase {
         if (!basePath) {
             throw new Error('Developer fix this: basePath is undefined');
         }
-
+        
         this.basePath = basePath;
         this.mainUrl = mainUrl;
         //merging config options prioritising upcoming ones
@@ -37,28 +38,16 @@ class BotBase {
         this.screenshotBasepath = path.resolve(basePath, './screenshots');
     }
 
-    async initialize({ chromium, puppeteer }, opts = {}) {
+    async initialize(opts = {}) {
         var pjson = require('./package.json');
         console.log(`init bot base v${pjson.version}`);
         if (this.browser != null) {
             this.browser.close();
             this.page = null;
         }
-        if (puppeteer) { //like the dep require('puppeteer') or equivalents
-            this.browser = await puppeteer.launch({
-                ...opts
-            });
-        }
-        if (chromium) { //like the dep require('chrome-aws-lambda')
-            const { executablePath } = chromium
-
-            this.browser = await chromium.puppeteer.launch({
-                ignoreDefaultArgs: ['--disable-extensions'],
-                args: chromium.args,
-                executablePath,
-            });
-
-        }
+        this.browser = await puppeteer.launch({
+            ...opts
+        });
         this.page = await this.browser.newPage();
 
         await this.semiRandomiseViewPort();
@@ -170,7 +159,7 @@ class BotBase {
     /**
      * reads from local filesystem
      */
-    async readCookiesFile() {
+     async readCookiesFile() {
         return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
     }
 
@@ -205,7 +194,7 @@ class BotBase {
     /* END I/O FUNCTIONS */
     /* ******************* */
 
-    async _testSampleWebsite(puppeteer) {
+    async _testSampleWebsite() {
         this.browser = await puppeteer.launch({
             // args: [...argsTor], //TODO: reactivar tor
             headless: false,
