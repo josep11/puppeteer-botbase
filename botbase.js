@@ -94,9 +94,20 @@ class BotBase {
 
         await this.isLoggedIn().catch(async (error) => {
             console.error(`App is not logged into ${this.appName()}`);
-            await helper.writeFile(this.cookiesFile, "[]"); //deteling cookies file
+            await this.writeCookiesFile("[]"); //deteling cookies file
             throw error;
         });
+    }
+
+    /**
+     * reads from local filesystem
+     */
+    async readCookiesFile() {
+        return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+    }
+
+    async writeCookiesFile(stringifiedObj) {
+        await helper.writeFile(this.cookiesFile, stringifiedObj);
     }
 
     /**
@@ -108,7 +119,7 @@ class BotBase {
         * @param {string} password 
          */
     async login(username, password) {
-        let cookies = await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+        let cookies = await this.readCookiesFile();
 
         try {
             if (cookies && Object.keys(cookies).length) {
@@ -137,14 +148,14 @@ class BotBase {
                 path: screenshotLocation,
                 fullPage: true
             });
-            await helper.writeFile(this.cookiesFile, "[]"); //deteling cookies file
+            await this.writeCookiesFile("[]"); //deteling cookies file
             throw error;
         }
 
         // Save our freshest cookies that contain our Milanuncios session
         await this.page.cookies().then(async (freshCookies) => {
             // console.log('saving fresh cookies');
-            await helper.writeFile(this.cookiesFile, JSON.stringify(freshCookies, null, 2));
+            await this.writeCookiesFile(JSON.stringify(freshCookies, null, 2));
         });
 
         console.log('Login ok');
