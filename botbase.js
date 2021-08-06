@@ -21,13 +21,15 @@ class BotBase {
      * @param {string} mainUrl used for checking isLoggedIn and loginWithSession
      * @param {*} configChild optional
      */
-    constructor(basePath, mainUrl, configChild = {}) {
+    constructor(mainUrl, basePath, configChild = {}) {
+        if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes('http')) {
+            throw new Error('Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js');
+        }
+
         if (!basePath) {
             throw new Error('Developer fix this: basePath is undefined');
         }
-        if (!mainUrl || typeof mainUrl != "string") {
-            throw new Error('Developer fix this: mainUrl is undefined or not string. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js');
-        }
+        
         this.basePath = basePath;
         this.mainUrl = mainUrl;
         //merging config options prioritising upcoming ones
@@ -99,16 +101,6 @@ class BotBase {
         });
     }
 
-    /**
-     * reads from local filesystem
-     */
-    async readCookiesFile() {
-        return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
-    }
-
-    async writeCookiesFile(stringifiedObj) {
-        await helper.writeFile(this.cookiesFile, stringifiedObj);
-    }
 
     /**
          * Tries to login using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
@@ -165,6 +157,22 @@ class BotBase {
     /* END LOGIN FUNCTIONS */
     /* ******************* */
 
+
+    /* ******************* */
+    /* BEGIN I/O FUNCTIONS */
+    /* ******************* */
+
+    /**
+     * reads from local filesystem
+     */
+     async readCookiesFile() {
+        return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+    }
+
+    async writeCookiesFile(stringifiedObj) {
+        await helper.writeFile(this.cookiesFile, stringifiedObj);
+    }
+
     /**
      * Will take screenshot and append the date before the desired filename
      * @param {string} filename just the name of the file without extension
@@ -187,6 +195,10 @@ class BotBase {
         console.log(current_ip_address);
         return current_ip_address
     }
+
+    /* ******************* */
+    /* END I/O FUNCTIONS */
+    /* ******************* */
 
     async _testSampleWebsite() {
         this.browser = await puppeteer.launch({

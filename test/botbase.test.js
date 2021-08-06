@@ -2,10 +2,11 @@ const { fail } = require('assert');
 const assert = require('assert');
 const BotBase = require('../botbase');
 // var expect = require("chai").expect;
+const path = require('path');
 
 class ExampleChild extends BotBase {
     constructor(basePath) {
-        super(basePath, 'fake url', {
+        super('http://dummy.com', basePath, {
             settings: {
                 enabled: false
             }
@@ -17,15 +18,22 @@ describe('Botbase Tests', () => {
     let botbase = null;
 
     it('should intantiate BotBase', () => {
-        const path = require('path');
-        botbase = new BotBase(path.resolve(__dirname, '../') , 'http://sampleurl.com');
+        botbase = new BotBase('http://sampleurl.com', path.resolve(__dirname, '../'));
         assert.ok(botbase);
     });
+
+    it('should throw an error on constructor because of first param type style', () => {
+        let mainUrl = 'http://google.com';
+        assert.throws(() => {
+            let botbase6 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
+        }, 'botbase constructor param order is wrong');
+    })
+
     it('should throw on instantiation BotBase', () => {
         const path = require('path');
         let mainUrl = {};
-        
-        assert.throws(()=>{
+
+        assert.throws(() => {
             let botbase2 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
         }, 'botbase constructor not checking mainUrl type parameter');
 
