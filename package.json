@@ -23,8 +23,6 @@
     "chai": "^4.3.4",
     "eslint": "^7.20.0",
     "mocha": "^9.0.2",
-    "puppeteer": "^10.1.0",
-    "chrome-aws-lambda": "^10.1.0",
-    "puppeteer-core": "^10.2.0"
+    "puppeteer": "^10.1.0"
   }
 }
