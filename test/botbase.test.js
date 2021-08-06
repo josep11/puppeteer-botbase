@@ -30,7 +30,6 @@ describe('Botbase Tests', () => {
     })
 
     it('should throw on instantiation BotBase', () => {
-        const path = require('path');
         let mainUrl = {};
 
         assert.throws(() => {

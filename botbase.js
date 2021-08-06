@@ -134,12 +134,7 @@ class BotBase {
             await this.isLoggedIn();
         } catch (error) {
             console.error(`App is not logged into ${this.appName()}`);
-            const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_login_error.png`;
-            console.log(`Saving screenshot login error: ${screenshotLocation}`);
-            await this.page.screenshot({
-                path: screenshotLocation,
-                fullPage: true
-            });
+            const screenshotLocation = await this.takeScreenshot('login_error');
             await this.writeCookiesFile("[]"); //deteling cookies file
             throw error;
         }
