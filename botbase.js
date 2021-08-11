@@ -28,7 +28,7 @@ class BotBase {
         if (!basePath) {
             throw new Error('Developer fix this: basePath is undefined');
         }
-        
+
         this.basePath = basePath;
         this.mainUrl = mainUrl;
         //merging config options prioritising upcoming ones
@@ -58,6 +58,22 @@ class BotBase {
             width: config.settings.width + helper.getRandBetween(1, 100),
             height: config.settings.height + helper.getRandBetween(1, 100)
         })
+    }
+
+    /**
+     * Prevents loading images to save CPU, memory and bandwidth
+     * @param {*} page 
+     */
+    async interceptImages(page) {
+        await page.setRequestInterception(true);
+        page.on('request', (req) => {
+            if (req.resourceType() === 'image') {
+                req.abort();
+            }
+            else {
+                req.continue();
+            }
+        });
     }
 
     /* *************** */
@@ -159,7 +175,7 @@ class BotBase {
     /**
      * reads from local filesystem
      */
-     async readCookiesFile() {
+    async readCookiesFile() {
         return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
     }
 
