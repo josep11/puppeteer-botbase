@@ -18,6 +18,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: npm install
+      - run:
+          name: Custom command (show tree)
+          command: "ls -a"
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
