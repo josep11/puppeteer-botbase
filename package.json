@@ -5,7 +5,7 @@
   "main": "botbase.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha --timeout 25000 --exit --bail"
+    "test": "mocha --timeout 25000 --exit --bail --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results/mocha/results.xml"
   },
   "author": "Josep Alsina",
   "license": "ISC",
@@ -21,8 +21,9 @@
     "puppeteer": "^10.1.0"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
     "eslint": "^7.20.0",
     "mocha": "^9.0.2",
-    "chai": "^4.3.4"
+    "mocha-junit-reporter": "^2.0.0"
   }
 }
