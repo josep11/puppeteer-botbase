@@ -26,7 +26,7 @@ jobs:
           name: Run tests
           command: npm run test
       - store_test_results:
-          path: test-results/mocha/results.xml
+          path: test-results/mocha/
       - run:
           name: Custom command (show tree)
           command: ls -al
