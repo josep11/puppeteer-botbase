@@ -5,7 +5,7 @@ apify_storage/
 
 config/user.json
 
-logs/
+logs/*
 !logs/.gitkeep
 
 screenshots/*
