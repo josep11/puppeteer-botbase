@@ -12,3 +12,6 @@ screenshots/*
 !screenshots/.gitkeep
 
 db/*
+
+test-results/*
+!test-results/.gitkeep
