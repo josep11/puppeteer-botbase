@@ -15,3 +15,6 @@ db/*
 
 test-results/*
 !test-results/.gitkeep
+!test-results/mocha/
+test-results/mocha/*
+!test-results/mocha/.gitkeep
