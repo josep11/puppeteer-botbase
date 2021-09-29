@@ -1,5 +1,3 @@
-const helper = require('./helper');
-
 class HelperPuppeteer {
 
     static async closePopup(page, textBtn = "Aceptar y cerrar", element = "*") {
@@ -49,6 +47,6 @@ class HelperPuppeteer {
         });
     }
 
-};
+}
 
 module.exports = HelperPuppeteer;

@@ -1,4 +1,3 @@
-/*global __dirname */
 const path = require('path');
 
 const { promises: fs } = require("fs");
@@ -7,6 +6,7 @@ const util = require('util');
 const moment = require('moment');
 
 class Helper {
+    delay() { return util.promisify(setTimeout) }
 
     printDate(channel = console.log) {
         let day = this.getNow();
@@ -88,7 +88,7 @@ class Helper {
      * @param {string} basePath defaults to current dir 
      * @returns undefined if no error happened or string with error message otherwise
      */
-    async writeIPToFile(ip, date, basePath=__dirname) {
+    async writeIPToFile(ip, date, basePath = __dirname) {
         const ip_file = path.resolve(basePath, "./logs/ip.txt");
         try {
             await fs.appendFile(ip_file, `Data: ${date}\nIP: ${ip}\n\n`);
@@ -130,8 +130,8 @@ class Helper {
             fs.mkdirSync(dir);
         }
     }
-   
-    async logJSONdebug(jsonStr, basePath=__dirname) {
+
+    async logJSONdebug(jsonStr, basePath = __dirname) {
         const dir = path.resolve(basePath, `./logs/dataset`);
         this.createDirIfNotExists(dir);
         const filenameFullPath = path.resolve(dir, `data_${this.dateFormatForLog()}.json`);
@@ -172,7 +172,6 @@ class Helper {
         }
         return false;
     }
-    delay = util.promisify(setTimeout)
     getRanomisedUserAgend() {
         //Working but unused in this project
 

@@ -1,4 +1,4 @@
-const { fail } = require('assert');
+/* global it, describe, after  */
 const assert = require('assert');
 const helper = require('../helper');
 const expect = require("chai").expect;
@@ -39,6 +39,10 @@ describe('Module Helper Tests', () => {
         let resp = await helper.writeIPToFile('0.0.0.0', helper.dateFormatForLog());
 
         expect(resp).to.be.undefined;
+    });
+
+    it('should wait 10ms', async () => {
+        await helper.delay(10);
     });
 
 });

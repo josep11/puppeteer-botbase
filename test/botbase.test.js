@@ -1,4 +1,4 @@
-const { fail } = require('assert');
+/* global it, describe, after  */
 const assert = require('assert');
 const BotBase = require('../botbase');
 // var expect = require("chai").expect;

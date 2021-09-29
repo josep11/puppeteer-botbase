@@ -3,16 +3,13 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 
 const helper = require('./helper');
+const { NotImplementedError, MyTimeoutError } = require('./custom_errors');
 
-const HelperPuppeteer = require('./helper_puppeteer');
+// const HelperPuppeteer = require('./helper_puppeteer');
 let config = require('./config/config.json');
 
 class BotBase {
-    browser = null;
-    page = null;
-
-    basePath = null;
-    mainUrl = null;
+    // moved to constructor (browser, page, basePath, mainUrl)
 
     /**
      * 
@@ -29,6 +26,8 @@ class BotBase {
             throw new Error('Developer fix this: basePath is undefined');
         }
 
+        this.browser = null;
+        this.page = null;
         this.basePath = basePath;
         this.mainUrl = mainUrl;
         //merging config options prioritising upcoming ones
