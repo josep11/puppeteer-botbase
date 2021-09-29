@@ -1,0 +1,37 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.2.0
+jobs:
+  tests-job:
+    docker:
+      # put here version you need
+      - image: circleci/node:12-browsers
+      # - image: satantime/puppeteer-node:12.16-buster
+    steps:
+      # tutorial followed: https://circleci.com/blog/functional-browser-testing/
+      - checkout
+      - run:
+          name: Update NPM
+          command: "sudo npm install -g npm"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Run tests
+          command: npm run test
+workflows:
+  tests-workflow:
+    jobs:
+      - tests-job
+      #- node/test:
+      #  matrix:
+      #    parameters:
+      #      - version: 12.18.4
+            # TODO: remove for production as I don't need it so far
+            # - version: 14.17.2
