@@ -4,9 +4,7 @@ orbs:
 jobs:
   tests-job:
     docker:
-      # put here version you need
       - image: circleci/node:12-browsers
-      # - image: satantime/puppeteer-node:12.16-buster
     steps:
       # tutorial followed: https://circleci.com/blog/functional-browser-testing/
       - checkout
@@ -27,9 +25,6 @@ jobs:
           command: npm run test
       - store_test_results:
           path: test-results/mocha/
-      - run:
-          name: Custom command (show tree)
-          command: ls -al
 workflows:
   tests-workflow:
     jobs:
@@ -38,5 +33,4 @@ workflows:
       #  matrix:
       #    parameters:
       #      - version: 12.18.4
-            # TODO: remove for production as I don't need it so far
             # - version: 14.17.2
