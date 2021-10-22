@@ -8,7 +8,7 @@ class LoginError extends Error {
 }
 
 class MyTimeoutError extends Error {
-    constructor(message) {
+    constructor(message = 'Conexió Lenta ❌') {
         super(message)
         Error.captureStackTrace(this, this.constructor);
 

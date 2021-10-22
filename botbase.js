@@ -39,7 +39,7 @@ class BotBase {
 
     async initialize(opts = {}) {
         var pjson = require('./package.json');
-        console.log(`init bot base v${pjson.version}`);
+        // console.log(`init bot base v${pjson.version}`);
         if (this.browser != null) {
             this.browser.close();
             this.page = null;
@@ -211,7 +211,6 @@ class BotBase {
 
     async _testSampleWebsite() {
         this.browser = await puppeteer.launch({
-            // args: [...argsTor], //TODO: reactivar tor
             headless: false,
             devtools: false,
             ignoreHTTPSErrors: true,
