@@ -17,6 +17,15 @@ class Helper {
     dateFormatForLog() {
         return moment(new Date()).format("yyyy-MM-DD_hh.mm.ss");
     }
+
+    consoleListener(message) {
+        const type = message.type().substr(0, 3).toUpperCase()
+        if (type == 'WAR' || type == 'INF') {
+            return;
+        }
+        console.info(`${type} ${message.text()}`)
+    }
+
     /**
      * This function gets the difference in hours from the param with the actual moment
      * @param {Date} pastTime 

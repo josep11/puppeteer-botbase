@@ -1,7 +1,7 @@
 class HelperPuppeteer {
 
     static async closePopup(page, textBtn = "Aceptar y cerrar", element = "*") {
-        let btn = await page.$x(`//${element}[contains(text(), "${textBtn}")]`);
+        const btn = await page.$x(`//${element}[contains(text(), "${textBtn}")]`);
         if (btn && btn.length == 0) {
             console.debug(`popup with text ${textBtn} not found ... continuing`);
         } else {
@@ -18,7 +18,7 @@ class HelperPuppeteer {
     /**
      * Finds texts (ignoring case) on page text
      * @param {*} page Puppeteer Page
-     * @param {*} text Text to find
+     * @param {string} text Text to find
      * @returns true or false
      */
     static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
