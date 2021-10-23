@@ -25,8 +25,18 @@ class NotImplementedError extends Error {
     }
 }
 
+class NoInternetError extends Error {
+    constructor(message='No Tens Internet ❌') {
+        super(message)
+        Error.captureStackTrace(this, this.constructor);
+
+        this.name = this.constructor.name
+    }
+}
+
 module.exports = {
     LoginError,
     MyTimeoutError,
+    NoInternetError,
     NotImplementedError
 }
