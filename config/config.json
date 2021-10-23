@@ -1,5 +1,6 @@
 {
     "settings": {
+        "enabled": true,
         "width": 1200,
         "height": 800,
         "useTor": true,

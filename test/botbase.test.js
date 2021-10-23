@@ -6,7 +6,9 @@ const path = require('path');
 
 class ExampleChild extends BotBase {
     constructor(basePath) {
-        super('http://dummy.com', basePath, {
+        super(
+            'http://dummy.com',
+            basePath, {
             settings: {
                 enabled: false
             }
@@ -23,17 +25,17 @@ describe('Botbase Tests', () => {
     });
 
     it('should throw an error on constructor because of first param type style', () => {
-        let mainUrl = 'http://google.com';
+        const mainUrl = 'http://google.com';
         assert.throws(() => {
-            let botbase6 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
+            botbase6 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
         }, 'botbase constructor param order is wrong');
     })
 
     it('should throw on instantiation BotBase', () => {
-        let mainUrl = {};
+        const mainUrl = {};
 
         assert.throws(() => {
-            let botbase2 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
+            new BotBase(path.resolve(__dirname, '../'), mainUrl);
         }, 'botbase constructor not checking mainUrl type parameter');
 
     });
@@ -56,13 +58,19 @@ describe('Botbase Tests', () => {
     it('should get enabled false as default option for child class', async () => {
         const myChildCls = new ExampleChild(__dirname);
         const enabled = myChildCls.enabled();
-        assert.strictEqual(enabled, false);
+        assert.strictEqual(false, enabled);
+    });
+
+    it('should override default config properties', async () => {
+        const myChildCls = new ExampleChild(__dirname);
         const config = myChildCls.getConfig();
-        const errMsg = 'it didnt override config properties rather delete the previous ones';
+        const errMsg = 'it didnt override config properties rather deconste the previous ones';
         assert.ok(config, errMsg);
         assert.ok(config.settings, errMsg);
         assert.ok(config.settings.width, errMsg);
     });
+
+
 
     it('should get a sample website with puppeteer', async () => {
 
