@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "mocha --timeout 25000 --exit --bail",
-    "test:ci": "mocha --timeout 25000 --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results/mocha/results.xml",
+    "test:ci": "mocha --timeout 25000 --reporter mocha-junit-reporter --exit --reporter-options mochaFile=./test-results/mocha/results.xml",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix"
   },
