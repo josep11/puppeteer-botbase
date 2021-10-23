@@ -47,4 +47,8 @@ describe('Module Helper Puppeteer Tests', () => {
 
 after(async () => {
     await browser.close();
+
+    console.log('//TODO: delete. Its only for debugging circleCI');
+    console.log(`${__filename} tests run`);
+
 })

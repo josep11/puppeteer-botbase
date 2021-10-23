@@ -46,3 +46,8 @@ describe('Module Helper Tests', () => {
     });
 
 });
+
+after(() => {
+    console.log('//TODO: delete. Its only for debugging circleCI');
+    console.log(`${__filename} tests run`);
+})
