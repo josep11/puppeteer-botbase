@@ -5,7 +5,6 @@ const path = require('path');
 const helper = require('./helper');
 const { NotImplementedError, MyTimeoutError } = require('./custom_errors');
 
-// const HelperPuppeteer = require('./helper_puppeteer');
 let config = require('./config/config.json');
 
 class BotBase {
@@ -25,8 +24,8 @@ class BotBase {
         if (!basePath) {
             throw new Error('Developer fix this: basePath is undefined');
         }
-
         this.browser = null;
+        /** @type {puppeteer.Page} */
         this.page = null;
         this.basePath = basePath;
         this.mainUrl = mainUrl;
@@ -38,7 +37,7 @@ class BotBase {
     }
 
     async initialize(opts = {}) {
-        var pjson = require('./package.json');
+        // const pjson = require('./package.json');
         // console.log(`init bot base v${pjson.version}`);
         if (this.browser != null) {
             this.browser.close();
@@ -89,6 +88,7 @@ class BotBase {
     /**
      * Implementation required
      */
+    // eslint-disable-next-line no-unused-vars
     async loginWithCredentials(username, password) {
         throw new NotImplementedError('loginWithCredentials not implemented');
     }
@@ -148,7 +148,7 @@ class BotBase {
             await this.isLoggedIn();
         } catch (error) {
             console.error(`App is not logged into ${this.appName()}`);
-            const screenshotLocation = await this.takeScreenshot('login_error');
+            await this.takeScreenshot('login_error');
             await this.writeCookiesFile("[]"); //deteling cookies file
             throw error;
         }
@@ -233,7 +233,7 @@ class BotBase {
     }
 
     getVersion() {
-        var pjson = require('./package.json');
+        const pjson = require('./package.json');
         return pjson.version;
     }
 
@@ -244,6 +244,7 @@ class BotBase {
     }
 
     appName() {
+        // eslint-disable-next-line no-useless-escape
         return "SHOULD OVERRIDE ¯\_(ツ)_/¯ SHOULD OVERRIDE";
     }
 

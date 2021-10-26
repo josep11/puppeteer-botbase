@@ -1,4 +1,4 @@
-/* global it, describe, after  */
+/* global it, describe  */
 const assert = require('assert');
 const BotBase = require('../botbase');
 // var expect = require("chai").expect;
@@ -27,7 +27,7 @@ describe('Botbase Tests', () => {
     it('should throw an error on constructor because of first param type style', () => {
         const mainUrl = 'http://google.com';
         assert.throws(() => {
-            botbase6 = new BotBase(path.resolve(__dirname, '../'), mainUrl);
+            botbase = new BotBase(path.resolve(__dirname, '../'), mainUrl);
         }, 'botbase constructor param order is wrong');
     })
 
@@ -79,8 +79,3 @@ describe('Botbase Tests', () => {
     });
 
 });
-
-after(() => {
-    console.log('//TODO: delete. Its only for debugging circleCI');
-    console.log(`${__filename} tests run`);
-})

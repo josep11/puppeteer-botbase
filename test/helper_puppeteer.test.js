@@ -1,6 +1,5 @@
-/* global it, describe, after  */
+/* global it, describe, before, after  */
 const assert = require('assert');
-const expect = require("chai").expect;
 // Require the Puppeteer module and the built-in assert module
 const puppeteer = require('puppeteer')
 let browser, page
@@ -47,8 +46,4 @@ describe('Module Helper Puppeteer Tests', () => {
 
 after(async () => {
     await browser.close();
-
-    console.log('//TODO: delete. Its only for debugging circleCI');
-    console.log(`${__filename} tests run`);
-
 })
