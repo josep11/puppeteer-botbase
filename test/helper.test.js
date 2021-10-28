@@ -1,4 +1,4 @@
-/* global it, describe, after  */
+/* global it, describe  */
 const assert = require('assert');
 const helper = require('../helper');
 const expect = require("chai").expect;

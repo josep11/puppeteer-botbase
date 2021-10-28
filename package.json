@@ -1,11 +1,11 @@
 {
   "name": "botbase",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "botbase.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha --timeout 25000 --exit --bail",
+    "test": "mocha --timeout 25000 --exit --colors --bail",
     "test:ci": "mocha --timeout 25000 --reporter mocha-junit-reporter --exit --reporter-options mochaFile=./test-results/mocha/results.xml",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix"

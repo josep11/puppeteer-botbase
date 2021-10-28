@@ -6,6 +6,10 @@ const util = require('util');
 const moment = require('moment');
 
 class Helper {
+    /**
+     * @param {number} in miliseconds
+     * @returns {function}
+     */
     delay() { return util.promisify(setTimeout) }
 
     printDate(channel = console.log) {
@@ -116,6 +120,18 @@ class Helper {
         //     console.error(`cannot write to file ${filename}. Error: ${err}`);
         // }
     }
+    /**
+     * Will write the text to the filename. Newlines should be explicitly set.
+     * @param {string} filename filename to write to
+     * @param {string} text text to write 
+     * @returns 
+     */
+    async appendFile(filename, text) {
+        // await fs.appendFile(path.join(__dirname, '../logs/prova.log'), 'example\n', 'utf8');
+        const nBytes = await fs.appendFile(filename, text, 'utf-8');
+        return nBytes;
+    }
+
     async readFile(filename) {
         let content = await fs.readFile(filename, "utf-8");
         return content;

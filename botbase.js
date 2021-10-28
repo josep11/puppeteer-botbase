@@ -189,7 +189,7 @@ class BotBase {
      */
     async takeScreenshot(filename) {
         const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.png`;
-        console.log(`Before taking screenshot: ${screenshotLocation}`);
+        console.log(`Taking screenshot ${filename} at ${screenshotLocation}`);
         await this.page.screenshot({
             path: screenshotLocation,
             fullPage: true
