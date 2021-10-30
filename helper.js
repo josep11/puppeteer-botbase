@@ -6,11 +6,14 @@ const util = require('util');
 const moment = require('moment');
 
 class Helper {
-    /**
-     * @param {number} in miliseconds
-     * @returns {function}
-     */
-    delay() { return util.promisify(setTimeout) }
+
+    constructor() {
+        /**
+         * @param {number} in miliseconds
+         * @returns {function}
+         */
+        this.delay = util.promisify(setTimeout);
+    }
 
     printDate(channel = console.log) {
         let day = this.getNow();
@@ -115,10 +118,6 @@ class Helper {
     async writeFile(filename, text) {
         const nBytes = await fs.writeFile(filename, text);
         return nBytes;
-        //TODO: check
-        // catch (err) {
-        //     console.error(`cannot write to file ${filename}. Error: ${err}`);
-        // }
     }
     /**
      * Will write the text to the filename. Newlines should be explicitly set.
@@ -127,7 +126,6 @@ class Helper {
      * @returns 
      */
     async appendFile(filename, text) {
-        // await fs.appendFile(path.join(__dirname, '../logs/prova.log'), 'example\n', 'utf8');
         const nBytes = await fs.appendFile(filename, text, 'utf-8');
         return nBytes;
     }
@@ -149,7 +147,7 @@ class Helper {
         }
     }
     createDirIfNotExists(dir) {
-        var fs = require('fs');
+        const fs = require('fs');
 
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);

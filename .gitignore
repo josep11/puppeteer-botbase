@@ -18,3 +18,5 @@ test-results/*
 !test-results/mocha/
 test-results/mocha/*
 !test-results/mocha/.gitkeep
+
+playground.*
