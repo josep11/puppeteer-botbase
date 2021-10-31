@@ -22,7 +22,7 @@ class Helper {
         // console.log('---------------------------------------');
     }
     dateFormatForLog() {
-        return moment(new Date()).format("yyyy-MM-DD_hh.mm.ss");
+        return moment(new Date()).format("yyyy-MM-DD_HH.mm.ss");
     }
 
     consoleListener(message) {
