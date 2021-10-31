@@ -44,6 +44,12 @@ class Helper {
         const hours = duration.asHours();
         return hours;
     }
+    /**
+     * Returns date in format YYYY-MM-DD = 2021-10-30
+     */
+    getDate() {
+        return moment().format("yyyy-MM-DD");
+    }
     getNow() {
         return moment().format();
     }
