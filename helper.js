@@ -156,7 +156,7 @@ class Helper {
         const fs = require('fs');
 
         if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
+            fs.mkdirSync(dir, { recursive: true });
         }
     }
 
