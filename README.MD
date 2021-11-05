@@ -8,10 +8,11 @@ Utilities to reuse codebase for Scraping with Puppeteer
 npm i git+https://github.com/josep11/puppeteer-botbase.git
 ```
 
-To install a specific version run:
+To install a specific version or semver versions run:
 
 ```bash
 npm i git+https://github.com/josep11/puppeteer-botbase.git#0.1.3
+npm i github:josep11/puppeteer-botbase.git#semver:^1.0.10
 ```
 
 ## Config
