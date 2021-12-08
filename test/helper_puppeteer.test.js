@@ -53,15 +53,15 @@ describe('Module Helper Puppeteer Tests', () => {
 
         await page.goto(url, { waitUntil: 'networkidle0' });
 
-        const clicked = await HelperPuppeteer.closePopup(page, textTofind, elementType);
+        const clicked = await HelperPuppeteer.closePopupByTextContaining(page, textTofind, elementType);
         assert.strictEqual(clicked, true);
 
-        const clicked2 = await HelperPuppeteer.closePopup(page, 'random text not existing', elementType);
+        const clicked2 = await HelperPuppeteer.closePopupByTextContaining(page, 'random text not existing', elementType);
         assert.strictEqual(clicked2, false, 'should have returned false as ');
     }).timeout(20000);
 
 
-    it('should close popup by text containing (in the root element)', async () => {
+    it('should close popup by text (in the root element)', async () => {
         const url = "https://www.mailerlite.com/blog/inspiring-examples-of-email-pop-ups-and-why-they-work";
         const elementType = "button";
         const textTofind = "Accept All Cookies";
