@@ -6,7 +6,9 @@ let browser, page
 
 // In the Mocha "before" hook, create the browser and page objects.
 before(async () => {
-    browser = await puppeteer.launch()
+    browser = await puppeteer.launch({
+        // headless: false,
+    })
     page = await browser.newPage()
 })
 
@@ -32,6 +34,7 @@ describe('Module Helper Puppeteer Tests', () => {
 
     }).timeout(20000);
 
+
     /* 
     it('should find element with text present (ignorecase)', async () => {
         const filenameExampleHtml = path.resolve(__dirname, './fixtures/test-page.html');
@@ -41,6 +44,34 @@ describe('Module Helper Puppeteer Tests', () => {
         assert.strictEqual(elements.length, 2);
     }).timeout(20000);
  */
+
+    it('should close popup by text containing (in the child elements)', async () => {
+        const url = "https://blog.wishpond.com/post/94441887713/5-examples-of-website-popups-that-work";
+        const elementType = "p"; //this element does not contain the desired text, only their children
+        //in this example the structure is <p><a>desired text</a></p>
+        const textTofind = "Get Started";
+
+        await page.goto(url, { waitUntil: 'networkidle0' });
+
+        const clicked = await HelperPuppeteer.closePopup(page, textTofind, elementType);
+        assert.strictEqual(clicked, true);
+
+        const clicked2 = await HelperPuppeteer.closePopup(page, 'random text not existing', elementType);
+        assert.strictEqual(clicked2, false, 'should have returned false as ');
+    }).timeout(20000);
+
+
+    it('should close popup by text containing (in the root element)', async () => {
+        const url = "https://www.mailerlite.com/blog/inspiring-examples-of-email-pop-ups-and-why-they-work";
+        const elementType = "button";
+        const textTofind = "Accept All Cookies";
+
+        await page.goto(url, { waitUntil: 'networkidle0' });
+
+        const clicked = await HelperPuppeteer.closePopup(page, textTofind, elementType);
+
+        assert.strictEqual(clicked, true);
+    }).timeout(20000);
 
 });
 

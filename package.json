@@ -1,6 +1,6 @@
 {
   "name": "botbase",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "",
   "main": "botbase.js",
   "scripts": {

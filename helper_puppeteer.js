@@ -1,18 +1,28 @@
 class HelperPuppeteer {
 
+    /**
+     * 
+     * @param {*} page Puppeteer page
+     * @param {string?} textBtn the text to find
+     * @param {string?} element the tag refering to the dom element
+     * @returns {boolean} true if the element was clicked, false otherwise
+     */
     static async closePopup(page, textBtn = "Aceptar y cerrar", element = "*") {
-        const btn = await page.$x(`//${element}[contains(text(), "${textBtn}")]`);
+        const btn = await page.$x(`//${element}[contains(., "${textBtn}")]`);
+        let clicked = false;
         if (btn && btn.length == 0) {
-            console.debug(`popup with text ${textBtn} not found ... continuing`);
+            console.debug(`popup with text '${textBtn}' not found ... continuing`);
         } else {
             try {
                 await btn[0].click();
+                clicked = true;
             } catch (err) {
-                console.error("error clicking popup button. \"" + textBtn + "\" (element=" + element + "). Continuing ...");
+                console.error(`error clicking popup button. '${textBtn}' (element="${element}"). Continuing ...`);
             }
         }
 
         await page.waitForTimeout(1500);
+        return clicked;
     }
 
     /**
