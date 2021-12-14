@@ -29,7 +29,7 @@ class BotBase {
         this.page = null;
         this.basePath = basePath;
         this.mainUrl = mainUrl;
-        //merging config options prioritising upcoming ones
+        //merging config options overriding with the upcoming ones
         config = deepmerge(config, configChild);
 
         this.cookiesFile = path.resolve(basePath, './res/cookies.json');
@@ -125,7 +125,7 @@ class BotBase {
         * @param {string} password 
          */
     async login(username, password) {
-        let cookies = await this.readCookiesFile();
+        const cookies = await this.readCookiesFile();
 
         try {
             if (cookies && Object.keys(cookies).length) {
@@ -199,10 +199,10 @@ class BotBase {
 
     async logIP() {
         await this.page.goto('http://checkip.amazonaws.com/');
-        let current_ip_address = await this.page.evaluate(() => document.body.textContent.trim());
-        await helper.writeIPToFile(current_ip_address, helper.dateFormatForLog(), this.basePath);
-        console.log(current_ip_address);
-        return current_ip_address
+        const ip = await this.page.evaluate(() => document.body.textContent.trim());
+        await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
+        console.log(ip);
+        return ip
     }
 
     /* ******************* */

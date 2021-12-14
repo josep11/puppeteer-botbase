@@ -57,7 +57,7 @@ class HelperPuppeteer {
      * @returns true or false
      */
     static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
-        let options = ignoreCase ? 'gi' : 'g';
+        const options = ignoreCase ? 'gi' : 'g';
         const innerText = await page.evaluate(() => document.body.innerText);
         const regex = new RegExp(text, options);
         if (regex.test(innerText)) {

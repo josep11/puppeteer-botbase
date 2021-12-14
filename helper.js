@@ -16,9 +16,8 @@ class Helper {
     }
 
     printDate(channel = console.log) {
-        let day = this.getNow();
         // console.log('---------------------------------------');
-        channel('----------' + day + '----------');
+        channel('----------' + this.getNow() + '----------');
         // console.log('---------------------------------------');
     }
     dateFormatForLog() {
@@ -38,11 +37,9 @@ class Helper {
      * @param {Date} pastTime 
      */
     getDiferenceInHours(pastTime) {
-        let now = moment();    // get "now" as a moment
-        let momentStart = moment(pastTime);
-        let duration = moment.duration(now.diff(momentStart));
-        const hours = duration.asHours();
-        return hours;
+        const now = moment();    // get "now" as a moment
+        const momentStart = moment(pastTime);
+        return moment.duration(now.diff(momentStart)).asHours();
     }
     /**
      * Returns date in format YYYY-MM-DD = 2021-10-30
@@ -62,7 +59,7 @@ class Helper {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     async textExistsInPage(page, text) {
-        let found = await page.$x(`//*[contains(., "${text}")]`);
+        const found = await page.$x(`//*[contains(., "${text}")]`);
         return found.length > 0;
     }
     /**
@@ -136,9 +133,13 @@ class Helper {
         return nBytes;
     }
 
+    /**
+     * 
+     * @param {string} filename 
+     * @returns {string} the content of the file
+     */
     async readFile(filename) {
-        let content = await fs.readFile(filename, "utf-8");
-        return content;
+        return await fs.readFile(filename, "utf-8");
     }
     async emptyFile(filename) {
         return await this.writeFile(filename, '');
