@@ -239,7 +239,7 @@ class BotBase {
 
     async shutDown() {
         if (this.browser) {
-            this.browser.close();
+            await this.browser.close();
         }
     }
 

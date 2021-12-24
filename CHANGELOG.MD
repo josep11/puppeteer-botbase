@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 1.0.16
+
+- Fixed bug on shutDown method (no await)
+
 ## 1.0.15
 
 - Added filterAsync function
