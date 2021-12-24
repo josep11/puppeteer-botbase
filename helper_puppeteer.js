@@ -2,14 +2,14 @@ class HelperPuppeteer {
 
     /**
      * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found. 
-     * That's why it is recommended to set the @element param to narrow down the search
+     * That's why it is recommended to set the @elementType param to narrow down the search
      * @param {*} page Puppeteer page
      * @param {string?} textBtnOrChildren the text to find
-     * @param {string?} element the tag refering to the dom element
+     * @param {string?} elementType the element type. i.e: p, div, a, ...
      * @returns {boolean} true if the element was clicked, false otherwise
      */
-    static async closePopupByTextContaining(page, textBtnOrChildren = "Aceptar y cerrar", element = "*") {
-        const btn = await page.$x(`//${element}[contains(., "${textBtnOrChildren}")]`);
+    static async closePopupByTextContaining(page, textBtnOrChildren = "Aceptar y cerrar", elementType = "*") {
+        const btn = await page.$x(`//${elementType}[contains(., "${textBtnOrChildren}")]`);
         let clicked = false;
         if (btn && btn.length == 0) {
             console.debug(`popup with text '${textBtnOrChildren}' not found ... continuing`);
@@ -19,7 +19,7 @@ class HelperPuppeteer {
                 clicked = true;
                 await page.waitForTimeout(1500);
             } catch (err) {
-                console.error(`error clicking popup button. '${textBtnOrChildren}' (element="${element}"). Continuing ...`);
+                console.error(`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`);
             }
         }
 
@@ -29,11 +29,11 @@ class HelperPuppeteer {
      * 
      * @param {*} page Puppeteer page
      * @param {string?} textBtn the exact text to find
-     * @param {string?} element the tag refering to the dom element
+     * @param {string?} elementType the element type. i.e: p, div, a, ...
      * @returns {boolean} true if the element was clicked, false otherwise
      */
-    static async closePopup(page, textBtn = "Aceptar y cerrar", element = "*") {
-        const btn = await page.$x(`//${element}[contains(text(), "${textBtn}")]`);
+    static async closePopup(page, textBtn = "Aceptar y cerrar", elementType = "*") {
+        const btn = await page.$x(`//${elementType}[contains(text(), "${textBtn}")]`);
         let clicked = false;
         if (btn && btn.length == 0) {
             console.debug(`popup with text '${textBtn}' not found ... continuing`);
@@ -43,7 +43,7 @@ class HelperPuppeteer {
                 clicked = true;
                 await page.waitForTimeout(1500);
             } catch (err) {
-                console.error(`error clicking popup button. '${textBtn}' (element="${element}"). Continuing ...`);
+                console.error(`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`);
             }
         }
 

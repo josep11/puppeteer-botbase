@@ -5,6 +5,22 @@ const expect = require("chai").expect;
 
 describe('Module Helper Tests', () => {
 
+    it('should filter async', async () => {
+        var arr = [1, 2, 3, 4];
+
+        function isThreeAsync(number) {
+            return new Promise((res, rej) => {
+                setTimeout(() => {
+                    res(number === 3);
+                }, 1);
+            });
+        }
+
+        const filteredArr = await helper.filterAsync(arr, isThreeAsync);
+        assert.strictEqual(filteredArr.length, 1);
+        assert.strictEqual(filteredArr[0], 3);
+    });
+
     it('should be 0 hours difference', () => {
         const res = helper.getDiferenceInHours(helper.getNow());
         assert.strictEqual(Math.round(res), 0);

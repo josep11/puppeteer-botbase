@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 1.0.15
+
+- Added filterAsync function
+
 ## 1.0.0
 
 ==================

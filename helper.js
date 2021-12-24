@@ -58,6 +58,22 @@ class Helper {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
+    mapAsync(array, callbackfn) {
+        return Promise.all(array.map(callbackfn));
+    }
+
+    /**
+     * 
+     * @param {array} array array to filter
+     * @param {function} callbackfn should be a function that returns a Promise
+     * @returns 
+     */
+    async filterAsync(array, callbackfn) {
+        const filterMap = await this.mapAsync(array, callbackfn);
+        return array.filter((value, index) => filterMap[index]);
+    }
+
     async textExistsInPage(page, text) {
         const found = await page.$x(`//*[contains(., "${text}")]`);
         return found.length > 0;
@@ -202,6 +218,10 @@ class Helper {
         }
         return false;
     }
+
+    /**
+     * @deprecated
+     */
     getRanomisedUserAgend() {
         //Working but unused in this project
 
