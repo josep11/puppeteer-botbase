@@ -67,6 +67,10 @@ class HelperPuppeteer {
         return false;
     }
 
+    /**
+     * Usage: 
+     * await this.page.evaluate(HelperPuppeteer.scrollToBottom);
+     */
     static async scrollToBottom() { //Will be evaluated in browser context, so constant goes here
         const DISTANCE_SCROLL = Math.floor(Math.random() * (100 - 65 + 1)) + 65; //pseudo randomising distance_scroll bw 65 and 100
         await new Promise(resolve => {

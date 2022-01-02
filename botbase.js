@@ -46,7 +46,7 @@ class BotBase {
         this.browser = await puppeteer.launch({
             ...opts
         });
-        this.page = await this.browser.newPage();
+        [this.page] = await this.browser.pages();
 
         await this.semiRandomiseViewPort();
     }
@@ -60,6 +60,7 @@ class BotBase {
 
     /**
      * Prevents loading images to save CPU, memory and bandwidth
+     * Careful, it will raise an error if another function already intercepted the request like in this issue (https://github.com/berstend/puppeteer-extra/issues/600)
      * @param {*} page 
      */
     async interceptImages(page) {
