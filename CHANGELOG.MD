@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 1.0.18
+
+- Updated deps and puppeteer version with vulnerability
+
 ## 1.0.16
 
 - Fixed bug on shutDown method (no await)

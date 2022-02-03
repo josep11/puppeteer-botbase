@@ -212,7 +212,7 @@ class BotBase {
 
     async _testSampleWebsite() {
         this.browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             devtools: false,
             ignoreHTTPSErrors: true,
             // slowMo: 50,
