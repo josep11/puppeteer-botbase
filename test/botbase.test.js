@@ -1,15 +1,13 @@
 /* global it, describe  */
-const assert = require('assert');
 const puppeteer = require('puppeteer');
+const { shouldTestBotBase } = require('./botbase.shared');
 const BotBase = require('../botbase')(puppeteer);
-const { shouldTestBotbase } = require('./shared/botbase.shared');
+
+const path = require('path');
+const projectRoot = path.resolve(__dirname, '../');
 
 describe('Botbase Tests', () => {
 
-    // before(function() {
-    //     this.user = new User('tobi', 'holowaychuk');
-    //   })
-
-    shouldTestBotbase({ puppeteer, BotBase });
+    shouldTestBotBase({ puppeteer, BotBase, projectRoot });
 
 });

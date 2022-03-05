@@ -3,9 +3,7 @@ const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
 
-const projectRoot = path.resolve(__dirname, '../../');
-
-exports.shouldTestBotBase = ({ puppeteer, BotBase }) => {
+const shouldTestBotBase = ({ BotBase, projectRoot }) => {
 
     class ExampleChild extends BotBase {
         constructor(basePath) {
@@ -107,5 +105,9 @@ exports.shouldTestBotBase = ({ puppeteer, BotBase }) => {
         }
         // TODO: clean up screenshot tests
     });
-
 };
+
+module.exports = {
+    shouldTestBotBase
+};
+
