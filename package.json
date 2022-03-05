@@ -22,7 +22,7 @@
     "fs": "0.0.1-security",
     "moment": "^2.29.1"
   },
-  "peerDependencies": {
+  "optionalDependencies": {
     "chrome-aws-lambda": "^9.1.0",
     "puppeteer": "^13.3.2",
     "puppeteer-core": "^13.4.1"
