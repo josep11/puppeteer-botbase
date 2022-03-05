@@ -8,7 +8,7 @@ class IScreenshotSaver {
 
     _checkParams(imageBuffer) {
         if (!imageBuffer) {
-            throw new Error('Developer fix this: unexistent param');
+            throw new Error('Developer fix this: imageBuffer unexistent param');
         }
         if (!(imageBuffer instanceof Buffer)) {
             throw new Error('imageBuffer is not of type Buffer');

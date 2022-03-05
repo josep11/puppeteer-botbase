@@ -10,7 +10,7 @@ class LocalScreenshotSaver extends IScreenshotSaver {
             throw new Error('screenshotBasepath parameter not defined');
         }
         this.screenshotBasepath = screenshotBasepath;
-        this.allowedTypes = ['jpg', 'png'];
+        this.allowedTypes = ['jpg', 'jpeg', 'png'];
     }
 
     _checkType(type) {
@@ -21,8 +21,8 @@ class LocalScreenshotSaver extends IScreenshotSaver {
 
     async saveScreenshot({ imageBuffer, filename = '', type }) {
         //check for errors
-        this._checkParams();
-        this._checkType();
+        this._checkParams(imageBuffer);
+        this._checkType(type);
 
         const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.${type}`;
         console.log(`Saving screenshot ${filename} at ${screenshotLocation}`);
