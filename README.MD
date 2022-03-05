@@ -10,6 +10,8 @@ npm i git+https://github.com/josep11/puppeteer-botbase.git
 
 To install a specific version or semver versions run:
 
+It will pick it by the tag version. List of tags [here](2)
+
 ```bash
 npm i git+https://github.com/josep11/puppeteer-botbase.git#0.1.3
 npm i github:josep11/puppeteer-botbase.git#semver:^1.0.10
@@ -39,3 +41,6 @@ To use the Puppeteer Helper class import like so (all methods are static - as of
 ```js
 const HelperPuppeteer = require('botbase/helper_puppeteer');
 ```
+
+[1]: https://github.com/josep11/puppeteer-botbase.git
+[2]: https://github.com/josep11/puppeteer-botbase/tags
