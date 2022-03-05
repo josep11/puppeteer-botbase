@@ -1,6 +1,8 @@
+const { dirname } = require('path');
+const fs = require('fs');
 const helper = require('./helper');
 const IScreenshotSaver = require('./IScreenshotSaver');
-const fs = require('fs');
+const { createDirIfNotExists } = require('./helper');
 
 class LocalScreenshotSaver extends IScreenshotSaver {
 
@@ -9,8 +11,12 @@ class LocalScreenshotSaver extends IScreenshotSaver {
         if (!screenshotBasepath) {
             throw new Error('screenshotBasepath parameter not defined');
         }
+        
         this.screenshotBasepath = screenshotBasepath;
         this.allowedTypes = ['jpg', 'jpeg', 'png'];
+
+        //check that the screenshotBasepath exists or create it
+        helper.createDirIfNotExists(dirname(this.screenshotBasepath))
     }
 
     _checkType(type) {

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { dirname } = require('path');
-const { createDirIfNotExists } = require('./helper');
+const helper = require('./helper');
 const ICookieSaver = require('./ICookieSaver');
 
 class LocalFsCookieSaver extends ICookieSaver {
@@ -16,7 +16,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 
         this.cookiesFilePath = cookiesFilePath;
 
-        createDirIfNotExists(dirname(this.cookiesFilePath))
+        helper.createDirIfNotExists(dirname(this.cookiesFilePath))
     }
 
     async readCookies() {
