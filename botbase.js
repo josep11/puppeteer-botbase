@@ -218,7 +218,7 @@ module.exports = (puppeteer) => {
          * @returns {string} screenshotLocation full screenshot location
          */
         async takeScreenshot(filename) {
-            const type = 'png';
+            const type = 'jpg';
             const imageBuffer = await this.page.screenshot({
                 type,
                 quality: 80,
