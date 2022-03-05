@@ -22,3 +22,4 @@ test-results/mocha/*
 
 playground.*
 
+node_modules.*

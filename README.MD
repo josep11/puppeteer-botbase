@@ -42,5 +42,17 @@ To use the Puppeteer Helper class import like so (all methods are static - as of
 const HelperPuppeteer = require('botbase/helper_puppeteer');
 ```
 
+## TODO
+
+Should move all source files inside src directory and then create an index.js that exports all the files:
+
+```js
+module.exports = {
+    BotBase,
+    helper,
+    ...
+};
+```
+
 [1]: https://github.com/josep11/puppeteer-botbase.git
 [2]: https://github.com/josep11/puppeteer-botbase/tags
