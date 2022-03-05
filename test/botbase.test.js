@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 /* global it, describe  */
 const puppeteer = require('puppeteer');
 const { shouldTestBotBase } = require('./botbase.shared');

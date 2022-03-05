@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 /* global it, describe  */
 const chromium = require('chrome-aws-lambda');
 const { shouldTestBotBase } = require('./botbase.shared');

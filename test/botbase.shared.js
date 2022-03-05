@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 /* global it, describe, before, after  */
 const assert = require('assert');
 // const path = require('path');
