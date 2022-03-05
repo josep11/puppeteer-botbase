@@ -3,6 +3,7 @@ const assert = require('assert');
 const BotBase = require('../botbase');
 // var expect = require("chai").expect;
 const path = require('path');
+const fs = require('fs');
 
 class ExampleChild extends BotBase {
     constructor(basePath) {
@@ -45,6 +46,7 @@ describe('Botbase Tests', () => {
         await botbase.initialize();
 
     });
+
     it('should log ip to text file', async () => {
 
         await botbase.logIP();
@@ -77,6 +79,29 @@ describe('Botbase Tests', () => {
 
         await botbase._testSampleWebsite();
 
+    });
+
+    it('should take a screenshot with puppeteer', async () => {
+
+        let screenshotPath;
+        await botbase.page.goto('https://google.com', { waitUntil: 'networkidle2' });
+        try {
+            screenshotPath = await botbase.takeScreenshot();
+            assert.equal(typeof screenshotPath, "string")
+        } catch (err) {
+            assert.fail('screenshot not successful');
+        }
+
+        try {
+            fs.statSync(screenshotPath);
+        } catch (err) {
+            if (err.code == 'ENOENT') {
+                assert.fail(`The file "${screenshotPath}" does not exist`);
+            } else {
+                throw err;
+            }
+        }
+        // TODO: clean up screenshot tests
     });
 
 });
