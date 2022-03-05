@@ -177,6 +177,24 @@ class Helper {
         }
     }
 
+    /**
+     * 
+     * @param {string} file The file to remove
+     */
+    rmFileIfExists(file) {
+        try {
+            fs.stat(file);
+            // console.log(`removing ${file}`);
+            fs.unlink(file);
+        } catch (err) {
+            if (err.code == 'ENOENT') {
+                // console.error(`The file ${file} does not exist`);
+            } else {
+                throw err;
+            }
+        }
+    }
+
     async logJSONdebug(jsonStr, basePath = __dirname) {
         const dir = path.resolve(basePath, `./logs/dataset`);
         this.createDirIfNotExists(dir);
