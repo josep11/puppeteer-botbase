@@ -10,12 +10,21 @@ module.exports = (puppeteer) => {
         // moved to constructor (browser, page, basePath, mainUrl)
 
         /**
-         * 
-         * @param {string} basePath the dirname basePath where project is installed
-         * @param {string} mainUrl used for checking isLoggedIn and loginWithSession
-         * @param {*} configChild optional
+         * @typedef {Object} BotBaseParams
+         * @property {string} basePath the dirname basePath where project is installed
+         * @property {string} mainUrl used for checking isLoggedIn and loginWithSession
+         * @property {*} configChild optional
          */
-        constructor(mainUrl, basePath, configChild = {}) {
+
+        /**
+         * @param {BotBaseParams} botBaseParams 
+         */
+        constructor({
+            mainUrl,
+            basePath,
+            configChild = {},
+            chromiumExecutablePath = null
+        } = {}) {
             if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes('http')) {
                 throw new Error('Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js');
             }
@@ -23,7 +32,7 @@ module.exports = (puppeteer) => {
             if (!basePath) {
                 throw new Error('Developer fix this: basePath is undefined');
             }
-            
+
             this.browser = null;
             /** @type {puppeteer.Page} */
             this.page = null;
@@ -38,6 +47,7 @@ module.exports = (puppeteer) => {
 
             this.cookiesFile = path.resolve(basePath, './res/cookies.json');
             this.screenshotBasepath = path.resolve(basePath, './screenshots');
+            this.chromiumExecutablePath = chromiumExecutablePath;
         }
 
         async initialize(opts = {}) {
@@ -46,6 +56,10 @@ module.exports = (puppeteer) => {
             if (this.browser != null) {
                 this.browser.close();
                 this.page = null;
+            }
+            // override the chromium executablePath if it was passed in the constructor
+            if (this.chromiumExecutablePath) {
+                opts = { ...opts, executablePath: this.chromiumExecutablePath }
             }
             this.browser = await puppeteer.launch({
                 ...opts
@@ -213,21 +227,6 @@ module.exports = (puppeteer) => {
         /* ******************* */
         /* END I/O FUNCTIONS */
         /* ******************* */
-
-        async _testSampleWebsite() {
-            this.browser = await puppeteer.launch({
-                headless: true,
-                devtools: false,
-                ignoreHTTPSErrors: true,
-                // slowMo: 50,
-                // args: ['--disable-gpu', '--no-sandbox', '--no-zygote', '--disable-setuid-sandbox', '--disable-accelerated-2d-canvas', '--disable-dev-shm-usage', "--proxy-server='direct://'", "--proxy-bypass-list=*"]
-            });
-            this.page = await this.browser.newPage();
-
-            await this.page.goto('https://bot.sannysoft.com', { waitUntil: 'networkidle2' });
-
-            // await this.page.evaluate(HelperPuppeteer.scrollToBottom);
-        }
 
         enabled() {
             return this.config.settings.enabled;

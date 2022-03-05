@@ -4,10 +4,10 @@ const { shouldTestBotBase } = require('./botbase.shared');
 const BotBase = require('../botbase')(puppeteer);
 
 const path = require('path');
-const projectRoot = path.resolve(__dirname, '../');
+const basePath = path.resolve(__dirname, '../');
 
 describe('Botbase Tests', () => {
 
-    shouldTestBotBase({ puppeteer, BotBase, projectRoot });
+    shouldTestBotBase({ puppeteer, BotBase, basePath });
 
 });
