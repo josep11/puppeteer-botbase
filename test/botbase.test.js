@@ -39,6 +39,7 @@ describe('Botbase Tests', () => {
         }, 'botbase constructor not checking mainUrl type parameter');
 
     });
+
     it('should call successfully initialise', async () => {
 
         await botbase.initialize();

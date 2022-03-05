@@ -11,6 +11,7 @@ logs/*
 screenshots/*
 !screenshots/.gitkeep
 
+res
 db/*
 
 test-results/*
@@ -20,3 +21,4 @@ test-results/mocha/*
 !test-results/mocha/.gitkeep
 
 playground.*
+

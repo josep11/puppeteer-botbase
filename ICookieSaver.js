@@ -10,7 +10,10 @@ class ICookieSaver {
         throw new NotImplementedError('not implemented');
     }
 
-    async writeCookies(){
+    async writeCookies(cookiesJson){
+        if (!cookiesFile) {
+            throw new Error('Developer fix this: unexistent param');
+        }
         throw new NotImplementedError('not implemented');
     }
     
