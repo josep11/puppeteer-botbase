@@ -10,17 +10,17 @@ class ICookieSaver {
         throw new NotImplementedError('not implemented');
     }
 
-    async writeCookies(cookiesJson){
-        if (!cookiesFile) {
+    async writeCookies(cookiesJson) {
+        if (!cookiesJson) {
             throw new Error('Developer fix this: unexistent param');
         }
         throw new NotImplementedError('not implemented');
     }
-    
+
     /**
      * When extending it, should save "[]" as empty cookie
      */
-    async removeCookies(){
+    async removeCookies() {
         throw new NotImplementedError('not implemented');
     }
 
