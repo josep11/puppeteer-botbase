@@ -1,7 +1,8 @@
 /* global it, describe, before, after  */
 const assert = require('assert');
 // Require the Puppeteer module and the built-in assert module
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
+const { getLocalPuppeteerInstallation } = require('../helper_puppeteer');
 let browser, page
 
 // In the Mocha "before" hook, create the browser and page objects.
@@ -18,6 +19,13 @@ describe('Module Helper Puppeteer Tests', () => {
 
     it('should import helper puppeteer', () => {
         assert.ok(HelperPuppeteer);
+    });
+
+    it('should find local puppeteer chromium install', () => {
+        //TODO: decide if it's needed here as chromium is lazily installed and puppeteer is an optionalDependency
+        assert.doesNotThrow(() => {
+            getLocalPuppeteerInstallation();
+        }, 'Install problem: local chromium not found');
     });
 
     it('should find text in webpage (ignorecase)', async () => {

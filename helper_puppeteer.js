@@ -1,4 +1,21 @@
+const glob = require('glob');
+
 class HelperPuppeteer {
+
+    /**
+     * Gets the location of the local puppeteer installation
+     * @returns {string} the path to the puppeteer installation
+     */
+    static getLocalPuppeteerInstallation() {
+        // TODO: port it to other OS's
+        const puppeteerDirname = './node_modules/puppeteer/.local-chromium/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
+
+        const results = glob.sync(puppeteerDirname);
+        if (!results || results.length < 1) {
+            throw 'Puppeteer not installed'
+        }
+        return results[0];
+    }
 
     /**
      * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found. 
