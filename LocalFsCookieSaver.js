@@ -4,7 +4,6 @@ const { createDirIfNotExists } = require('./helper');
 const ICookieSaver = require('./ICookieSaver');
 
 class LocalFsCookieSaver extends ICookieSaver {
-
     /**
      * 
      * @param {obj} param should have the following keys { cookiesFilePath }

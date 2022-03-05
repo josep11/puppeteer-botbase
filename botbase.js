@@ -1,18 +1,18 @@
 const deepmerge = require('deepmerge');
-const path = require('path');
 
 const helper = require('./helper');
 const { NotImplementedError, MyTimeoutError } = require('./custom_errors');
+const ICookieSaver = require('./ICookieSaver');
+const IScreenshotSaver = require('./IScreenshotSaver');
 
 module.exports = (puppeteer) => {
 
     class BotBase {
-        // moved to constructor (browser, page, basePath, mainUrl)
 
         /**
          * @typedef {Object} BotBaseParams
-         * @property {string} basePath the dirname basePath where project is installed
-         * @property {string} mainUrl used for checking isLoggedIn and loginWithSession
+         * @property {ICookieSaver} cookieSaver the delegate to save cookies
+         * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
          * @property {*} configChild optional
          */
 
@@ -22,6 +22,8 @@ module.exports = (puppeteer) => {
         constructor({
             mainUrl,
             basePath,
+            cookieSaver,
+            screenshotSaver,
             configChild = {},
             chromiumExecutablePath = null
         } = {}) {
@@ -31,6 +33,14 @@ module.exports = (puppeteer) => {
 
             if (!basePath) {
                 throw new Error('Developer fix this: basePath is undefined');
+            }
+
+            if (!(cookieSaver instanceof ICookieSaver)) {
+                throw new Error('Developer fix this: cookieSaver is not defined or not of type ICookieSaver');
+            }
+
+            if (!(screenshotSaver instanceof IScreenshotSaver)) {
+                throw new Error('Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver');
             }
 
             this.browser = null;
@@ -45,8 +55,8 @@ module.exports = (puppeteer) => {
             //merging config options overriding with the upcoming ones
             this.config = deepmerge(this.config, configChild);
 
-            this.cookiesFile = path.resolve(basePath, './res/cookies.json');
-            this.screenshotBasepath = path.resolve(basePath, './screenshots');
+            this.cookieSaver = cookieSaver;
+            this.screenshotSaver = screenshotSaver;
             this.chromiumExecutablePath = chromiumExecutablePath;
         }
 
@@ -129,7 +139,7 @@ module.exports = (puppeteer) => {
 
             await this.isLoggedIn().catch(async (error) => {
                 console.error(`App is not logged into ${this.appName()}`);
-                await this.writeCookiesFile("[]"); //deteling cookies file
+                await this.writeCookiesFile([]); //deteling cookies file
                 throw error;
             });
         }
@@ -168,14 +178,14 @@ module.exports = (puppeteer) => {
             } catch (error) {
                 console.error(`App is not logged into ${this.appName()}`);
                 await this.takeScreenshot('login_error');
-                await this.writeCookiesFile("[]"); //deteling cookies file
+                await this.writeCookiesFile([]); //deteling cookies file
                 throw error;
             }
 
             // Save our freshest cookies that contain our Milanuncios session
             await this.page.cookies().then(async (freshCookies) => {
                 // console.log('saving fresh cookies');
-                await this.writeCookiesFile(JSON.stringify(freshCookies, null, 2));
+                await this.writeCookiesFile(freshCookies);
             });
 
             console.log('Login ok');
@@ -194,11 +204,12 @@ module.exports = (puppeteer) => {
          * reads from local filesystem
          */
         async readCookiesFile() {
-            return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+            return await this.cookieSaver.readCookies();
+            // return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
         }
 
-        async writeCookiesFile(stringifiedObj) {
-            await helper.writeFile(this.cookiesFile, stringifiedObj);
+        async writeCookiesFile(cookiesJson) {
+            await this.cookieSaver.writeCookies(cookiesJson);
         }
 
         /**
@@ -207,13 +218,18 @@ module.exports = (puppeteer) => {
          * @returns {string} screenshotLocation full screenshot location
          */
         async takeScreenshot(filename) {
-            const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.png`;
-            console.log(`Taking screenshot ${filename} at ${screenshotLocation}`);
-            await this.page.screenshot({
-                path: screenshotLocation,
-                fullPage: true
+            const type = 'png';
+            const imageBuffer = await this.page.screenshot({
+                type,
+                quality: 80,
+                // omitBackground: true,
+                // fullPage: true
             });
-            return screenshotLocation;
+            // await this.page.screenshot({
+            //     path: screenshotLocation,
+            //     fullPage: true
+            // });
+            return this.screenshotSaver.saveScreenshot({ imageBuffer, filename, type });
         }
 
         async logIP() {
