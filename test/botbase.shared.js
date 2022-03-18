@@ -5,13 +5,21 @@ const assert = require('assert');
 const fs = require('fs');
 const glob = require('glob');
 
-const shouldTestBotBase = ({ BotBase, basePath }) => {
+const shouldTestBotBase = ({
+    puppeteer,
+    BotBase,
+    basePath,
+    cookieSaver,
+    screenshotSaver
+}) => {
 
     class ExampleChild extends BotBase {
         constructor({ basePath }) {
             super({
                 mainUrl: 'http://dummy.com',
                 basePath,
+                cookieSaver,
+                screenshotSaver,
                 configChild: {
                     settings: {
                         enabled: false
@@ -27,7 +35,9 @@ const shouldTestBotBase = ({ BotBase, basePath }) => {
     it('should intantiate BotBase', () => {
         botbase = new BotBase({
             mainUrl,
-            basePath
+            basePath,
+            cookieSaver,
+            screenshotSaver,
         });
         assert.ok(botbase);
     });
@@ -74,7 +84,9 @@ const shouldTestBotBase = ({ BotBase, basePath }) => {
         assert.throws(() => {
             new BotBase({
                 mainUrl,
-                basePath
+                basePath,
+                cookieSaver,
+                screenshotSaver,
             });
         }, 'botbase constructor not checking mainUrl type parameter');
 
@@ -117,6 +129,7 @@ const shouldTestBotBase = ({ BotBase, basePath }) => {
             screenshotPath = await botbase.takeScreenshot('tests');
             assert.equal(typeof screenshotPath, "string")
         } catch (err) {
+            console.error(err);
             assert.fail('screenshot not successful');
         }
 
@@ -131,6 +144,7 @@ const shouldTestBotBase = ({ BotBase, basePath }) => {
         }
 
     });
+
 
     // clean up screenshot tests
     after(async () => {

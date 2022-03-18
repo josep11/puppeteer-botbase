@@ -8,8 +8,20 @@ const BotBase = require('../botbase')(puppeteer);
 const path = require('path');
 const basePath = path.resolve(__dirname, '../');
 
+const LocalFsCookieSaver = require('../LocalFsCookieSaver');
+const LocalScreenshotSaver = require('../LocalScreenshotSaver');
+// TODO: should create and inject AWSCookieSaver or AWSScreenshotSaver
+const cookieSaver = new LocalFsCookieSaver({ cookiesFilePath: path.resolve(basePath, './res/cookies.json') });
+const screenshotSaver = new LocalScreenshotSaver({ screenshotBasepath: path.resolve(basePath, './screenshots') });
+
 describe('Botbase AWS Tests', () => {
 
-    shouldTestBotBase({ puppeteer, BotBase, basePath });
+    shouldTestBotBase({
+        puppeteer,
+        BotBase,
+        basePath,
+        cookieSaver,
+        screenshotSaver
+    });
 
 });
