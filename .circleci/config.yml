@@ -22,9 +22,6 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: Run hello world
-          command: node hello.js
-      - run:
           name: Run tests
           command: npm run test:ci
       - store_test_results:
