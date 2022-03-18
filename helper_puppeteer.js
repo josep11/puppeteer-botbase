@@ -16,8 +16,7 @@ class HelperPuppeteer {
 
         for (const puppeteerDirname of [puppeteerDirnameLinux, puppeteerDirnameMac]) {
             const results = glob.sync(puppeteerDirname);
-            console.log(results);
-            if (!results || results.length < 1) {
+            if (results && results.length > 0) {
                 return results[0];
             }
         }
