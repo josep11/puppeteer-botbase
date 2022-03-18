@@ -25,13 +25,13 @@
     "moment": "^2.29.1"
   },
   "optionalDependencies": {
-    "chrome-aws-lambda": "^9.1.0",
+    "chrome-aws-lambda": "^10.1.0",
     "puppeteer": "^13.5.1",
     "puppeteer-core": "^13.5.1"
   },
   "devDependencies": {
     "chai": "^4.3.6",
-    "chrome-aws-lambda": "^9.1.0",
+    "chrome-aws-lambda": "^10.1.0",
     "eslint": "^8.11.0",
     "mocha": "^9.2.2",
     "mocha-junit-reporter": "^2.0.2",
