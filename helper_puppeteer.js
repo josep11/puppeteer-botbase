@@ -7,14 +7,22 @@ class HelperPuppeteer {
      * @returns {string} the path to the puppeteer installation
      */
     static getLocalPuppeteerInstallation() {
-        // TODO: port it to other OS's
-        const puppeteerDirname = './node_modules/puppeteer/.local-chromium/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
+        // example paths for linux:
+        // './node_modules/puppeteer/.local-chromium/linux-970485/chrome-linux/chrome'
+        // './node_modules/puppeteer/.local-chromium/linux-624492/chrome-linux'
+        // example path for mac (tested and working):
+        const puppeteerDirnameMac = './node_modules/puppeteer/.local-chromium/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
+        const puppeteerDirnameLinux = './node_modules/puppeteer/.local-chromium/linux-*/chrome-linux/chrome'
 
-        const results = glob.sync(puppeteerDirname);
-        if (!results || results.length < 1) {
-            throw 'Puppeteer not installed'
+        for (const puppeteerDirname of [puppeteerDirnameLinux, puppeteerDirnameMac]) {
+            const results = glob.sync(puppeteerDirname);
+            console.log(results);
+            if (!results || results.length < 1) {
+                return results[0];
+            }
         }
-        return results[0];
+
+        throw 'Puppeteer not installed';
     }
 
     /**

@@ -4,6 +4,7 @@ orbs:
 jobs:
   tests-job:
     docker:
+      # TODO: UPDATE TO node 14
       - image: circleci/node:12-browsers
     steps:
       # tutorial followed: https://circleci.com/blog/functional-browser-testing/
@@ -20,6 +21,9 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: Run hello world
+          command: node hello.js
       - run:
           name: Run tests
           command: npm run test:ci
