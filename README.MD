@@ -27,6 +27,21 @@ npm i github:josep11/puppeteer-botbase.git#semver:^2.0.0
 
 On instantiation it accepts config as second param that will merge the default configuration, overwritting the parameter "config" over the default ones.
 
+## CircleCI
+
+Debug CricleCI configuration locally. First install `brew install circleci` then run:
+
+```bash
+circleci config process .circleci/config.yml > process.yml
+circleci local execute --job tests-job
+```
+
+(for now it's not working on M1 mac)
+
+> Error: 
+Unexpected environment preparation error: Error response from daemon: failed to create shim: OCI runtime create failed: container_linux.go:380: starting container process caused: process_linux.go:385: applying cgroup configuration for process caused: cannot enter cgroupv2 "/sys/fs/cgroup/docker/94ae21cf66066b208eabe995893afb711e3badd0aee65bdcee1ef2ce45b47154/297ae8b741ee3c4dc45f9d49107dcfe8085a1200e23847163c83eef40759a8eb" with domain controllers -- it is in an invalid state: unknown
+
+
 ## Classes
 
 To use and import the BotBase import like so:
