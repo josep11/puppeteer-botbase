@@ -1,6 +1,7 @@
 const glob = require("glob");
 
-console.log(getLocalPuppeteerInstallation());
+const local = getLocalPuppeteerInstallation();
+console.log(local);
 
 function getLocalPuppeteerInstallation() {
 
@@ -14,7 +15,7 @@ function getLocalPuppeteerInstallation() {
     const puppeteerDirnames = [puppeteerDirnameLinux, puppeteerDirnameMac];
     for (const puppeteerDirname of puppeteerDirnames) {
         const results = glob.sync(puppeteerDirname);
-        console.log(results);
+        // console.log(results);
         if (!results || results.length < 1) {
             return results[0];
         }
