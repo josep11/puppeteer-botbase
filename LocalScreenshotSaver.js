@@ -2,7 +2,6 @@ const { dirname } = require('path');
 const fs = require('fs');
 const helper = require('./helper');
 const IScreenshotSaver = require('./IScreenshotSaver');
-const { createDirIfNotExists } = require('./helper');
 
 class LocalScreenshotSaver extends IScreenshotSaver {
 
