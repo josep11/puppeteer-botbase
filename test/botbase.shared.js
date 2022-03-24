@@ -120,32 +120,6 @@ const shouldTestBotBase = ({
     });
 
 
-    it('should take a screenshot with puppeteer', async () => {
-
-        let screenshotPath;
-        await botbase.initialize();
-        await botbase.page.goto('https://google.com', { waitUntil: 'networkidle2' });
-        try {
-            screenshotPath = await botbase.takeScreenshot('tests');
-            assert.equal(typeof screenshotPath, "string")
-        } catch (err) {
-            console.error(err);
-            assert.fail('screenshot not successful');
-        }
-
-        try {
-            fs.statSync(screenshotPath);
-        } catch (err) {
-            if (err.code == 'ENOENT') {
-                assert.fail(`The file "${screenshotPath}" does not exist`);
-            } else {
-                throw err;
-            }
-        }
-
-    });
-
-
     // clean up screenshot tests
     after(async () => {
         //list files in screenshot directory

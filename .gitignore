@@ -25,3 +25,4 @@ playground.*
 node_modules.*
 
 process.yml
+.env.test
