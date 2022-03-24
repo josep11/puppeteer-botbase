@@ -13,7 +13,6 @@ const LocalScreenshotSaver = require('../LocalScreenshotSaver');
 const cookieSaver = new LocalFsCookieSaver({ cookiesFilePath: path.resolve(basePath, './res/cookies.json') });
 const screenshotSaver = new LocalScreenshotSaver({ screenshotBasepath: path.resolve(basePath, './screenshots') });
 
-
 describe('Botbase Tests', () => {
 
     shouldTestBotBase({
