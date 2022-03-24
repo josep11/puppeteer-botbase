@@ -4,8 +4,29 @@ const s3 = new AWS.S3()
 class S3Manager {
 
     constructor(S3_BUCKET_NAME) {
+        if (!S3_BUCKET_NAME || typeof S3_BUCKET_NAME != "string") {
+            throw new Error('Developer fix this: S3_BUCKET_NAME parameter is undefined or not string');
+        }
         this.S3_BUCKET_NAME = S3_BUCKET_NAME;
     }
+
+    async checkBucketExists() {
+        try {
+            await s3.headBucket({ Bucket: this.S3_BUCKET_NAME }).promise()
+            //   console.log `Bucket "${this.S3_BUCKET_NAME}" exists`
+        } catch (err) {
+            if (err.statusCode === 403) {
+                throw `Bucket "${this.S3_BUCKET_NAME}" Access Denied`
+            }
+
+            if (err.statusCode >= 400 && err.statusCode < 500) {
+                throw `Bucket "${this.S3_BUCKET_NAME}" Not Found`
+            }
+
+            throw err
+        }
+    }
+
 
     async saveJson(key, json) {
         let text = json;
@@ -53,6 +74,32 @@ class S3Manager {
         }
     }
 
+    async objectExists(key) {
+        const params = {
+            Bucket: this.S3_BUCKET_NAME,
+            Key: key,
+        };
+
+        try {
+            await s3.getObject(params).promise();
+            // TODO: maybe check body if some problem crops up
+            return true;
+        } catch (err) {
+            if (err.name === 'NotFound') {
+                console.error(err.name);
+                return false;
+            }
+            if (err.code == 'NoSuchKey') {
+                return false;
+            }
+
+            console.error('another error', err);
+        }
+
+        return false;
+
+    }
+
     async deleteObject(key) {
         const params = {
             Bucket: this.S3_BUCKET_NAME,
@@ -63,10 +110,6 @@ class S3Manager {
     }
 
     async saveImage(key, imageBuffer) {
-        // console.log('\n\nScreenshot taken (in memory)\n\n')
-
-        // key = `screenshots/${output_filename}`;
-
         const s3Params = {
             Bucket: this.S3_BUCKET_NAME,
             Key: key,

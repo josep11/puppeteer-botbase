@@ -10,7 +10,7 @@ class LocalScreenshotSaver extends IScreenshotSaver {
         if (!screenshotBasepath) {
             throw new Error('screenshotBasepath parameter not defined');
         }
-        
+
         this.screenshotBasepath = screenshotBasepath;
         this.allowedTypes = ['jpg', 'jpeg', 'png'];
 
@@ -19,12 +19,15 @@ class LocalScreenshotSaver extends IScreenshotSaver {
     }
 
     _checkType(type) {
+        if (!type) {
+            throw new Error('type is not defined');
+        }
         if (this.allowedTypes.indexOf(type) == -1) {
             throw new Error(`Type ${type} not allowed.`);
         }
     }
 
-    async saveScreenshot({ imageBuffer, filename = '', type }) {
+    async saveScreenshot({ imageBuffer, filename = 'default', type }) {
         //check for errors
         this._checkParams(imageBuffer);
         this._checkType(type);
