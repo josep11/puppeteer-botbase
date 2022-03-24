@@ -35,11 +35,12 @@ class LocalFsCookieSaver extends ICookieSaver {
      * @param {*} cookiesJson 
      * @returns 
      */
-    async writeCookies(cookiesJson) {
-        if (typeof cookiesJson !== 'object') {
-            throw new Error('cookiesJson parameter is not of type object.')
+    async writeCookies(cookies) {
+        let cookiesText = cookies;
+        if (typeof json == "object") {
+            cookiesText = JSON.stringify(cookies, null, 2);
         }
-        return fs.writeFileSync(this.cookiesFilePath, JSON.stringify(cookiesJson, null, 2));
+        return fs.writeFileSync(this.cookiesFilePath, cookiesText);
     }
 
     /**
