@@ -37,7 +37,7 @@ class LocalFsCookieSaver extends ICookieSaver {
      */
     async writeCookies(cookies) {
         let cookiesText = cookies;
-        if (typeof json == "object") {
+        if (typeof cookies == "object") {
             cookiesText = JSON.stringify(cookies, null, 2);
         }
         return fs.writeFileSync(this.cookiesFilePath, cookiesText);

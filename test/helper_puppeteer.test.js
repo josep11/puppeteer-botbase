@@ -72,7 +72,7 @@ describe('Module Helper Puppeteer Tests', () => {
     it('should close popup by text (in the root element)', async () => {
         const url = "https://www.mailerlite.com/blog/inspiring-examples-of-email-pop-ups-and-why-they-work";
         const elementType = "button";
-        const textTofind = "Accept All Cookies";
+        const textTofind = "Accept all cookies";
 
         await page.goto(url, { waitUntil: 'networkidle0' });
 

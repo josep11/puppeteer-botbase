@@ -36,9 +36,12 @@ describe('LocalFsCookieSaver Tests', () => {
 
     it('should write cookies', async () => {
 
-        assert.doesNotThrow(async () => {
+        try {
             await cookieSaver.writeCookies([{ 'e': 1 }]);
-        })
+        } catch (err) {
+            console.error(err);
+            assert.fail('exception saving cookies');
+        }
 
         assert.strictEqual(fs.existsSync(cookiesFilePath), true);
     });
