@@ -45,7 +45,7 @@ describe('S3ScreenshotSaver Tests', () => {
 
     it('should save screenshot', async () => {
 
-        var imgFile = readFileSync(pathToImage);
+        const imgFile = readFileSync(pathToImage);
         // var imageBuffer = imgFile.toString("base64");
         const imageBuffer = Buffer.from(imgFile);
         const filename = 'example.png';
