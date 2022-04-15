@@ -1,6 +1,6 @@
 {
   "name": "botbase",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "",
   "main": "botbase.js",
   "scripts": {
@@ -26,7 +26,6 @@
   },
   "optionalDependencies": {
     "aws-sdk": "^2.1099.0",
-    "chrome-aws-lambda": "^10.1.0",
     "puppeteer-core": "^13.5.1"
   },
   "devDependencies": {

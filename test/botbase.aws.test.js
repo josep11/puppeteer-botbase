@@ -1,4 +1,5 @@
 // eslint-disable-next-line no-unused-vars
+/*
 const assert = require('assert');
 const chromium = require('chrome-aws-lambda');
 const { shouldTestBotBase } = require('./botbase.shared');
@@ -77,3 +78,4 @@ describe('Botbase AWS Tests', () => {
     });
 
 });
+*/
