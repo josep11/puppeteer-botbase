@@ -4,6 +4,7 @@ const { promises: fs } = require("fs");
 const { exec: execAsync } = require('child-process-async');
 const util = require('util');
 const moment = require('moment');
+const UserAgent = require("user-agents");
 
 class Helper {
 
@@ -21,6 +22,7 @@ class Helper {
         // console.log('---------------------------------------');
     }
     dateFormatForLog() {
+        // TODO: move to luxon
         return moment(new Date()).format("yyyy-MM-DD_HH.mm.ss");
     }
 
@@ -238,17 +240,14 @@ class Helper {
     }
 
     /**
-     * @deprecated
+     * 
      */
-    getRanomisedUserAgend() {
-        //Working but unused in this project
-
-        // const UserAgent = require("user-agents");
-        // const userAgent = new UserAgent({
-        //     deviceCategory: "desktop",
-        //     platform: "MacIntel" //"Linux x86_64",
-        // });
-        // return userAgent;
+    getRanomisedUserAgent() {
+        const userAgent = new UserAgent({
+            deviceCategory: "desktop",
+            platform: "MacIntel" //"Linux x86_64",
+        });
+        return userAgent;
     }
 }
 

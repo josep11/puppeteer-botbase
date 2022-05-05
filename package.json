@@ -22,7 +22,8 @@
     "deepmerge": "^4.2.2",
     "fs": "0.0.1-security",
     "glob": "^8.0.1",
-    "moment": "^2.29.3"
+    "moment": "^2.29.3",
+    "user-agents": "^1.0.1007"
   },
   "optionalDependencies": {
     "aws-sdk": "^2.1120.0",
