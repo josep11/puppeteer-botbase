@@ -245,7 +245,8 @@ class Helper {
     getRanomisedUserAgent() {
         const userAgent = new UserAgent({
             deviceCategory: "desktop",
-            platform: "MacIntel" //"Linux x86_64",
+            platform: "MacIntel", //"Linux x86_64",
+            vendor: "Google Inc.",
         });
         return userAgent;
     }
