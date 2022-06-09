@@ -27,7 +27,7 @@
   },
   "optionalDependencies": {
     "aws-sdk": "^2.1130.0",
-    "puppeteer-core": "^13.7.0"
+    "puppeteer-core": "^14.3.0"
   },
   "devDependencies": {
     "chai": "^4.3.6",
@@ -37,6 +37,6 @@
     "mocha": "^10.0.0",
     "mocha-junit-reporter": "^2.0.2",
     "puppeteer": "^13.7.0",
-    "puppeteer-core": "^13.7.0"
+    "puppeteer-core": "^14.3.0"
   }
 }
