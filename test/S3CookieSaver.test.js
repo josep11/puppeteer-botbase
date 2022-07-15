@@ -7,7 +7,7 @@ const S3_BUCKET_NAME = 'botsdatasam';
 const output_filename = 'MyDummyBot.json';
 
 describe('S3CookieSaver Tests', () => {
-
+/* 
     it('should intantiate it', () => {
         cookieSaver = new S3CookieSaver({ S3_BUCKET_NAME, output_filename });
         assert.ok(cookieSaver);
@@ -58,6 +58,6 @@ describe('S3CookieSaver Tests', () => {
         }
         await assertEmptyCookies();
     });
-
+ */
 
 });

@@ -4,7 +4,7 @@ const S3Manager = require("../S3Manager");
 const S3_BUCKET_NAME = 'botsdatasam';
 
 describe('S3Manager Tests', () => {
-
+/* 
     it('should throw on unexistent bucket', async () => {
 
         const s3Manager = new S3Manager('dummyyy');
@@ -29,5 +29,6 @@ describe('S3Manager Tests', () => {
             assert.fail('didnt find bucket');
         }
 
-    });
+    }); 
+    */
 });

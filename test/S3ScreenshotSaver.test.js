@@ -14,7 +14,7 @@ const pathToImage = path.resolve(__dirname, './test-resources/example.png');
 const s3Manager = new S3Manager(S3_BUCKET_NAME);
 
 describe('S3ScreenshotSaver Tests', () => {
-
+/* 
     it('should intantiate it', () => {
         screenshotSaver = new S3ScreenshotSaver({
             botName,
@@ -57,5 +57,5 @@ describe('S3ScreenshotSaver Tests', () => {
         // assert.strictEqual(cookies[0].e, 1);
 
     });
-
+ */
 });
