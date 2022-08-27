@@ -4,7 +4,13 @@ const helper = require("./helper");
 const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
 const ICookieSaver = require("./ICookieSaver");
 const IScreenshotSaver = require("./IScreenshotSaver");
+const { Puppeteer, Page } = require("puppeteer");
 
+/**
+ * 
+ * @param {Puppeteer} puppeteer 
+ * @returns 
+ */
 module.exports = (puppeteer) => {
 	class BotBase {
 		/**
@@ -48,7 +54,7 @@ module.exports = (puppeteer) => {
 			}
 
 			this.browser = null;
-			/** @type {puppeteer.Page} */
+			/** @type {Page|null} */
 			this.page = null;
 			this.basePath = basePath;
 			this.mainUrl = mainUrl;
@@ -84,7 +90,7 @@ module.exports = (puppeteer) => {
 		}
 
 		async semiRandomiseViewPort() {
-			await this.page.setViewport({
+			await this.page?.setViewport({
 				width: this.config.settings.width + helper.getRandBetween(1, 100),
 				height: this.config.settings.height + helper.getRandBetween(1, 100),
 			});
