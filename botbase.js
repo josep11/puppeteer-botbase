@@ -1,274 +1,288 @@
-const deepmerge = require('deepmerge');
+const deepmerge = require("deepmerge");
 
-const helper = require('./helper');
-const { NotImplementedError, MyTimeoutError } = require('./custom_errors');
-const ICookieSaver = require('./ICookieSaver');
-const IScreenshotSaver = require('./IScreenshotSaver');
+const helper = require("./helper");
+const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
+const ICookieSaver = require("./ICookieSaver");
+const IScreenshotSaver = require("./IScreenshotSaver");
 
 module.exports = (puppeteer) => {
+	class BotBase {
+		/**
+		 * @typedef {Object} BotBaseParams
+		 * @property {ICookieSaver} cookieSaver the delegate to save cookies
+		 * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
+		 * @property {*} configChild optional
+		 */
 
-    class BotBase {
+		/**
+		 * @param {BotBaseParams} botBaseParams
+		 */
+		constructor({
+			mainUrl,
+			basePath,
+			cookieSaver,
+			screenshotSaver,
+			configChild = {},
+			chromiumExecutablePath = null,
+		} = {}) {
+			if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes("http")) {
+				throw new Error(
+					"Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js"
+				);
+			}
 
-        /**
-         * @typedef {Object} BotBaseParams
-         * @property {ICookieSaver} cookieSaver the delegate to save cookies
-         * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
-         * @property {*} configChild optional
-         */
+			if (!basePath) {
+				throw new Error("Developer fix this: basePath is undefined");
+			}
 
-        /**
-         * @param {BotBaseParams} botBaseParams 
-         */
-        constructor({
-            mainUrl,
-            basePath,
-            cookieSaver,
-            screenshotSaver,
-            configChild = {},
-            chromiumExecutablePath = null
-        } = {}) {
-            if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes('http')) {
-                throw new Error('Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js');
-            }
+			if (!(cookieSaver instanceof ICookieSaver)) {
+				throw new Error(
+					"Developer fix this: cookieSaver is not defined or not of type ICookieSaver"
+				);
+			}
 
-            if (!basePath) {
-                throw new Error('Developer fix this: basePath is undefined');
-            }
+			if (!(screenshotSaver instanceof IScreenshotSaver)) {
+				throw new Error(
+					"Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver"
+				);
+			}
 
-            if (!(cookieSaver instanceof ICookieSaver)) {
-                throw new Error('Developer fix this: cookieSaver is not defined or not of type ICookieSaver');
-            }
+			this.browser = null;
+			/** @type {puppeteer.Page} */
+			this.page = null;
+			this.basePath = basePath;
+			this.mainUrl = mainUrl;
 
-            if (!(screenshotSaver instanceof IScreenshotSaver)) {
-                throw new Error('Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver');
-            }
+			//load default configuration options
+			this.config = require("./config/config.json");
 
-            this.browser = null;
-            /** @type {puppeteer.Page} */
-            this.page = null;
-            this.basePath = basePath;
-            this.mainUrl = mainUrl;
+			//merging config options overriding with the upcoming ones
+			this.config = deepmerge(this.config, configChild);
 
-            //load default configuration options
-            this.config = require('./config/config.json');
+			this.cookieSaver = cookieSaver;
+			this.screenshotSaver = screenshotSaver;
+			this.chromiumExecutablePath = chromiumExecutablePath;
+		}
 
-            //merging config options overriding with the upcoming ones
-            this.config = deepmerge(this.config, configChild);
+		async initialize(opts = {}) {
+			// const pjson = require('./package.json');
+			// console.log(`init bot base v${pjson.version}`);
+			if (this.browser != null) {
+				this.browser.close();
+				this.page = null;
+			}
+			// override the chromium executablePath if it was passed in the constructor
+			if (this.chromiumExecutablePath) {
+				opts = { ...opts, executablePath: this.chromiumExecutablePath };
+			}
+			this.browser = await puppeteer.launch({
+				...opts,
+			});
+			[this.page] = await this.browser.pages();
 
-            this.cookieSaver = cookieSaver;
-            this.screenshotSaver = screenshotSaver;
-            this.chromiumExecutablePath = chromiumExecutablePath;
-        }
+			await this.semiRandomiseViewPort();
+		}
 
-        async initialize(opts = {}) {
-            // const pjson = require('./package.json');
-            // console.log(`init bot base v${pjson.version}`);
-            if (this.browser != null) {
-                this.browser.close();
-                this.page = null;
-            }
-            // override the chromium executablePath if it was passed in the constructor
-            if (this.chromiumExecutablePath) {
-                opts = { ...opts, executablePath: this.chromiumExecutablePath }
-            }
-            this.browser = await puppeteer.launch({
-                ...opts
-            });
-            [this.page] = await this.browser.pages();
+		async semiRandomiseViewPort() {
+			await this.page.setViewport({
+				width: this.config.settings.width + helper.getRandBetween(1, 100),
+				height: this.config.settings.height + helper.getRandBetween(1, 100),
+			});
+		}
 
-            await this.semiRandomiseViewPort();
-        }
+		/**
+		 * Prevents loading images to save CPU, memory and bandwidth
+		 * Careful, it will raise an error if another function already intercepted the request like in this issue (https://github.com/berstend/puppeteer-extra/issues/600)
+		 * @param {*} page
+		 */
+		async interceptImages(page) {
+			await page.setRequestInterception(true);
+			page.on("request", (req) => {
+				if (req.resourceType() === "image") {
+					req.abort();
+				} else {
+					req.continue();
+				}
+			});
+		}
 
-        async semiRandomiseViewPort() {
-            await this.page.setViewport({
-                width: this.config.settings.width + helper.getRandBetween(1, 100),
-                height: this.config.settings.height + helper.getRandBetween(1, 100)
-            })
-        }
+		/* *************** */
+		/* LOGIN FUNCTIONS */
+		/* *************** */
 
-        /**
-         * Prevents loading images to save CPU, memory and bandwidth
-         * Careful, it will raise an error if another function already intercepted the request like in this issue (https://github.com/berstend/puppeteer-extra/issues/600)
-         * @param {*} page 
-         */
-        async interceptImages(page) {
-            await page.setRequestInterception(true);
-            page.on('request', (req) => {
-                if (req.resourceType() === 'image') {
-                    req.abort();
-                }
-                else {
-                    req.continue();
-                }
-            });
-        }
+		/**
+		 * Implementation required
+		 */
+		async isLoggedIn() {
+			throw new NotImplementedError("isLoggedIn not implemented");
+		}
 
-        /* *************** */
-        /* LOGIN FUNCTIONS */
-        /* *************** */
+		/**
+		 * Implementation required
+		 */
+		// eslint-disable-next-line no-unused-vars
+		async loginWithCredentials(username, password) {
+			throw new NotImplementedError("loginWithCredentials not implemented");
+		}
 
-        /**
-         * Implementation required
-         */
-        async isLoggedIn() {
-            throw new NotImplementedError('isLoggedIn not implemented');
-        }
+		/**
+		 * Tries to log in using cookies or otherwise it throws error
+		 * It depends on implementation of isLoggedIn()
+		 * @param {*} cookies
+		 * @param {string} mainUrl the url to check the login
+		 */
+		async loginWithSession(cookies) {
+			if (!this.mainUrl) {
+				throw new Error("loginWithSession: mainUrl param is not set");
+			}
+			console.log(`Logging into ${this.appName()} using cookies`);
+			await this.page.setCookie(...cookies);
+			await this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
+			await this.page.waitForTimeout(helper.getRandBetween(1500, 4000));
 
-        /**
-         * Implementation required
-         */
-        // eslint-disable-next-line no-unused-vars
-        async loginWithCredentials(username, password) {
-            throw new NotImplementedError('loginWithCredentials not implemented');
-        }
+			await this.isLoggedIn().catch(async (error) => {
+				console.error(`App is not logged into ${this.appName()}`);
+				await this.writeCookiesFile([]); //deteling cookies file
+				throw error;
+			});
+		}
 
-        /**
-         * Tries to log in using cookies or otherwise it throws error
-         * It depends on implementation of isLoggedIn()
-         * @param {*} cookies 
-         * @param {string} mainUrl the url to check the login 
-         */
-        async loginWithSession(cookies) {
-            if (!this.mainUrl) {
-                throw new Error('loginWithSession: mainUrl param is not set');
-            }
-            console.log(`Logging into ${this.appName()} using cookies`);
-            await this.page.setCookie(...cookies);
-            await this.page.goto(this.mainUrl, { waitUntil: 'networkidle2' });
-            await this.page.waitForTimeout(helper.getRandBetween(1500, 4000));
+		/**
+		 * Tries to login using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
+		 * throws MyTimeoutError if could not connect for timeout or another Error for other ones
+		 * If login is ok it writes the cookies to the file, if it's not it deletes them
+		 * Careful this function depends on implementation of isLoggedIn
+		 * @param {*} username username for the website
+		 * @param {string} password
+		 */
+		async login(username, password) {
+			const cookies = await this.readCookiesFile();
 
-            await this.isLoggedIn().catch(async (error) => {
-                console.error(`App is not logged into ${this.appName()}`);
-                await this.writeCookiesFile([]); //deteling cookies file
-                throw error;
-            });
-        }
+			try {
+				if (cookies && Object.keys(cookies).length) {
+					await this.loginWithSession(cookies, this.mainUrl).catch(
+						async (error) => {
+							console.error(`Unable to login using session: ${error}`);
+							if (error.name.indexOf("TimeoutError") != -1) {
+								throw error;
+							}
+							await this.loginWithCredentials(username, password);
+						}
+					);
+				} else {
+					await this.loginWithCredentials(username, password);
+				}
+			} catch (error) {
+				if (error.name.indexOf("TimeoutError") != -1) {
+					throw new MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
+				}
+				throw error;
+			}
 
+			try {
+				await this.isLoggedIn();
+			} catch (error) {
+				console.error(`App is not logged into ${this.appName()}`);
+				await this.takeScreenshot("login_error");
+				await this.writeCookiesFile([]); //deteling cookies file
+				throw error;
+			}
 
-        /**
-             * Tries to login using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
-             * throws MyTimeoutError if could not connect for timeout or another Error for other ones
-             * If login is ok it writes the cookies to the file, if it's not it deletes them
-             * Careful this function depends on implementation of isLoggedIn
-             * @param {*} username username for the website
-            * @param {string} password 
-             */
-        async login(username, password) {
-            const cookies = await this.readCookiesFile();
+			// Save our freshest cookies that contain our Milanuncios session
+			await this.page.cookies().then(async (freshCookies) => {
+				// console.log('saving fresh cookies');
+				await this.writeCookiesFile(freshCookies);
+			});
 
-            try {
-                if (cookies && Object.keys(cookies).length) {
-                    await this.loginWithSession(cookies, this.mainUrl).catch(async (error) => {
-                        console.error(`Unable to login using session: ${error}`);
-                        if (error.name.indexOf('TimeoutError') != -1) { throw error }
-                        await this.loginWithCredentials(username, password);
-                    });
-                } else {
-                    await this.loginWithCredentials(username, password);
-                }
-            } catch (error) {
-                if (error.name.indexOf('TimeoutError') != -1) {
-                    throw new MyTimeoutError('Connexió lenta, no s\'ha pogut fer login');
-                }
-                throw error;
-            }
+			console.log("Login ok");
+		}
 
-            try {
-                await this.isLoggedIn();
-            } catch (error) {
-                console.error(`App is not logged into ${this.appName()}`);
-                await this.takeScreenshot('login_error');
-                await this.writeCookiesFile([]); //deteling cookies file
-                throw error;
-            }
+		/* ******************* */
+		/* END LOGIN FUNCTIONS */
+		/* ******************* */
 
-            // Save our freshest cookies that contain our Milanuncios session
-            await this.page.cookies().then(async (freshCookies) => {
-                // console.log('saving fresh cookies');
-                await this.writeCookiesFile(freshCookies);
-            });
+		/* ******************* */
+		/* BEGIN I/O FUNCTIONS */
+		/* ******************* */
 
-            console.log('Login ok');
-        }
+		/**
+		 * reads from local filesystem
+		 */
+		async readCookiesFile() {
+			return await this.cookieSaver.readCookies();
+			// return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+		}
 
-        /* ******************* */
-        /* END LOGIN FUNCTIONS */
-        /* ******************* */
+		async writeCookiesFile(cookiesJson) {
+			await this.cookieSaver.writeCookies(cookiesJson);
+		}
 
+		/**
+		 * Will take screenshot and append the date before the desired filename
+		 * @param {string} filename just the name of the file without extension
+		 * @returns {string} screenshotLocation full screenshot location
+		 */
+		async takeScreenshot(filename) {
+			const type = "jpeg";
+			const imageBuffer = await this.page.screenshot({
+				type,
+				quality: 80,
+				// omitBackground: true,
+				// fullPage: true
+			});
+			// await this.page.screenshot({
+			//     path: screenshotLocation,
+			//     fullPage: true
+			// });
+			return this.screenshotSaver.saveScreenshot({
+				imageBuffer,
+				filename,
+				type,
+			});
+		}
 
-        /* ******************* */
-        /* BEGIN I/O FUNCTIONS */
-        /* ******************* */
+		async logIP() {
+			await this.page.goto("http://checkip.amazonaws.com/");
+			const ip = await this.page.evaluate(() =>
+				document.body.textContent.trim()
+			);
+			await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
+			console.log(ip);
+			return ip;
+		}
 
-        /**
-         * reads from local filesystem
-         */
-        async readCookiesFile() {
-            return await this.cookieSaver.readCookies();
-            // return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
-        }
+		/* ******************* */
+		/* END I/O FUNCTIONS */
+		/* ******************* */
 
-        async writeCookiesFile(cookiesJson) {
-            await this.cookieSaver.writeCookies(cookiesJson);
-        }
+		enabled() {
+			return this.config.settings.enabled;
+		}
 
-        /**
-         * Will take screenshot and append the date before the desired filename
-         * @param {string} filename just the name of the file without extension
-         * @returns {string} screenshotLocation full screenshot location
-         */
-        async takeScreenshot(filename) {
-            const type = 'jpeg';
-            const imageBuffer = await this.page.screenshot({
-                type,
-                quality: 80,
-                // omitBackground: true,
-                // fullPage: true
-            });
-            // await this.page.screenshot({
-            //     path: screenshotLocation,
-            //     fullPage: true
-            // });
-            return this.screenshotSaver.saveScreenshot({ imageBuffer, filename, type });
-        }
+		getConfig() {
+			return this.config;
+		}
 
-        async logIP() {
-            await this.page.goto('http://checkip.amazonaws.com/');
-            const ip = await this.page.evaluate(() => document.body.textContent.trim());
-            await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
-            console.log(ip);
-            return ip
-        }
+		getVersion() {
+			const pjson = require("./package.json");
+			return pjson.version;
+		}
 
-        /* ******************* */
-        /* END I/O FUNCTIONS */
-        /* ******************* */
+		async shutDown() {
+			if (this.browser) {
+				await this.browser.close();
+			}
+		}
 
-        enabled() {
-            return this.config.settings.enabled;
-        }
+		/**
+		 *
+		 * @returns {string}
+		 */
+		appName() {
+			// eslint-disable-next-line no-useless-escape
+			return "SHOULD OVERRIDE ¯_(ツ)_/¯ SHOULD OVERRIDE";
+		}
+	}
 
-        getConfig() {
-            return this.config;
-        }
-
-        getVersion() {
-            const pjson = require('./package.json');
-            return pjson.version;
-        }
-
-        async shutDown() {
-            if (this.browser) {
-                await this.browser.close();
-            }
-        }
-
-        appName() {
-            // eslint-disable-next-line no-useless-escape
-            return "SHOULD OVERRIDE ¯\_(ツ)_/¯ SHOULD OVERRIDE";
-        }
-
-    }
-
-    return BotBase;
-}
+	return BotBase;
+};
