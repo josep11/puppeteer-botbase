@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 2.0.0
+
+- Changed BotBase constructor parameters
+
 ## 1.0.18
 
 - Updated deps and puppeteer version with vulnerability
