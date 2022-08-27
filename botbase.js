@@ -226,11 +226,11 @@ module.exports = (puppeteer) => {
 		/**
 		 * Will take screenshot and append the date before the desired filename
 		 * @param {string} filename just the name of the file without extension
-		 * @returns {string} screenshotLocation full screenshot location
+		 * @returns {Promise<string>} screenshotLocation full screenshot location
 		 */
 		async takeScreenshot(filename) {
 			const type = "jpeg";
-			const imageBuffer = await this.page.screenshot({
+			const imageBuffer = await this.page?.screenshot({
 				type,
 				quality: 80,
 				// omitBackground: true,
