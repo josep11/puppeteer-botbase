@@ -35,7 +35,7 @@
     "eslint": "^8.23.0",
     "mocha": "^10.0.0",
     "mocha-junit-reporter": "^2.0.2",
-    "puppeteer": "^16.2.0",
+    "puppeteer": "^18.0.5",
     "puppeteer-core": "^16.2.0"
   }
 }
