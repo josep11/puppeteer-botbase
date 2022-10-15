@@ -10,5 +10,25 @@
     "parserOptions": {
         "ecmaVersion": 12
     },
-    "rules": {}
+    "rules": {
+        "@typescript-eslint/no-floating-promises": [
+            "error"
+        ],
+        "no-multiple-empty-lines": [
+            1,
+            {
+                "max": 1
+            }
+        ],
+        "lines-between-class-members": [
+            "error",
+            "always"
+        ],
+        "padded-blocks": [
+            "error",
+            {
+                "classes": "always"
+            }
+        ]
+    }
 }
