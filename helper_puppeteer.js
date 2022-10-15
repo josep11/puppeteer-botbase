@@ -32,14 +32,18 @@ class HelperPuppeteer {
 			return null;
 		}
 
+		const puppeteerVersion = require('puppeteer/package.json').version
+
 		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will not be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder. 
 		const rootDir = os.homedir() + "/.cache/puppeteer/chrome";
 
 		// 2. If not found trying to find for older versions of Puppeteer (< 19)
 		const rootDirOld = "./node_modules/puppeteer/.local-chromium";
 
-		let puppeteerPath = getLocalPuppeteer(rootDir);
-		if (!puppeteerPath){
+		let puppeteerPath = null;
+		if (puppeteerVersion >= "19"){
+			puppeteerPath = getLocalPuppeteer(rootDir);
+		} else {
 			puppeteerPath = getLocalPuppeteer(rootDirOld);
 		}
 
