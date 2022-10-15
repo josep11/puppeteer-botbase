@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 3.0.0
+
+- Updated to puppeteer 19+
+
 ## 2.1.0
 
 - Updated deps

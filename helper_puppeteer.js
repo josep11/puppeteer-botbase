@@ -1,29 +1,50 @@
 const glob = require("glob");
+const os = require('os');
+
 const { Puppeteer, Page } = require("puppeteer");
 class HelperPuppeteer {
 
 	/**
 	 * Gets the location of the local puppeteer installation
+	 * @throws {Error} when not found
 	 * @returns {string} the path to the puppeteer installation
 	 */
 	static getLocalPuppeteerInstallation() {
-		// example paths for linux:
-		// './node_modules/puppeteer/.local-chromium/linux-970485/chrome-linux/chrome'
-		// './node_modules/puppeteer/.local-chromium/linux-624492/chrome-linux'
-		// example path for mac (tested and working):
-		const puppeteerDirnameMac =
-			"./node_modules/puppeteer/.local-chromium/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
-		const puppeteerDirnameLinux =
-			"./node_modules/puppeteer/.local-chromium/linux-*/chrome-linux/chrome";
 
-		for (const puppeteerDirname of [
-			puppeteerDirnameLinux,
-			puppeteerDirnameMac,
-		]) {
-			const results = glob.sync(puppeteerDirname);
-			if (results && results.length > 0) {
-				return results[0];
+		/**
+		 * 
+		 * @param {string} rootDir 
+		 * @returns {string?} path to puppeteer installation
+		 */
+		 function getLocalPuppeteer(rootDir){
+			const puppeteerDirnameMac = rootDir + "/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
+			const puppeteerDirnameLinux = rootDir + "/linux-*/chrome-linux/chrome";
+	
+			for (const puppeteerDirname of [
+				puppeteerDirnameLinux,
+				puppeteerDirnameMac,
+			]) {
+				const results = glob.sync(puppeteerDirname);
+				if (results && results.length > 0) {
+					return results[0];
+				}
 			}
+			return null;
+		}
+
+		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will not be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder. 
+		const rootDir = os.homedir() + "/.cache/puppeteer/chrome";
+
+		// 2. If not found trying to find for older versions of Puppeteer (< 19)
+		const rootDirOld = "./node_modules/puppeteer/.local-chromium";
+
+		let puppeteerPath = getLocalPuppeteer(rootDir);
+		if (!puppeteerPath){
+			puppeteerPath = getLocalPuppeteer(rootDirOld);
+		}
+
+		if (puppeteerPath){
+			return puppeteerPath;
 		}
 
 		throw "Puppeteer not installed";
