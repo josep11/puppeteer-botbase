@@ -13,6 +13,7 @@ const { Puppeteer, Page } = require("puppeteer");
  */
 module.exports = (puppeteer) => {
 	class BotBase {
+
 		/**
 		 * @typedef {Object} BotBaseParams
 		 * @property {ICookieSaver} cookieSaver the delegate to save cookies
@@ -288,7 +289,8 @@ module.exports = (puppeteer) => {
 			// eslint-disable-next-line no-useless-escape
 			return "SHOULD OVERRIDE ¯_(ツ)_/¯ SHOULD OVERRIDE";
 		}
-	}
+	
+}
 
 	return BotBase;
 };
