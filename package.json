@@ -1,6 +1,6 @@
 {
   "name": "botbase",
-  "version": "3.0.0",
+  "version": "2.2.1",
   "description": "",
   "main": "botbase.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "eslint": "^8.25.0",
     "mocha": "^10.0.0",
     "mocha-junit-reporter": "^2.1.0",
-    "puppeteer": "^19.0.0",
-    "puppeteer-core": "^19.0.0"
+    "puppeteer": "^18.0.0",
+    "puppeteer-core": "^18.0.0"
   }
 }
