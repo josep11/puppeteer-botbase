@@ -21,6 +21,7 @@ class Helper {
         channel('----------' + this.getNow() + '----------');
         // console.log('---------------------------------------');
     }
+
     dateFormatForLog() {
         // TODO: move to luxon
         return moment(new Date()).format("yyyy-MM-DD_HH.mm.ss");
@@ -43,18 +44,22 @@ class Helper {
         const momentStart = moment(pastTime);
         return moment.duration(now.diff(momentStart)).asHours();
     }
+
     /**
      * Returns date in format YYYY-MM-DD = 2021-10-30
      */
     getDate() {
         return moment().format("yyyy-MM-DD");
     }
+
     getNow() {
         return moment().format();
     }
+
     getNowMinus(hoursAgo = 0) {
         return moment().subtract(hoursAgo, 'hours').format();
     }
+
     getRandBetween(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -80,6 +85,7 @@ class Helper {
         const found = await page.$x(`//*[contains(., "${text}")]`);
         return found.length > 0;
     }
+
     /**
      * 
      * @param {string} timeStr 
@@ -103,6 +109,7 @@ class Helper {
             throw (`FIXME: Helper.extractHorasFromString: En la string the time no se encontró 'hora'. Input timeStr = ${timeStr}`);
         }
     }
+
     async getIp() {
         const { stdout, stderr } = await execAsync(`curl checkip.amazonaws.com`);
         if (!stdout) {
@@ -112,7 +119,6 @@ class Helper {
         }
         return stdout.trim();
     }
-
 
     /*****************************************/
     /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
@@ -136,10 +142,12 @@ class Helper {
         }
         return undefined;
     }
+
     async writeFile(filename, text) {
         const nBytes = await fs.writeFile(filename, text);
         return nBytes;
     }
+
     /**
      * Will write the text to the filename. Newlines should be explicitly set.
      * @param {string} filename filename to write to
@@ -159,9 +167,11 @@ class Helper {
     async readFile(filename) {
         return await fs.readFile(filename, "utf-8");
     }
+
     async emptyFile(filename) {
         return await this.writeFile(filename, '');
     }
+
     async readJsonFile(cookiesFile) {
         try {
             const myJsonObject = require(cookiesFile);
@@ -171,6 +181,7 @@ class Helper {
             return [];
         }
     }
+
     createDirIfNotExists(dir) {
         const fs = require('fs');
 
@@ -215,7 +226,6 @@ class Helper {
     /* END I/O FUNCTIONS TO THE FILESYSTEM */
     /***************************************/
 
-
     /**
      * This function is deprecated with the RenewManager no need to run this function in the browser context
      * @param {*} timeStr 
@@ -250,7 +260,7 @@ class Helper {
         });
         return userAgent;
     }
-}
 
+}
 
 module.exports = new Helper();

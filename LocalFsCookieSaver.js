@@ -4,9 +4,10 @@ const helper = require('./helper');
 const ICookieSaver = require('./ICookieSaver');
 
 class LocalFsCookieSaver extends ICookieSaver {
+
     /**
      * 
-     * @param {obj} param should have the following keys { cookiesFilePath }
+     * @param {Object} param should have the following keys { cookiesFilePath }
      */
     constructor({ cookiesFilePath }) {
         super();
@@ -32,7 +33,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 
     /**
      * 
-     * @param {*} cookiesJson 
+     * @param {*} cookies
      * @returns 
      */
     async writeCookies(cookies) {

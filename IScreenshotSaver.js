@@ -17,8 +17,8 @@ class IScreenshotSaver {
 
     /**
      * 
-     * @param {obj} param0 
-     * @returns {string} the place where the image is stored
+     * @param {Object} param0 
+     * @returns {Promise<string>} the place where the image is stored
      */
     async saveScreenshot({ imageBuffer, filename }) {
         this._checkParams(imageBuffer);

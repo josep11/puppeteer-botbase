@@ -4,6 +4,7 @@ const LocalScreenshotSaver = require("./LocalScreenshotSaver");
 const BotBase = require("./botbase");
 
 class BotBaseFactory {
+
     createBotBase({
         mainUrl,
         basePath,
@@ -21,6 +22,7 @@ class BotBaseFactory {
             chromiumExecutablePath
         });
     }
+
 }
 
 module.exports = BotBaseFactory;
