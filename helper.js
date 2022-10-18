@@ -88,6 +88,17 @@ class Helper {
 
     /**
      * 
+     * @param {string} text 
+     * @param {string} textToFind 
+     * @returns {number}
+     */
+    function countStringOccurrences(text, textToFind) {
+        const re = new RegExp(textToFind, "gi");
+        return (text.match(re) || []).length;
+    }
+
+    /**
+     * 
      * @param {string} timeStr 
      * @returns Number
      */
