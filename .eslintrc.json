@@ -14,14 +14,16 @@
         "@typescript-eslint/no-floating-promises": [
             "error"
         ],
-        "no-multiple-empty-lines": [
-            1,
-            {
-                "max": 1
-            }
-        ],
+        "prettier/prettier": "error",
+        // "no-multiple-empty-lines": [
+        //     1,
+        //     {
+        //         "max": 1
+        //     }
+        // ],
         "lines-between-class-members": [
-            "error",
+            // 0 = off, 1 = warn, 2 = error
+            "1",
             "always"
         ],
         "padded-blocks": [
