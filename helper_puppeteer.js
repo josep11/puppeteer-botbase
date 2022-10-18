@@ -1,25 +1,24 @@
 const glob = require("glob");
-const os = require('os');
+const os = require("os");
 
 const { Puppeteer, Page } = require("puppeteer");
 class HelperPuppeteer {
-
 	/**
 	 * Gets the location of the local puppeteer installation
 	 * @throws {Error} when not found
 	 * @returns {string} the path to the puppeteer installation
 	 */
 	static getLocalPuppeteerInstallation() {
-
 		/**
-		 * 
-		 * @param {string} rootDir 
+		 *
+		 * @param {string} rootDir
 		 * @returns {string?} path to puppeteer installation
 		 */
-		 function getLocalPuppeteer(rootDir){
-			const puppeteerDirnameMac = rootDir + "/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
+		function getLocalPuppeteer(rootDir) {
+			const puppeteerDirnameMac =
+				rootDir + "/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
 			const puppeteerDirnameLinux = rootDir + "/linux-*/chrome-linux/chrome";
-	
+
 			for (const puppeteerDirname of [
 				puppeteerDirnameLinux,
 				puppeteerDirnameMac,
@@ -32,22 +31,22 @@ class HelperPuppeteer {
 			return null;
 		}
 
-		const puppeteerVersion = require('puppeteer/package.json').version
+		const puppeteerVersion = require("puppeteer/package.json").version;
 
-		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will not be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder. 
+		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will not be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder.
 		const rootDir = os.homedir() + "/.cache/puppeteer/chrome";
 
 		// 2. If not found trying to find for older versions of Puppeteer (< 19)
 		const rootDirOld = "./node_modules/puppeteer/.local-chromium";
 
 		let puppeteerPath = null;
-		if (puppeteerVersion >= "19"){
+		if (puppeteerVersion >= "19") {
 			puppeteerPath = getLocalPuppeteer(rootDir);
 		} else {
 			puppeteerPath = getLocalPuppeteer(rootDirOld);
 		}
 
-		if (puppeteerPath){
+		if (puppeteerPath) {
 			return puppeteerPath;
 		}
 
@@ -147,7 +146,7 @@ class HelperPuppeteer {
 	 * @param {string} textToFind
 	 * @returns {Promise<Number>} count
 	 */
-	async countStringOccurrencesInPage(page, textToFind) {
+	static async countStringOccurrencesInPage(page, textToFind) {
 		return page.$eval(
 			"body",
 			(el, textSearch) => {
@@ -181,7 +180,6 @@ class HelperPuppeteer {
 			}, delay);
 		});
 	}
-
 }
 
 module.exports = HelperPuppeteer;
