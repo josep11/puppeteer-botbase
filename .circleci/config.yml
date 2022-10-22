@@ -5,7 +5,7 @@ jobs:
   tests-job:
     docker:
       # TODO: UPDATE TO node 14
-      - image: circleci/node:12-browsers
+      - image: cimg/node:16.14.0-browsers
     steps:
       # tutorial followed: https://circleci.com/blog/functional-browser-testing/
       - checkout
