@@ -33,7 +33,7 @@ class HelperPuppeteer {
 
 		const puppeteerVersion = require("puppeteer/package.json").version;
 
-		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will not be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder.
+		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will NOT be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder.
 		const rootDir = os.homedir() + "/.cache/puppeteer/chrome";
 
 		// 2. If not found trying to find for older versions of Puppeteer (< 19)
