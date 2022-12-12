@@ -55,9 +55,8 @@ describe('Module Helper Puppeteer Tests', () => {
 
     /**
      * @deprecated
-     */
+     
      it('should close popup by text containing (in the child elements)', async () => {
-        return;
         const url = "https://blog.wishpond.com/post/94441887713/5-examples-of-website-popups-that-work";
         const elementType = "p"; //this element does not contain the desired text, only their children
         //in this example the structure is <p><a>desired text</a></p>
@@ -73,7 +72,7 @@ describe('Module Helper Puppeteer Tests', () => {
         const clicked2 = await HelperPuppeteer.closePopupByTextContaining(page, 'random text not existing', elementType);
         assert.strictEqual(clicked2, false, 'should have returned false as ');
     }).timeout(20000);
-
+*/
 
     it('should close popup by text (in the root element)', async () => {
         const url = "https://www.mailerlite.com/blog/inspiring-examples-of-email-pop-ups-and-why-they-work";

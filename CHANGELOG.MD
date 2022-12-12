@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 3.0.1
+
+- Updated Dependencies
+
 ## 3.0.0
 
 - Updated to puppeteer 19+
