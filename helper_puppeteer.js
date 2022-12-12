@@ -70,7 +70,6 @@ class HelperPuppeteer {
 		const btn = await page.$x(
 			`//${elementType}[contains(., "${textBtnOrChildren}")]`
 		);
-		let clicked = false;
 		if (btn && btn.length == 0) {
 			console.debug(
 				`popup with text '${textBtnOrChildren}' not found ... continuing`
@@ -78,8 +77,8 @@ class HelperPuppeteer {
 		} else {
 			try {
 				await btn[0].click();
-				clicked = true;
 				await waitForTimeout(1500);
+				return true;
 			} catch (err) {
 				console.error(
 					`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`
@@ -87,7 +86,7 @@ class HelperPuppeteer {
 			}
 		}
 
-		return clicked;
+		return false;
 	}
 
 	/**
@@ -127,7 +126,7 @@ class HelperPuppeteer {
 	 * Finds texts (ignoring case) on page text
 	 * @param {Page} page Puppeteer Page
 	 * @param {string} text Text to find
-	 * @returns true or false
+	 * @returns {Promise<boolean>}
 	 */
 	static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
 		const options = ignoreCase ? "gi" : "g";
