@@ -7,7 +7,7 @@ class ICookieSaver {
 	 * @param {*} cookies
 	 */
 	async writeCookies(cookies) {
-		if (!cookiesJson) {
+		if (!cookies) {
 			throw new Error("Developer fix this: unexistent param");
 		}
 		throw new NotImplementedError("not implemented");
