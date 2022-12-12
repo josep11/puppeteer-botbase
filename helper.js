@@ -35,6 +35,13 @@ class Helper {
 	}
 
 	/**
+	 * @param milliseconds - the number of milliseconds to wait.
+	 */
+	async waitForTimeout(milliseconds) {
+		await new Promise((r) => setTimeout(r, milliseconds));
+	}
+
+	/**
 	 * This function gets the difference in hours from the param with the actual moment
 	 * @param {Date} pastTime
 	 */

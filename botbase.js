@@ -5,6 +5,7 @@ const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
 const ICookieSaver = require("./ICookieSaver");
 const IScreenshotSaver = require("./IScreenshotSaver");
 const { Puppeteer, Page } = require("puppeteer");
+const { waitForTimeout } = require("./helper");
 
 /**
  * 
@@ -145,7 +146,7 @@ module.exports = (puppeteer) => {
 			console.log(`Logging into ${this.appName()} using cookies`);
 			await this.page.setCookie(...cookies);
 			await this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
-			await this.page.waitForTimeout(helper.getRandBetween(1500, 4000));
+			await waitForTimeout(helper.getRandBetween(1500, 4000));
 
 			await this.isLoggedIn().catch(async (error) => {
 				console.error(`App is not logged into ${this.appName()}`);

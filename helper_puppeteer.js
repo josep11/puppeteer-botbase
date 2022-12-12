@@ -2,6 +2,7 @@ const glob = require("glob");
 const os = require("os");
 
 const { Page } = require("puppeteer");
+const { waitForTimeout } = require("./helper");
 class HelperPuppeteer {
 	/**
 	 * Gets the location of the local puppeteer installation
@@ -78,7 +79,7 @@ class HelperPuppeteer {
 			try {
 				await btn[0].click();
 				clicked = true;
-				await page.waitForTimeout(1500);
+				await waitForTimeout(1500);
 			} catch (err) {
 				console.error(
 					`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`
@@ -111,7 +112,7 @@ class HelperPuppeteer {
 			try {
 				await btn[0].click();
 				clicked = true;
-				await page.waitForTimeout(1500);
+				await waitForTimeout(1500);
 			} catch (err) {
 				console.error(
 					`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
