@@ -254,7 +254,6 @@ module.exports = (puppeteer) => {
 				document.body.textContent.trim()
 			);
 			await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
-			console.log(ip);
 			return ip;
 		}
 
