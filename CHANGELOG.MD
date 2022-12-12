@@ -1,5 +1,9 @@
 # Puppeteer BotBase
 
+## 3.0.7
+
+- deprecated page.waitfortimeout replaced
+
 ## 3.0.6
 
 - Updated Dependencies
