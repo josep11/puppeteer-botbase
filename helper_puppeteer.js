@@ -1,7 +1,7 @@
 const glob = require("glob");
 const os = require("os");
 
-const { Puppeteer, Page } = require("puppeteer");
+const { Page } = require("puppeteer");
 class HelperPuppeteer {
 	/**
 	 * Gets the location of the local puppeteer installation
@@ -56,7 +56,7 @@ class HelperPuppeteer {
 	/**
 	 * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
 	 * That's why it is recommended to set the @elementType param to narrow down the search
-	 * @param {*} page Puppeteer page
+	 * @param {Page} page Puppeteer page
 	 * @param {string?} textBtnOrChildren the text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
 	 * @returns {Promise<boolean>} true if the element was clicked, false otherwise
@@ -91,7 +91,7 @@ class HelperPuppeteer {
 
 	/**
 	 *
-	 * @param {*} page Puppeteer page
+	 * @param {Page} page Puppeteer page
 	 * @param {string?} textBtn the exact text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
 	 * @returns {Promise<boolean>} true if the element was clicked, false otherwise
@@ -124,7 +124,7 @@ class HelperPuppeteer {
 
 	/**
 	 * Finds texts (ignoring case) on page text
-	 * @param {*} page Puppeteer Page
+	 * @param {Page} page Puppeteer Page
 	 * @param {string} text Text to find
 	 * @returns true or false
 	 */
