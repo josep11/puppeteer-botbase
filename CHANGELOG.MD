@@ -1,6 +1,6 @@
 # Puppeteer BotBase
 
-## 3.0.1
+## 3.0.6
 
 - Updated Dependencies
 
