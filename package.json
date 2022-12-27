@@ -3,19 +3,22 @@
   "version": "3.0.5",
   "description": "",
   "main": "botbase.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "mocha --timeout 25000 --exit --colors --bail",
-    "test:fast": "NODE_ENV=test mocha --timeout 55000 --exit --colors --bail test/*puppeteer*.*",
-    "test:ci": "mocha --timeout 25000 --reporter mocha-junit-reporter --exit --reporter-options mochaFile=./test-results/mocha/results.xml",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix"
-  },
   "author": "Josep Alsina",
   "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/josep11/puppeteer-botbase.git"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --exit --colors --bail",
+    "test:fast": "NODE_ENV=test mocha --exit --colors --bail test/*puppeteer*.*",
+    "test:ci": "mocha --reporter mocha-junit-reporter --exit --reporter-options mochaFile=./test-results/mocha/results.xml",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "mocha": {
+    "timeout": 55000
   },
   "dependencies": {
     "child-process-async": "^1.0.1",
@@ -23,19 +26,19 @@
     "fs": "0.0.1-security",
     "glob": "^8.0.3",
     "moment": "^2.29.4",
-    "user-agents": "^1.0.1227"
+    "user-agents": "^1.0.1242"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.1273.0",
-    "puppeteer-core": "^19.4.0"
+    "aws-sdk": "^2.1283.0",
+    "puppeteer-core": "^19.4.1"
   },
   "devDependencies": {
     "chai": "^4.3.7",
     "dotenv": "^16.0.3",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.0",
-    "puppeteer": "^19.4.0",
-    "puppeteer-core": "^19.4.0"
+    "puppeteer": "^19.4.1",
+    "puppeteer-core": "^19.4.1"
   }
 }
