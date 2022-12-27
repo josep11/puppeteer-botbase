@@ -1,6 +1,6 @@
 # BOT BASE
 
-Utilities to reuse codebase for Scraping with Puppeteer
+Utilities to reuse codebase for Scraping with Puppeteer. [Repo][1]
 
 ## Install
 
@@ -10,7 +10,7 @@ npm i git+https://github.com/josep11/puppeteer-botbase.git
 
 To install a specific version or semver versions run:
 
-It will pick it by the tag version. List of tags [here](2)
+It will pick it by the tag version. List of tags [here][2]
 
 ```bash
 # this will install an exact version
