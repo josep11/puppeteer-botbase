@@ -8,23 +8,26 @@ const { Puppeteer, Page } = require("puppeteer");
 const { waitForTimeout } = require("./helper");
 
 /**
- * 
- * @param {Puppeteer} puppeteer 
- * @returns 
+ *
+ * @param {Puppeteer} puppeteer
+ * @returns
  */
 module.exports = (puppeteer) => {
 	class BotBase {
-
 		/**
 		 * @typedef {Object} BotBaseParams
+		 * @property {string} mainUrl
+		 * @property {string} basePath
 		 * @property {ICookieSaver} cookieSaver the delegate to save cookies
 		 * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
 		 * @property {*} configChild optional
+		 * @property {string|null} chromiumExecutablePath
 		 */
 
 		/**
 		 * @param {BotBaseParams} botBaseParams
 		 */
+		// @ts-ignore
 		constructor({
 			mainUrl,
 			basePath,
@@ -137,7 +140,6 @@ module.exports = (puppeteer) => {
 		 * Tries to log in using cookies or otherwise it throws error
 		 * It depends on implementation of isLoggedIn()
 		 * @param {*} cookies
-		 * @param {string} mainUrl the url to check the login
 		 */
 		async loginWithSession(cookies) {
 			if (!this.mainUrl) {
@@ -168,15 +170,13 @@ module.exports = (puppeteer) => {
 
 			try {
 				if (cookies && Object.keys(cookies).length) {
-					await this.loginWithSession(cookies, this.mainUrl).catch(
-						async (error) => {
-							console.error(`Unable to login using session: ${error}`);
-							if (error.name.indexOf("TimeoutError") != -1) {
-								throw error;
-							}
-							await this.loginWithCredentials(username, password);
+					await this.loginWithSession(cookies).catch(async (error) => {
+						console.error(`Unable to login using session: ${error}`);
+						if (error.name.indexOf("TimeoutError") != -1) {
+							throw error;
 						}
-					);
+						await this.loginWithCredentials(username, password);
+					});
 				} else {
 					await this.loginWithCredentials(username, password);
 				}
@@ -289,8 +289,7 @@ module.exports = (puppeteer) => {
 			// eslint-disable-next-line no-useless-escape
 			return "SHOULD OVERRIDE ¯_(ツ)_/¯ SHOULD OVERRIDE";
 		}
-	
-}
+	}
 
 	return BotBase;
 };
