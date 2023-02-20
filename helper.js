@@ -159,8 +159,14 @@ class Helper {
 		return undefined;
 	}
 
-	async writeFile(filename, text) {
-		const nBytes = await fs.writeFile(filename, text);
+	/**
+	 *
+	 * @param {string} filename
+	 * @param {string} content
+	 * @returns
+	 */
+	async writeFile(filename, content) {
+		const nBytes = await fs.writeFile(filename, content);
 		return nBytes;
 	}
 

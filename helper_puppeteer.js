@@ -2,7 +2,7 @@ const glob = require("glob");
 const os = require("os");
 
 const { Page } = require("puppeteer");
-const { waitForTimeout } = require("./helper");
+const { waitForTimeout, writeFile } = require("./helper");
 class HelperPuppeteer {
 	/**
 	 * Gets the location of the local puppeteer installation
@@ -179,6 +179,16 @@ class HelperPuppeteer {
 				}
 			}, delay);
 		});
+	}
+
+	/**
+	 * @param {Page} page
+	 * @param {string} filename
+	 * @returns {Promise<void>}
+	 */
+	static async dumpPageContentToFile(page, filename) {
+		const content = await page.content();
+		await writeFile(filename, content);
 	}
 }
 
