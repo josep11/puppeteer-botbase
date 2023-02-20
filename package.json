@@ -26,11 +26,11 @@
     "fs": "0.0.1-security",
     "glob": "^8.1.0",
     "moment": "^2.29.4",
-    "user-agents": "^1.0.1289"
+    "user-agents": "^1.0.1295"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.1313.0",
-    "puppeteer-core": "^19.6.3"
+    "aws-sdk": "^2.1318.0",
+    "puppeteer-core": "^19.7.1"
   },
   "devDependencies": {
     "chai": "^4.3.7",
@@ -38,7 +38,7 @@
     "eslint": "^8.34.0",
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.0",
-    "puppeteer": "^19.6.3",
-    "puppeteer-core": "^19.6.3"
+    "puppeteer": "^19.7.1",
+    "puppeteer-core": "^19.7.1"
   }
 }
