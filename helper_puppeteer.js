@@ -2,7 +2,7 @@ const glob = require("glob");
 const os = require("os");
 
 const { Page } = require("puppeteer");
-const { waitForTimeout, writeFile } = require("./helper");
+const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
 	/**
 	 * Gets the location of the local puppeteer installation
@@ -226,6 +226,18 @@ class HelperPuppeteer {
 	static async dumpPageContentToFile(page, filename) {
 		const content = await page.content();
 		await writeFile(filename, content);
+	}
+
+	/**
+	 *
+	 * @param {Page} page
+	 * @param {string} selector
+	 * @param {string} text
+	 */
+	static async typeDelayed(page, selector, text) {
+		await page.type(selector, text, {
+			delay: getRandBetween(10, 20),
+		});
 	}
 }
 
