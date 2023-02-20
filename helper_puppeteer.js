@@ -70,20 +70,22 @@ class HelperPuppeteer {
 		const btn = await page.$x(
 			`//${elementType}[contains(., "${textBtnOrChildren}")]`
 		);
+		
 		if (btn && btn.length == 0) {
 			console.debug(
 				`popup with text '${textBtnOrChildren}' not found ... continuing`
 			);
-		} else {
-			try {
-				await btn[0].click();
-				await waitForTimeout(1500);
-				return true;
-			} catch (err) {
-				console.error(
-					`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`
-				);
-			}
+			return false;
+		}
+
+		try {
+			await btn[0].click();
+			await waitForTimeout(1500);
+			return true;
+		} catch (err) {
+			console.error(
+				`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`
+			);
 		}
 
 		return false;
