@@ -91,8 +91,6 @@ class HelperPuppeteer {
 		return false;
 	}
 
-	
-
 	/**
 	 *
 	 * @param {Page} page Puppeteer page
@@ -124,6 +122,41 @@ class HelperPuppeteer {
 		}
 
 		return clicked;
+	}
+
+	/**
+	 *
+	 * @param {Page} page Puppeteer page
+	 * @param {string?} textElementOrChildren the text to find
+	 * @param {Array} cssSelectorArray
+	 */
+	static async tryToClickElementByTextOrCssSelectors(
+		page,
+		textElementOrChildren = null,
+		cssSelectorArray = []
+	) {
+		if (
+			textElementOrChildren &&
+			(await this.closePopupByTextContaining(page, textElementOrChildren))
+		) {
+			return;
+		}
+
+		for (const cssSelector of cssSelectorArray) {
+			const btn = await page.$(cssSelector);
+			if (btn) {
+				await btn.click();
+				return;
+			}
+			await page.evaluate((cssSelector) => {
+				// ".modal__buttons--dismiss"
+				const btn = document.querySelector(cssSelector);
+				if (btn) {
+					// @ts-ignore
+					btn.click();
+				}
+			}, cssSelector);
+		}
 	}
 
 	/**
