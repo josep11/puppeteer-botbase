@@ -58,22 +58,22 @@ class HelperPuppeteer {
 	 * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
 	 * That's why it is recommended to set the @elementType param to narrow down the search
 	 * @param {Page} page Puppeteer page
-	 * @param {string?} textBtnOrChildren the text to find
+	 * @param {string?} textElementOrChildren the text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
 	 * @returns {Promise<boolean>} true if the element was clicked, false otherwise
 	 */
 	static async closePopupByTextContaining(
 		page,
-		textBtnOrChildren = "Aceptar y cerrar",
+		textElementOrChildren = "Aceptar y cerrar",
 		elementType = "*"
 	) {
 		const btn = await page.$x(
-			`//${elementType}[contains(., "${textBtnOrChildren}")]`
+			`//${elementType}[contains(., "${textElementOrChildren}")]`
 		);
-		
+
 		if (btn && btn.length == 0) {
 			console.debug(
-				`popup with text '${textBtnOrChildren}' not found ... continuing`
+				`popup with text '${textElementOrChildren}' not found ... continuing`
 			);
 			return false;
 		}
@@ -84,12 +84,14 @@ class HelperPuppeteer {
 			return true;
 		} catch (err) {
 			console.error(
-				`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`
+				`error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`
 			);
 		}
 
 		return false;
 	}
+
+	
 
 	/**
 	 *
