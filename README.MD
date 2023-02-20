@@ -14,13 +14,13 @@ It will pick it by the tag version. List of tags [here][2]
 
 ```bash
 # this will install an exact version
-npm i git+https://github.com/josep11/puppeteer-botbase.git#0.1.3
-npm i github:josep11/puppeteer-botbase.git#semver:^1.0.10
+npm i git+https://github.com/josep11/puppeteer-botbase.git#3.0.10
+npm i github:josep11/puppeteer-botbase.git#semver:^3.0.10
 ```
 
 ```bash
 # this will install from semver version
-npm i github:josep11/puppeteer-botbase.git#semver:^2.0.0
+npm i github:josep11/puppeteer-botbase.git#semver:^3.0.10
 ```
 
 ## Config
