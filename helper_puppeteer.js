@@ -2,7 +2,7 @@ const glob = require("glob");
 const os = require("os");
 
 const { Page } = require("puppeteer");
-const { waitForTimeout, writeFile } = require("./helper");
+const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
 	/**
 	 * Gets the location of the local puppeteer installation
@@ -58,32 +58,34 @@ class HelperPuppeteer {
 	 * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
 	 * That's why it is recommended to set the @elementType param to narrow down the search
 	 * @param {Page} page Puppeteer page
-	 * @param {string?} textBtnOrChildren the text to find
+	 * @param {string?} textElementOrChildren the text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
 	 * @returns {Promise<boolean>} true if the element was clicked, false otherwise
 	 */
 	static async closePopupByTextContaining(
 		page,
-		textBtnOrChildren = "Aceptar y cerrar",
+		textElementOrChildren = "Aceptar y cerrar",
 		elementType = "*"
 	) {
 		const btn = await page.$x(
-			`//${elementType}[contains(., "${textBtnOrChildren}")]`
+			`//${elementType}[contains(., "${textElementOrChildren}")]`
 		);
+
 		if (btn && btn.length == 0) {
 			console.debug(
-				`popup with text '${textBtnOrChildren}' not found ... continuing`
+				`popup with text '${textElementOrChildren}' not found ... continuing`
 			);
-		} else {
-			try {
-				await btn[0].click();
-				await waitForTimeout(1500);
-				return true;
-			} catch (err) {
-				console.error(
-					`error clicking popup button. '${textBtnOrChildren}' (element="${elementType}"). Continuing ...`
-				);
-			}
+			return false;
+		}
+
+		try {
+			await btn[0].click();
+			await waitForTimeout(1500);
+			return true;
+		} catch (err) {
+			console.error(
+				`error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`
+			);
 		}
 
 		return false;
@@ -120,6 +122,41 @@ class HelperPuppeteer {
 		}
 
 		return clicked;
+	}
+
+	/**
+	 *
+	 * @param {Page} page Puppeteer page
+	 * @param {string?} textElementOrChildren the text to find
+	 * @param {Array} cssSelectorArray
+	 */
+	static async tryToClickElementByTextOrCssSelectors(
+		page,
+		textElementOrChildren = null,
+		cssSelectorArray = []
+	) {
+		if (
+			textElementOrChildren &&
+			(await this.closePopupByTextContaining(page, textElementOrChildren))
+		) {
+			return;
+		}
+
+		for (const cssSelector of cssSelectorArray) {
+			const btn = await page.$(cssSelector);
+			if (btn) {
+				await btn.click();
+				return;
+			}
+			await page.evaluate((cssSelector) => {
+				// ".modal__buttons--dismiss"
+				const btn = document.querySelector(cssSelector);
+				if (btn) {
+					// @ts-ignore
+					btn.click();
+				}
+			}, cssSelector);
+		}
 	}
 
 	/**
@@ -189,6 +226,18 @@ class HelperPuppeteer {
 	static async dumpPageContentToFile(page, filename) {
 		const content = await page.content();
 		await writeFile(filename, content);
+	}
+
+	/**
+	 *
+	 * @param {Page} page
+	 * @param {string} selector
+	 * @param {string} text
+	 */
+	static async typeDelayed(page, selector, text) {
+		await page.type(selector, text, {
+			delay: getRandBetween(10, 20),
+		});
 	}
 }
 
