@@ -216,11 +216,11 @@ class Helper {
 	 *
 	 * @param {string} file The file to remove
 	 */
-	rmFileIfExists(file) {
+	async rmFileIfExists(file) {
 		try {
-			fs.stat(file);
+			await fs.stat(file);
 			// console.log(`removing ${file}`);
-			fs.unlink(file);
+			await fs.unlink(file);
 		} catch (err) {
 			if (err.code == "ENOENT") {
 				// console.error(`The file ${file} does not exist`);
