@@ -5,6 +5,7 @@ const { Page } = require("puppeteer");
 const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
 	/**
+	 * @deprecated we should use "const { executablePath } = require("puppeteer");"
 	 * Gets the location of the local puppeteer installation
 	 * @throws {Error} when not found
 	 * @returns {string} the path to the puppeteer installation
