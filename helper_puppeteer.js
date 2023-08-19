@@ -17,6 +17,7 @@ class HelperPuppeteer {
 		 * @returns {string?} path to puppeteer installation
 		 */
 		function getLocalPuppeteer(rootDir) {
+			console.log(`getLocalPuppeteer: trying to find a puppeteer installation under ${rootDir}`);
 			const puppeteerDirnameMac =
 				rootDir + "/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
 			const puppeteerDirnameLinux = rootDir + "/linux-*/chrome-linux/chrome";
