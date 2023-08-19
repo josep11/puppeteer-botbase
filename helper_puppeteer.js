@@ -1,7 +1,7 @@
 const glob = require("glob");
 const os = require("os");
 
-const { Page } = require("puppeteer");
+const { Page, executablePath } = require("puppeteer");
 const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
 	/**
@@ -49,7 +49,10 @@ class HelperPuppeteer {
 			puppeteerPath = getLocalPuppeteer(rootDirOld);
 		}
 
+		console.log(`\npuppeteerPath: ${puppeteerPath}\nexecutablePath: ${executablePath()}\n`);
+
 		if (puppeteerPath) {
+			// if (puppeteerPath != executablePath()) {}
 			return puppeteerPath;
 		}
 
