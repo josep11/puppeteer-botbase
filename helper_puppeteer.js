@@ -11,13 +11,19 @@ class HelperPuppeteer {
 	 * @returns {string} the path to the puppeteer installation
 	 */
 	static getLocalPuppeteerInstallation() {
+		// TODO: remove everything below
+		// TODO: ultimately remove the method
+		return executablePath();
+
 		/**
 		 *
 		 * @param {string} rootDir
 		 * @returns {string?} path to puppeteer installation
 		 */
 		function getLocalPuppeteer(rootDir) {
-			console.log(`getLocalPuppeteer: trying to find a puppeteer installation under ${rootDir}`);
+			console.log(
+				`getLocalPuppeteer: trying to find a puppeteer installation under ${rootDir}`
+			);
 			const puppeteerDirnameMac =
 				rootDir + "/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
 			const puppeteerDirnameLinux = rootDir + "/linux-*/chrome-linux/chrome";
@@ -49,7 +55,9 @@ class HelperPuppeteer {
 			puppeteerPath = getLocalPuppeteer(rootDirOld);
 		}
 
-		console.log(`\npuppeteerPath: ${puppeteerPath}\nexecutablePath: ${executablePath()}\n`);
+		console.log(
+			`\npuppeteerPath: ${puppeteerPath}\nexecutablePath: ${executablePath()}\n`
+		);
 
 		if (puppeteerPath) {
 			// if (puppeteerPath != executablePath()) {}
