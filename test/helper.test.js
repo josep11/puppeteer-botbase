@@ -61,4 +61,9 @@ describe('Module Helper Tests', () => {
         await helper.delay(10);
     });
 
+    it('should get randomised user agent', () => {
+        const ua = helper.getRanomisedUserAgent();
+        expect(ua).to.be.a.string;
+    });
+
 });

@@ -11,60 +11,8 @@ class HelperPuppeteer {
 	 * @returns {string} the path to the puppeteer installation
 	 */
 	static getLocalPuppeteerInstallation() {
-		// TODO: remove everything below
 		// TODO: ultimately remove the method
 		return executablePath();
-
-		/**
-		 *
-		 * @param {string} rootDir
-		 * @returns {string?} path to puppeteer installation
-		 */
-		function getLocalPuppeteer(rootDir) {
-			console.log(
-				`getLocalPuppeteer: trying to find a puppeteer installation under ${rootDir}`
-			);
-			const puppeteerDirnameMac =
-				rootDir + "/mac-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium";
-			const puppeteerDirnameLinux = rootDir + "/linux-*/chrome-linux/chrome";
-
-			for (const puppeteerDirname of [
-				puppeteerDirnameLinux,
-				puppeteerDirnameMac,
-			]) {
-				const results = glob.sync(puppeteerDirname);
-				if (results && results.length > 0) {
-					return results[0];
-				}
-			}
-			return null;
-		}
-
-		const puppeteerVersion = require("puppeteer/package.json").version;
-
-		// 1. will try to get from the path: starting from Puppeteer 19, the binaries will NOT be downloaded to node_modules anymore but rather to the ~/.cache/puppeteer folder.
-		const rootDir = os.homedir() + "/.cache/puppeteer/chrome";
-
-		// 2. If not found trying to find for older versions of Puppeteer (< 19)
-		const rootDirOld = "./node_modules/puppeteer/.local-chromium";
-
-		let puppeteerPath = null;
-		if (puppeteerVersion >= "19") {
-			puppeteerPath = getLocalPuppeteer(rootDir);
-		} else {
-			puppeteerPath = getLocalPuppeteer(rootDirOld);
-		}
-
-		console.log(
-			`\npuppeteerPath: ${puppeteerPath}\nexecutablePath: ${executablePath()}\n`
-		);
-
-		if (puppeteerPath) {
-			// if (puppeteerPath != executablePath()) {}
-			return puppeteerPath;
-		}
-
-		throw "Puppeteer not installed";
 	}
 
 	/**
