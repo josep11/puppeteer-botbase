@@ -4,7 +4,7 @@ const { promises: fs } = require("fs");
 const { exec: execAsync } = require("child-process-async");
 const util = require("util");
 const moment = require("moment");
-const UserAgent = require("user-agents");
+const userAgents = require("user-agents");
 
 class Helper {
 	constructor() {
@@ -279,12 +279,11 @@ class Helper {
 	 *
 	 */
 	getRanomisedUserAgent() {
-		const userAgent = new UserAgent({
+		return userAgents.random({
 			deviceCategory: "desktop",
 			platform: "MacIntel", //"Linux x86_64",
 			vendor: "Google Inc.",
 		});
-		return userAgent;
 	}
 }
 
