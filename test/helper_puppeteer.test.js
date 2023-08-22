@@ -30,7 +30,7 @@ describe('Module Helper Puppeteer Tests', () => {
 
     it('should find text in webpage (ignorecase)', async () => {
         const url = "https://es.wikipedia.org/wiki/Wikipedia:Portada";
-        let textsTofind = ["la enciclopedia", "MediaWiki", "Al usar este sitio, usted acepta nuestros"];
+        let textsTofind = ["la enciclopedia", "Acceder", "Al usar este sitio, usted acepta nuestros"];
 
         await page.goto(url, { waitUntil: 'networkidle0' });
 
