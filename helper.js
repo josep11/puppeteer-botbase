@@ -4,7 +4,6 @@ const { promises: fs } = require("fs");
 const { exec: execAsync } = require("child-process-async");
 const util = require("util");
 const moment = require("moment");
-const UserAgents = require("user-agents");
 
 class Helper {
 	constructor() {
@@ -275,13 +274,27 @@ class Helper {
 		return false;
 	}
 
-	getRanomisedUserAgent() {
+	/**
+	 * Used by the V1 version of user-agents.
+	 * TODO: use this one instead when the vulnerability has been fixed
+	 */
+	#getRanomisedUserAgentV1() {
+		const UserAgents = require("user-agents");
 		const userAgents = new UserAgents({
 			deviceCategory: "desktop",
 			platform: "MacIntel", //"Linux x86_64",
 			vendor: "Google Inc.",
 		});
 		return userAgents.random();
+	}
+
+	#getRanomisedUserAgentV0() {
+		const userAgents = require("user-agents");
+		return userAgents.random();
+	}
+
+	getRanomisedUserAgent() {
+		return this.#getRanomisedUserAgentV0();
 	}
 }
 
