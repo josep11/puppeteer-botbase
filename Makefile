@@ -38,6 +38,6 @@ tag:
 posttag:
 	git push && git push --tags
 
-.PHONY: list
+.PHONY: list test
 .PHONY: tag 
 .PHONY: all install node_modules
