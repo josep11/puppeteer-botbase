@@ -1,6 +1,6 @@
 {
 	"name": "botbase",
-	"version": "3.0.15",
+	"version": "4.0.0",
 	"description": "",
 	"main": "botbase.js",
 	"author": "Josep Alsina",
@@ -26,10 +26,10 @@
 		"fs": "0.0.1-security",
 		"glob": "^10.3.3",
 		"moment": "^2.29.4",
-		"user-agents": "^0.0.2"
+		"user-agents": "^1.0.1444"
 	},
 	"optionalDependencies": {
-		"aws-sdk": "^2.1440.0",
+		"aws-sdk": "^2.1441.0",
 		"puppeteer-core": "^21.1.0"
 	},
 	"devDependencies": {
