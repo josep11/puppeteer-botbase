@@ -108,7 +108,7 @@ const shouldTestBotBase = ({
     it('should get a sample website with puppeteer', async () => {
 
         await botbase.initialize({
-            headless: true,
+            headless: "new",
             devtools: false,
             ignoreHTTPSErrors: true,
             // slowMo: 50,
