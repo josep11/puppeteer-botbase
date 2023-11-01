@@ -30,9 +30,13 @@ node_modules: package.json
 build:
 	$(PKG) run build
 
+_tag:
+	git tag ${TAG}
+	@echo created ${TAG}
+
 ## Run git tag picking the version from package.json
 tag:
-	git tag "$$(node -e 'console.log(require("./package").version)')"
+	make _tag TAG="$$(node -e 'console.log(require("./package").version)')"
 
 ## Push tags to the remote repository
 posttag:
