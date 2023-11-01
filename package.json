@@ -24,21 +24,21 @@
 		"child-process-async": "^1.0.1",
 		"deepmerge": "^4.3.1",
 		"fs": "0.0.1-security",
-		"glob": "^10.3.3",
+		"glob": "^10.3.10",
 		"moment": "^2.29.4",
 		"user-agents": "^0.0.2"
 	},
 	"optionalDependencies": {
-		"aws-sdk": "^2.1441.0",
-		"puppeteer-core": "^21.1.0"
+		"aws-sdk": "^2.1486.0",
+		"puppeteer-core": "^21.4.1"
 	},
 	"devDependencies": {
-		"chai": "^4.3.7",
+		"chai": "^4.3.10",
 		"dotenv": "^16.3.1",
-		"eslint": "^8.47.0",
+		"eslint": "^8.52.0",
 		"mocha": "^10.2.0",
 		"mocha-junit-reporter": "^2.2.1",
-		"puppeteer": "^21.1.0",
-		"puppeteer-core": "^21.1.0"
+		"puppeteer": "^21.4.1",
+		"puppeteer-core": "^21.4.1"
 	}
 }
