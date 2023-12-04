@@ -75,13 +75,26 @@ describe('Module Helper Puppeteer Tests', () => {
 */
 
     it('should close popup by text (in the root element)', async () => {
-        const url = "https://www.mailerlite.com/blog/inspiring-examples-of-email-pop-ups-and-why-they-work";
+        const url = "https://www.w3schools.com/bootstrap5/tryit.asp?filename=trybs_modal&stacked=h";
         const elementType = "button";
-        const textTofind = "Accept all cookies";
+        const textTofind = "Close";
 
         await page.goto(url, { waitUntil: 'networkidle0' });
 
-        const clicked = await HelperPuppeteer.closePopup(page, textTofind, elementType);
+        // select iframe
+        const frameElement = await page.$('#iframeResult');
+        const frame = await frameElement.contentFrame();
+        
+        // force open the modal
+        const cssSelectorOpenModal = 'body > div.container.mt-3 > button';
+        const btn = await frame.$(cssSelectorOpenModal);
+        if (!btn) {
+            throw Error('fix the tests as the button to open the modal does not exist in that page')
+        }
+
+        await btn.click();
+
+        const clicked = await HelperPuppeteer.closePopup(frame, textTofind, elementType);
 
         assert.strictEqual(clicked, true);
     }).timeout(20000);
