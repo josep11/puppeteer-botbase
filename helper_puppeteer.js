@@ -64,9 +64,8 @@ class HelperPuppeteer {
 		textBtn = "Aceptar y cerrar",
 		elementType = "*"
 	) {
-		const btn = await page.$x(
-			`//${elementType}[contains(text(), "${textBtn}")]`
-		);
+		const xPathSel = `//${elementType}[contains(text(), "${textBtn}")]`;
+		const btn = await page.$x(xPathSel);
 		let clicked = false;
 		if (btn && btn.length == 0) {
 			console.debug(`popup with text '${textBtn}' not found ... continuing`);
@@ -79,6 +78,7 @@ class HelperPuppeteer {
 				console.error(
 					`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
 				);
+				console.error(err)
 			}
 		}
 
