@@ -8,7 +8,7 @@ let browser, page;
 // In the Mocha "before" hook, create the browser and page objects.
 before(async () => {
 	browser = await puppeteer.launch({
-		headless: false,
+		// headless: false,
 	});
 	page = await browser.newPage();
 });
