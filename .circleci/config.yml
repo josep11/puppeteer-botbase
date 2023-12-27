@@ -1,11 +1,12 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.3
+  node: circleci/node@5.1.1
 jobs:
   tests-job:
     docker:
-      # TODO: UPDATE TO node 14
-      - image: cimg/node:16.14.0-browsers
+      # list of all images
+      # https://circleci.com/developer/images/image/cimg/node
+      - image: cimg/node:20.10.0-browsers
     steps:
       # tutorial followed: https://circleci.com/blog/functional-browser-testing/
       - checkout
