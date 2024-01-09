@@ -198,7 +198,6 @@ module.exports = (puppeteer) => {
 
 			// Save our freshest cookies that contain our Milanuncios session
 			await this.page.cookies().then(async (freshCookies) => {
-				// console.log('saving fresh cookies');
 				await this.writeCookiesFile(freshCookies);
 			});
 
