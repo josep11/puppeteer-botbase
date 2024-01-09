@@ -25,20 +25,20 @@
 		"deepmerge": "^4.3.1",
 		"fs": "0.0.1-security",
 		"glob": "^10.3.10",
-		"moment": "^2.29.4",
-		"user-agents": "^1.1.48"
+		"moment": "^2.30.1",
+		"user-agents": "^1.1.79"
 	},
 	"optionalDependencies": {
-		"aws-sdk": "^2.1515.0",
-		"puppeteer-core": "^21.6.0"
+		"aws-sdk": "^2.1532.0",
+		"puppeteer-core": "^21.7.0"
 	},
 	"devDependencies": {
 		"chai": "^4.3.10",
 		"dotenv": "^16.3.1",
-		"eslint": "^8.55.0",
+		"eslint": "^8.56.0",
 		"mocha": "^10.2.0",
 		"mocha-junit-reporter": "^2.2.1",
-		"puppeteer": "^21.6.0",
-		"puppeteer-core": "^21.6.0"
+		"puppeteer": "^21.7.0",
+		"puppeteer-core": "^21.7.0"
 	}
 }
