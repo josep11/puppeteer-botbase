@@ -27,8 +27,8 @@ node_modules: package.json
 # @file=$$(npm ls); echo "$$file";
 
 ## Build the project
-build:
-	$(PKG) run build
+# build:
+# 	$(PKG) run build
 
 _tag:
 	git tag ${TAG}
