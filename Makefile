@@ -48,4 +48,4 @@ posttag:
 
 ## Run update deps for all of them
 update-deps:
-	ncu -u && npm i && npm test
+	ncu -x chai -u && npm i && npm test
