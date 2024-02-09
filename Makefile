@@ -45,3 +45,7 @@ posttag:
 .PHONY: list test
 .PHONY: tag 
 .PHONY: all install node_modules
+
+## Run update deps for all of them
+update-deps:
+	ncu -x chai -u && npm i && npm test
