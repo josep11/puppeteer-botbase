@@ -22,14 +22,6 @@ node_modules: package.json
 	@NODE_ENV= $(PKG) install
 	@touch node_modules
 
-# Example how to get a command execution into a variable and use it in the same line
-# pack:
-# @file=$$(npm ls); echo "$$file";
-
-## Build the project
-# build:
-# 	$(PKG) run build
-
 _tag:
 	git tag ${TAG}
 	@echo created ${TAG}
