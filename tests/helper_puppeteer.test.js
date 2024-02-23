@@ -97,8 +97,7 @@ describe("Module Helper Puppeteer Tests", () => {
 		// Verify that some text inside that cookies popup is not present anymore
 		const textThatShouldNotBeFound = "utilitzem galetes";
 
-		// TODO: fix by adding the await call
-		const textNotFound = verifyTextIsNotPresent(page, textThatShouldNotBeFound);
+		const textNotFound = await verifyTextIsNotPresent(page, textThatShouldNotBeFound);
 		assert.equal(textNotFound, true);
 	}).timeout(20000);
 

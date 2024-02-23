@@ -126,7 +126,7 @@ const shouldTestBotBase = ({
     after(() => {
         //list files in screenshot directory
         const imgExtGlobFilter = "*(*.png|*.jpeg|*.jpg)";
-        const screenshotGlobFilter = `${basePath}/screenshots/${imgExtGlobFilter}`; //TODO: should move this if we parametrize screenshot taker
+        const screenshotGlobFilter = `${basePath}/screenshots/${imgExtGlobFilter}`;
         const results = glob.sync(screenshotGlobFilter);
         for (const file of results) {
             // console.log(`cleaning up ${file}`);
