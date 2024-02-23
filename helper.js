@@ -197,7 +197,10 @@ class Helper {
 		return await this.writeFile(filename, "");
 	}
 
-	async readJsonFile(cookiesFile) {
+	/**
+	 * @param {string} cookiesFile
+	 */
+	readJsonFile(cookiesFile) {
 		try {
 			const myJsonObject = require(cookiesFile);
 			return myJsonObject;
@@ -207,6 +210,9 @@ class Helper {
 		}
 	}
 
+	/**
+	 * @param {fs.PathLike} dir
+	 */
 	createDirIfNotExists(dir) {
 		const fs = require("fs");
 

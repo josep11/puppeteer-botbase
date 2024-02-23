@@ -42,6 +42,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 	/**
 	 * @param {*} cookies
 	 */
+	// eslint-disable-next-line require-await
 	async writeCookies(cookies) {
 		let cookiesText = cookies;
 		if (typeof cookies == "object") {

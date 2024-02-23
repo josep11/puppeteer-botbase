@@ -7,6 +7,10 @@
 - `HelperPuppeteer.getLocalPuppeteerInstallation` is removed. We should use `executablePath` from puppeteer instead.
 - `Helper.textExistsInPage` is removed. We should use `HelperPuppeteer.isTextPresentOnWebpage`.
 
+### Changed
+
+- `Helper.readJsonFile` is not async anymore.
+
 ## 3.0.7
 
 - deprecated page.waitfortimeout replaced

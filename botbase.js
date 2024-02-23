@@ -234,7 +234,7 @@ module.exports = (puppeteer) => {
 		 */
 		async readCookiesFile() {
 			return await this.cookieSaver.readCookies();
-			// return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+			// return helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
 		}
 
 		async writeCookiesFile(cookiesJson) {
