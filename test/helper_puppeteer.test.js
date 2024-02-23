@@ -13,12 +13,26 @@ before(async () => {
 
 const HelperPuppeteer = require("../helper_puppeteer");
 
+const POPUP_PAGE_URL = "https://www.bonarea.com/ca/";
+const POPUP_ACCEPT_COOKIES_BUTTON_TEXT = "Acceptar";
+const POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE = "button";
+
 describe("Module Helper Puppeteer Tests", () => {
 	it("should import helper puppeteer", () => {
 		assert.ok(HelperPuppeteer);
 	});
 
-	it("should find text in webpage (ignorecase)", async () => {
+	/* 
+    it('should find element with text present (ignorecase)', async () => {
+        const filenameExampleHtml = path.resolve(__dirname, './fixtures/test-page.html');
+        // contentHtml = await fs.readFile(filenameExampleHtml, 'utf8');
+        await page.setContent(contentHtml);
+        // const elements = await HelperPuppeteer.
+        assert.strictEqual(elements.length, 2);
+    }).timeout(20000);
+ */
+
+	it("isTextPresentOnWebpage: should find text in webpage (ignorecase)", async () => {
 		const url = "https://es.wikipedia.org/wiki/Wikipedia:Portada";
 		let textsTofind = ["la enciclopedia", "Acceder", "Al usar este sitio"];
 
@@ -31,17 +45,19 @@ describe("Module Helper Puppeteer Tests", () => {
 		}
 	}).timeout(20000);
 
-	/* 
-    it('should find element with text present (ignorecase)', async () => {
-        const filenameExampleHtml = path.resolve(__dirname, './fixtures/test-page.html');
-        // contentHtml = await fs.readFile(filenameExampleHtml, 'utf8');
-        await page.setContent(contentHtml);
-        // const elements = await HelperPuppeteer.
-        assert.strictEqual(elements.length, 2);
-    }).timeout(20000);
- */
+	it("closePopup: should close popup by text: Cookies popup - BonArea", async () => {
+		await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
 
-	it("should close popup by text (in the root element)", async () => {
+		const clicked = await HelperPuppeteer.closePopup(
+			page,
+			POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
+			POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE
+		);
+
+		assert.ok(clicked);
+	}).timeout(20000);
+
+	it("closePopup: should close popup by text (in the root element)", async () => {
 		const url =
 			"https://www.w3schools.com/bootstrap5/tryit.asp?filename=trybs_modal&stacked=h";
 		const elementType = "button";

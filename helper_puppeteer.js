@@ -39,7 +39,6 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 * //TODO refactor completely to not use xpath
 	 * @param {Page} page Puppeteer page
 	 * @param {string?} textBtn the exact text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
