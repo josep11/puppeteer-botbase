@@ -6,7 +6,7 @@ let browser, page;
 // In the Mocha "before" hook, create the browser and page objects.
 before(async () => {
 	browser = await puppeteer.launch({
-		// headless: false,
+		headless: false,
 	});
 	page = await browser.newPage();
 });
@@ -59,7 +59,7 @@ describe("Module Helper Puppeteer Tests", () => {
 
 	/* 
 	// This test is failing as there is no cookies pop up anymore. Keeping it here as a reference.
-	
+
 	it("closePopup: should close popup by text (in the root element)", async () => {
 		const url =
 			"https://www.w3schools.com/bootstrap5/tryit.asp?filename=trybs_modal&stacked=h";
