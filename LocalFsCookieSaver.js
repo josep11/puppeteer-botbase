@@ -30,7 +30,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 	async readCookies() {
 		try {
 			const jsonString = fs.readFileSync(this.cookiesFilePath);
-			return JSON.parse(jsonString);
+			return JSON.parse(jsonString.toString());
 		} catch (err) {
 			if (err.code != "ENOENT") {
 				console.error("Reading cookie error. Defaulting to [] \n\n" + err);
