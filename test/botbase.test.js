@@ -33,7 +33,7 @@ describe('Botbase Tests', () => {
         });
         let screenshotPath;
         await botbase.initialize();
-        await botbase.page.goto(mainUrl, { waitUntil: 'networkidle2' });
+        await botbase.page?.goto(mainUrl, { waitUntil: 'networkidle2' });
         try {
             screenshotPath = await botbase.takeScreenshot('tests');
             assert.equal(typeof screenshotPath, "string")

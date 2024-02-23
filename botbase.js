@@ -137,6 +137,17 @@ module.exports = (puppeteer) => {
 		}
 
 		/**
+		 * @throws {Error}
+		 * @returns {Page}
+		 */
+		checkPage() {
+			if (!this.page) {
+				throw Error("page is not initialised");
+			}
+			return this.page;
+		}
+
+		/**
 		 * Tries to log in using cookies or otherwise it throws error
 		 * It depends on implementation of isLoggedIn()
 		 * @param {*} cookies
@@ -145,6 +156,7 @@ module.exports = (puppeteer) => {
 			if (!this.mainUrl) {
 				throw new Error("loginWithSession: mainUrl param is not set");
 			}
+			this.page = this.checkPage();
 			console.log(`Logging into ${this.appName()} using cookies`);
 			await this.page.setCookie(...cookies);
 			await this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
@@ -166,6 +178,8 @@ module.exports = (puppeteer) => {
 		 * @param {string} password
 		 */
 		async login(username, password) {
+			this.page = this.checkPage();
+
 			const cookies = await this.readCookiesFile();
 
 			try {
@@ -249,6 +263,8 @@ module.exports = (puppeteer) => {
 		}
 
 		async logIP() {
+			this.page = this.checkPage();
+			
 			await this.page.goto("http://checkip.amazonaws.com/");
 			const ip = await this.page.evaluate(() =>
 				document.body.textContent.trim()

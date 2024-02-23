@@ -42,7 +42,7 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 *
+	 * //TODO refactor completely to not use xpath
 	 * @param {Page} page Puppeteer page
 	 * @param {string?} textBtn the exact text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
@@ -67,7 +67,7 @@ class HelperPuppeteer {
 				console.error(
 					`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
 				);
-				console.error(err)
+				console.error(err);
 			}
 		}
 
@@ -156,13 +156,16 @@ class HelperPuppeteer {
 			const distance = DISTANCE_SCROLL; // should be less than or equal to window.innerHeight
 			const delay = 100;
 			const timer = setInterval(() => {
+				// @ts-ignore
 				document.scrollingElement.scrollBy(0, distance);
 				if (
+					// @ts-ignore
 					document.scrollingElement.scrollTop + window.innerHeight >=
+					// @ts-ignore
 					document.scrollingElement.scrollHeight
 				) {
 					clearInterval(timer);
-					resolve();
+					resolve(true);
 				}
 			}, delay);
 		});
