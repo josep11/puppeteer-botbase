@@ -40,20 +40,22 @@ class HelperPuppeteer {
 
 	/**
 	 * @param {Page} page Puppeteer page
-	 * @param {string?} textBtn the exact text to find
+	 * @param {string?} elementText the exact text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
 	 * @returns {Promise<boolean>} true if the element was clicked, false otherwise
 	 */
 	static async closePopup(
 		page,
-		textBtn = "Aceptar y cerrar",
+		elementText = "Aceptar y cerrar",
 		elementType = "*"
 	) {
-		const xPathSel = `::-p-xpath(//${elementType}[contains(text(), "${textBtn}")])`;
+		const xPathSel = `::-p-xpath(//${elementType}[contains(text(), "${elementText}")])`;
 		const btn = await page.$(xPathSel);
 
 		if (!btn) {
-			console.debug(`popup with text '${textBtn}' not found ... continuing`);
+			console.debug(
+				`popup with text '${elementText}' not found ... continuing`
+			);
 			return false;
 		}
 
@@ -65,7 +67,7 @@ class HelperPuppeteer {
 			await waitForTimeout(1500);
 		} catch (err) {
 			console.error(
-				`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
+				`error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`
 			);
 			console.error(err);
 		}
@@ -74,19 +76,18 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 *
 	 * @param {Page} page Puppeteer page
-	 * @param {string?} textElementOrChildren the text to find
+	 * @param {string?} elementText the text to find
 	 * @param {Array} cssSelectorArray
 	 */
 	static async tryToClickElementByTextOrCssSelectors(
 		page,
-		textElementOrChildren = null,
+		elementText = null,
 		cssSelectorArray = []
 	) {
 		if (
-			textElementOrChildren &&
-			(await this.closePopupByTextContaining(page, textElementOrChildren))
+			elementText &&
+			(await this.closePopupByTextContaining(page, elementText))
 		) {
 			return;
 		}
@@ -144,8 +145,7 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 * Usage:
-	 * await this.page.evaluate(HelperPuppeteer.scrollToBottom);
+	 * Usage: await this.page.evaluate(HelperPuppeteer.scrollToBottom);
 	 */
 	static async scrollToBottom() {
 		//Will be evaluated in browser context, so constant goes here
@@ -180,7 +180,6 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 *
 	 * @param {Page} page
 	 * @param {string} selector
 	 * @param {string} text
