@@ -97,10 +97,7 @@ describe("Module Helper Puppeteer Tests", () => {
 		const textThatShouldNotBeFound = "utilitzem galetes";
 
 		// TODO: verify warning on floating promises
-		const textNotFound = await verifyTextIsNotPresent(
-			page,
-			textThatShouldNotBeFound
-		);
+		const textNotFound = verifyTextIsNotPresent(page, textThatShouldNotBeFound);
 		assert.equal(textNotFound, true);
 	}).timeout(20000);
 
