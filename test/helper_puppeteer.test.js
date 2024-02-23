@@ -1,4 +1,3 @@
-/* global it, describe, before, after  */
 const assert = require("assert");
 // Require the Puppeteer module and the built-in assert module
 const puppeteer = require("puppeteer");
