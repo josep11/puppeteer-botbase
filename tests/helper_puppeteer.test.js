@@ -30,6 +30,7 @@ const HelperPuppeteer = require("../helper_puppeteer");
 const POPUP_PAGE_URL = "https://www.bonarea.com/ca/";
 const POPUP_ACCEPT_COOKIES_BUTTON_TEXT = "Acceptar";
 const POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE = "button";
+const POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR = "#onetrust-accept-btn-handler";
 
 /**
  * @param {Page} page Puppeteer page
@@ -91,28 +92,30 @@ describe("Module Helper Puppeteer Tests", () => {
 		await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
 			page,
 			POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
-			[]
+			[],
 		);
 
 		// Verify that some text inside that cookies popup is not present anymore
-		const textThatShouldNotBeFound = "utilitzem galetes";
-
-		const textNotFound = await verifyTextIsNotPresent(page, textThatShouldNotBeFound);
-		assert.equal(textNotFound, true);
+		await assertThatCookiesTextIsNotPresent();
 	}).timeout(20000);
 
-	// TODO: set up both a wrong text and the css selectors to fully test the method to see if it can be found also
-	// it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
-	// 	await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
+	it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
+		// We set up both a wrong text and the css selectors to fully test the method to see if it can be found also
+		await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
 
-	// 	const clicked = await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
-	// 		page,
-	// 		POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
-	// 		[]
-	// 	);
+		await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
 
-	// 	assert.ok(clicked);
-	// }).timeout(20000);
+		const wrongText = "Acccccccccccccceptar";
+		
+		await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
+			page,
+			wrongText,
+			[POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR],
+		);
+
+		// Verify that some text inside that cookies popup is not present anymore
+		await assertThatCookiesTextIsNotPresent();
+	}).timeout(20000);
 
 	/* 
 	// This test is failing as there is no cookies pop up anymore. Keeping it here as a reference.
@@ -168,3 +171,10 @@ describe("Module Helper Puppeteer Tests", () => {
 after(async () => {
 	await closeBrowser();
 });
+async function assertThatCookiesTextIsNotPresent() {
+	const textThatShouldNotBeFound = "utilitzem galetes";
+
+	const textNotFound = await verifyTextIsNotPresent(page, textThatShouldNotBeFound);
+	assert.equal(textNotFound, true);
+}
+
