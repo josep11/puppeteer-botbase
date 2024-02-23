@@ -110,7 +110,7 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 * Finds texts (ignoring case) on page text
+	 * Checks if page contains a specific text (case sensitive by default)
 	 * @param {Page} page Puppeteer Page
 	 * @param {string} text Text to find
 	 * @param {boolean?} ignoreCase wether we should ignore the case or not

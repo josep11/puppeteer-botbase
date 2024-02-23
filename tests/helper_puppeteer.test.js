@@ -6,7 +6,7 @@ let browser, page;
 
 async function initBrowser() {
 	browser = await puppeteer.launch({
-		headless: false,
+		// headless: false,
 	});
 	page = await browser.newPage();
 }

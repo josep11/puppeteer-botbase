@@ -60,7 +60,3 @@ module.exports = {
 
 [1]: https://github.com/josep11/puppeteer-botbase.git
 [2]: https://github.com/josep11/puppeteer-botbase/tags
-
-TODO: unit test and fix the following
-
-- fix textExistsInPage

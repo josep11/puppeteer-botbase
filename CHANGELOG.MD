@@ -5,6 +5,7 @@
 ### Removed
 
 - `HelperPuppeteer.getLocalPuppeteerInstallation` is removed. We should use `executablePath` from puppeteer instead.
+- `Helper.textExistsInPage` is removed. We should use `HelperPuppeteer.isTextPresentOnWebpage`.
 
 ## 3.0.7
 

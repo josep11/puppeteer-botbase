@@ -4,6 +4,8 @@ const { promises: fs } = require("fs");
 const { exec: execAsync } = require("child-process-async");
 const util = require("util");
 const moment = require("moment");
+// eslint-disable-next-line no-unused-vars
+const { Puppeteer, Page } = require("puppeteer");
 
 class Helper {
 
@@ -85,11 +87,6 @@ class Helper {
 	async filterAsync(array, callbackfn) {
 		const filterMap = await this.mapAsync(array, callbackfn);
 		return array.filter((value, index) => filterMap[index]);
-	}
-
-	async textExistsInPage(page, text) {
-		const found = await page.$x(`//*[contains(., "${text}")]`);
-		return found.length > 0;
 	}
 
 	/**
