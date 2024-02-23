@@ -5,17 +5,6 @@ const { Page, executablePath } = require("puppeteer");
 const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
 	/**
-	 * @deprecated we should use "const { executablePath } = require("puppeteer");"
-	 * Gets the location of the local puppeteer installation
-	 * @throws {Error} when not found
-	 * @returns {string} the path to the puppeteer installation
-	 */
-	static getLocalPuppeteerInstallation() {
-		// TODO: ultimately remove the method
-		return executablePath();
-	}
-
-	/**
 	 * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
 	 * That's why it is recommended to set the @elementType param to narrow down the search
 	 * @param {Page} page Puppeteer page

@@ -1,5 +1,11 @@
 # Puppeteer BotBase
 
+## 6.0.0
+
+### Removed
+
+- `HelperPuppeteer.getLocalPuppeteerInstallation` is removed. We should use `executablePath` from puppeteer instead.
+
 ## 3.0.7
 
 - deprecated page.waitfortimeout replaced

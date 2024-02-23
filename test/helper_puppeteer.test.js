@@ -2,7 +2,6 @@
 const assert = require("assert");
 // Require the Puppeteer module and the built-in assert module
 const puppeteer = require("puppeteer");
-const { getLocalPuppeteerInstallation } = require("../helper_puppeteer");
 let browser, page;
 
 // In the Mocha "before" hook, create the browser and page objects.
@@ -18,13 +17,6 @@ const HelperPuppeteer = require("../helper_puppeteer");
 describe("Module Helper Puppeteer Tests", () => {
 	it("should import helper puppeteer", () => {
 		assert.ok(HelperPuppeteer);
-	});
-
-	it("should find local puppeteer chromium install", () => {
-		//TODO: decide if it's needed here as chromium is lazily installed and puppeteer is an optionalDependency
-		assert.doesNotThrow(() => {
-			getLocalPuppeteerInstallation();
-		}, "Install problem: local chromium not found");
 	});
 
 	it("should find text in webpage (ignorecase)", async () => {
@@ -49,27 +41,6 @@ describe("Module Helper Puppeteer Tests", () => {
         assert.strictEqual(elements.length, 2);
     }).timeout(20000);
  */
-
-	/**
-     * @deprecated
-     
-     it('should close popup by text containing (in the child elements)', async () => {
-        const url = "https://blog.wishpond.com/post/94441887713/5-examples-of-website-popups-that-work";
-        const elementType = "p"; //this element does not contain the desired text, only their children
-        //in this example the structure is <p><a>desired text</a></p>
-        const textTofind = "Later";
-
-        await page.goto(url, { waitUntil: 'networkidle0' });
-
-        await page.evaluate(HelperPuppeteer.scrollToBottom);
-
-        const clicked = await HelperPuppeteer.closePopupByTextContaining(page, textTofind, elementType);
-        assert.strictEqual(clicked, true);
-
-        const clicked2 = await HelperPuppeteer.closePopupByTextContaining(page, 'random text not existing', elementType);
-        assert.strictEqual(clicked2, false, 'should have returned false as ');
-    }).timeout(20000);
-*/
 
 	it("should close popup by text (in the root element)", async () => {
 		const url =
