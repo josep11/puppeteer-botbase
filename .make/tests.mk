@@ -10,6 +10,10 @@ test-ci:
 test-tdd:
 	npm run test:fast -- ${PARAMS}
 
+## Run linting
+lint:
+	npm run lint
+
 ## Run mocha (wrapper). Usage: make mocha PARAMS="-h"
 mocha:
 	./node_modules/.bin/mocha ${PARAMS}
