@@ -12,7 +12,7 @@
 	"scripts": {
 		"start": "node index.js",
 		"test": "NODE_ENV=test mocha --exit --colors --bail",
-		"test:fast": "NODE_ENV=test mocha --exit --colors --bail test/*puppeteer*.*",
+		"test:fast": "NODE_ENV=test mocha --exit --colors --bail tests/*puppeteer*.*",
 		"test:ci": "NODE_ENV=test mocha --reporter mocha-junit-reporter --exit --reporter-options mochaFile=./test-results/mocha/results.xml",
 		"lint": "eslint .",
 		"lint:fix": "npm run lint -- --fix"
