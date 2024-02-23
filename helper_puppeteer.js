@@ -49,22 +49,25 @@ class HelperPuppeteer {
 		textBtn = "Aceptar y cerrar",
 		elementType = "*"
 	) {
-		const xPathSel = `//${elementType}[contains(text(), "${textBtn}")]`;
-		const btn = await page.$x(xPathSel);
-		let clicked = false;
-		if (btn && btn.length == 0) {
+		const xPathSel = `::-p-xpath(//${elementType}[contains(text(), "${textBtn}")])`;
+		const btn = await page.$(xPathSel);
+
+		if (!btn) {
 			console.debug(`popup with text '${textBtn}' not found ... continuing`);
-		} else {
-			try {
-				await btn[0].click();
-				clicked = true;
-				await waitForTimeout(1500);
-			} catch (err) {
-				console.error(
-					`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
-				);
-				console.error(err);
-			}
+			return false;
+		}
+
+		let clicked = false;
+		try {
+			await btn.click();
+			clicked = true;
+			// TODO: parametrise timeout as optional param defaulting to 1500
+			await waitForTimeout(1500);
+		} catch (err) {
+			console.error(
+				`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
+			);
+			console.error(err);
 		}
 
 		return clicked;
@@ -95,7 +98,6 @@ class HelperPuppeteer {
 				return;
 			}
 			await page.evaluate((cssSelector) => {
-				// ".modal__buttons--dismiss"
 				const btn = document.querySelector(cssSelector);
 				if (btn) {
 					// @ts-ignore
