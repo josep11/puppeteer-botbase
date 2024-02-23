@@ -57,6 +57,9 @@ describe("Module Helper Puppeteer Tests", () => {
 		assert.ok(clicked);
 	}).timeout(20000);
 
+	/* 
+	// This test is failing as there is no cookies pop up anymore. Keeping it here as a reference.
+	
 	it("closePopup: should close popup by text (in the root element)", async () => {
 		const url =
 			"https://www.w3schools.com/bootstrap5/tryit.asp?filename=trybs_modal&stacked=h";
@@ -102,6 +105,7 @@ describe("Module Helper Puppeteer Tests", () => {
 
 		assert.ok(clicked);
 	}).timeout(20000);
+	 */
 });
 
 after(async () => {
