@@ -1,19 +1,7 @@
-const glob = require("glob");
-const os = require("os");
-
-const { Page, executablePath } = require("puppeteer");
+// eslint-disable-next-line no-unused-vars
+const { Page } = require("puppeteer");
 const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
-	/**
-	 * @deprecated we should use "const { executablePath } = require("puppeteer");"
-	 * Gets the location of the local puppeteer installation
-	 * @throws {Error} when not found
-	 * @returns {string} the path to the puppeteer installation
-	 */
-	static getLocalPuppeteerInstallation() {
-		// TODO: ultimately remove the method
-		return executablePath();
-	}
 
 	/**
 	 * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
@@ -28,11 +16,10 @@ class HelperPuppeteer {
 		textElementOrChildren = "Aceptar y cerrar",
 		elementType = "*"
 	) {
-		const btn = await page.$x(
-			`//${elementType}[contains(., "${textElementOrChildren}")]`
-		);
+		const xPathSel = `::-p-xpath(//${elementType}[contains(., "${textElementOrChildren}")])`;
+		const btn = await page.$(xPathSel);
 
-		if (btn && btn.length == 0) {
+		if (!btn) {
 			console.debug(
 				`popup with text '${textElementOrChildren}' not found ... continuing`
 			);
@@ -40,7 +27,7 @@ class HelperPuppeteer {
 		}
 
 		try {
-			await btn[0].click();
+			await btn.click();
 			await waitForTimeout(1500);
 			return true;
 		} catch (err) {
@@ -53,52 +40,55 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 *
 	 * @param {Page} page Puppeteer page
-	 * @param {string?} textBtn the exact text to find
+	 * @param {string?} elementText the exact text to find
 	 * @param {string?} elementType the element type. i.e: p, div, a, ...
 	 * @returns {Promise<boolean>} true if the element was clicked, false otherwise
 	 */
 	static async closePopup(
 		page,
-		textBtn = "Aceptar y cerrar",
+		elementText = "Aceptar y cerrar",
 		elementType = "*"
 	) {
-		const xPathSel = `//${elementType}[contains(text(), "${textBtn}")]`;
-		const btn = await page.$x(xPathSel);
+		const xPathSel = `::-p-xpath(//${elementType}[contains(text(), "${elementText}")])`;
+		const btn = await page.$(xPathSel);
+
+		if (!btn) {
+			console.debug(
+				`popup with text '${elementText}' not found ... continuing`
+			);
+			return false;
+		}
+
 		let clicked = false;
-		if (btn && btn.length == 0) {
-			console.debug(`popup with text '${textBtn}' not found ... continuing`);
-		} else {
-			try {
-				await btn[0].click();
-				clicked = true;
-				await waitForTimeout(1500);
-			} catch (err) {
-				console.error(
-					`error clicking popup button. '${textBtn}' (element="${elementType}"). Continuing ...`
-				);
-				console.error(err)
-			}
+		try {
+			await btn.click();
+			clicked = true;
+			// TODO: parametrise timeout as optional param defaulting to 1500
+			await waitForTimeout(1500);
+		} catch (err) {
+			console.error(
+				`error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`
+			);
+			console.error(err);
 		}
 
 		return clicked;
 	}
 
 	/**
-	 *
 	 * @param {Page} page Puppeteer page
-	 * @param {string?} textElementOrChildren the text to find
+	 * @param {string?} elementText the text to find
 	 * @param {Array} cssSelectorArray
 	 */
 	static async tryToClickElementByTextOrCssSelectors(
 		page,
-		textElementOrChildren = null,
+		elementText = null,
 		cssSelectorArray = []
 	) {
 		if (
-			textElementOrChildren &&
-			(await this.closePopupByTextContaining(page, textElementOrChildren))
+			elementText &&
+			(await this.closePopupByTextContaining(page, elementText))
 		) {
 			return;
 		}
@@ -110,7 +100,6 @@ class HelperPuppeteer {
 				return;
 			}
 			await page.evaluate((cssSelector) => {
-				// ".modal__buttons--dismiss"
 				const btn = document.querySelector(cssSelector);
 				if (btn) {
 					// @ts-ignore
@@ -121,9 +110,10 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 * Finds texts (ignoring case) on page text
+	 * Checks if page contains a specific text (case sensitive by default)
 	 * @param {Page} page Puppeteer Page
 	 * @param {string} text Text to find
+	 * @param {boolean?} ignoreCase wether we should ignore the case or not
 	 * @returns {Promise<boolean>}
 	 */
 	static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
@@ -145,7 +135,8 @@ class HelperPuppeteer {
 	 * @returns {Promise<Number>} count
 	 */
 	static async countStringOccurrencesInPage(page, textToFind) {
-		return page.$eval(
+		// TODO: fix floating promises still not being detected when missing
+		return await page.$eval(
 			"body",
 			(el, textSearch) => {
 				let text = el.innerText;
@@ -157,8 +148,7 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 * Usage:
-	 * await this.page.evaluate(HelperPuppeteer.scrollToBottom);
+	 * Usage: await this.page.evaluate(HelperPuppeteer.scrollToBottom);
 	 */
 	static async scrollToBottom() {
 		//Will be evaluated in browser context, so constant goes here
@@ -167,13 +157,16 @@ class HelperPuppeteer {
 			const distance = DISTANCE_SCROLL; // should be less than or equal to window.innerHeight
 			const delay = 100;
 			const timer = setInterval(() => {
+				// @ts-ignore
 				document.scrollingElement.scrollBy(0, distance);
 				if (
+					// @ts-ignore
 					document.scrollingElement.scrollTop + window.innerHeight >=
+					// @ts-ignore
 					document.scrollingElement.scrollHeight
 				) {
 					clearInterval(timer);
-					resolve();
+					resolve(true);
 				}
 			}, delay);
 		});
@@ -190,7 +183,6 @@ class HelperPuppeteer {
 	}
 
 	/**
-	 *
 	 * @param {Page} page
 	 * @param {string} selector
 	 * @param {string} text
@@ -200,6 +192,7 @@ class HelperPuppeteer {
 			delay: getRandBetween(10, 20),
 		});
 	}
+
 }
 
 module.exports = HelperPuppeteer;

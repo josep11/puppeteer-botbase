@@ -1,0 +1,8 @@
+node_modules/
+
+# specific files
+playground.js
+
+build-cdn/
+
+jest.config.js

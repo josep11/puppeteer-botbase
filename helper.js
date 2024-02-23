@@ -4,8 +4,11 @@ const { promises: fs } = require("fs");
 const { exec: execAsync } = require("child-process-async");
 const util = require("util");
 const moment = require("moment");
+// eslint-disable-next-line no-unused-vars
+const { Puppeteer, Page } = require("puppeteer");
 
 class Helper {
+
 	constructor() {
 		/**
 		 * @param {number} in miliseconds
@@ -86,11 +89,6 @@ class Helper {
 		return array.filter((value, index) => filterMap[index]);
 	}
 
-	async textExistsInPage(page, text) {
-		const found = await page.$x(`//*[contains(., "${text}")]`);
-		return found.length > 0;
-	}
-
 	/**
 	 *
 	 * @param {string} text
@@ -109,10 +107,16 @@ class Helper {
 	 */
 	extractHorasFromString(timeStr) {
 		// 23 horas
-		if (!timeStr) return null;
+		if (!timeStr) {
+			return null;
+		}
 
 		if (timeStr.indexOf("hora") != -1) {
-			const horas = timeStr.match(/\d+/)[0];
+			const m = timeStr.match(/\d+/);
+			if (!m) {
+				return null;
+			}
+			const horas = m[0];
 
 			return parseInt(horas);
 		} else {
@@ -122,7 +126,7 @@ class Helper {
 			if (timeStr.indexOf("día") != -1) {
 				return 25;
 			}
-			throw `FIXME: Helper.extractHorasFromString: En la string the time no se encontró 'hora'. Input timeStr = ${timeStr}`;
+			throw `FIXME: Helper.extractHorasFromString: En la string timeStr no s'ha trobat 'hora'. Input timeStr = ${timeStr}`;
 		}
 	}
 
@@ -183,7 +187,7 @@ class Helper {
 	/**
 	 *
 	 * @param {string} filename
-	 * @returns {string} the content of the file
+	 * @returns {Promise<string>} the content of the file
 	 */
 	async readFile(filename) {
 		return await fs.readFile(filename, "utf-8");
@@ -193,7 +197,10 @@ class Helper {
 		return await this.writeFile(filename, "");
 	}
 
-	async readJsonFile(cookiesFile) {
+	/**
+	 * @param {string} cookiesFile
+	 */
+	readJsonFile(cookiesFile) {
 		try {
 			const myJsonObject = require(cookiesFile);
 			return myJsonObject;
@@ -203,6 +210,9 @@ class Helper {
 		}
 	}
 
+	/**
+	 * @param {fs.PathLike} dir
+	 */
 	createDirIfNotExists(dir) {
 		const fs = require("fs");
 
@@ -296,6 +306,7 @@ class Helper {
 	getRanomisedUserAgent() {
 		return this.#getRanomisedUserAgentV0();
 	}
+
 }
 
 module.exports = new Helper();

@@ -4,6 +4,7 @@ const helper = require("./helper");
 const ICookieSaver = require("./ICookieSaver");
 
 class LocalFsCookieSaver extends ICookieSaver {
+
 	/**
 	 *
 	 * @param {Object} param should have the following keys { cookiesFilePath }
@@ -25,10 +26,11 @@ class LocalFsCookieSaver extends ICookieSaver {
 	 *
 	 * @returns {Promise<*>}
 	 */
+	// eslint-disable-next-line require-await
 	async readCookies() {
 		try {
 			const jsonString = fs.readFileSync(this.cookiesFilePath);
-			return JSON.parse(jsonString);
+			return JSON.parse(jsonString.toString());
 		} catch (err) {
 			if (err.code != "ENOENT") {
 				console.error("Reading cookie error. Defaulting to [] \n\n" + err);
@@ -40,6 +42,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 	/**
 	 * @param {*} cookies
 	 */
+	// eslint-disable-next-line require-await
 	async writeCookies(cookies) {
 		let cookiesText = cookies;
 		if (typeof cookies == "object") {
@@ -54,6 +57,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 	async removeCookies() {
 		await this.writeCookies("[]");
 	}
+
 }
 
 module.exports = LocalFsCookieSaver;

@@ -4,6 +4,7 @@ const helper = require("./helper");
 const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
 const ICookieSaver = require("./ICookieSaver");
 const IScreenshotSaver = require("./IScreenshotSaver");
+// eslint-disable-next-line no-unused-vars
 const { Puppeteer, Page } = require("puppeteer");
 const { waitForTimeout } = require("./helper");
 
@@ -14,6 +15,7 @@ const { waitForTimeout } = require("./helper");
  */
 module.exports = (puppeteer) => {
 	class BotBase {
+
 		/**
 		 * @typedef {Object} BotBaseParams
 		 * @property {string} mainUrl
@@ -124,6 +126,7 @@ module.exports = (puppeteer) => {
 		/**
 		 * Implementation required
 		 */
+		// eslint-disable-next-line require-await
 		async isLoggedIn() {
 			throw new NotImplementedError("isLoggedIn not implemented");
 		}
@@ -131,9 +134,20 @@ module.exports = (puppeteer) => {
 		/**
 		 * Implementation required
 		 */
-		// eslint-disable-next-line no-unused-vars
+		// eslint-disable-next-line no-unused-vars, require-await
 		async loginWithCredentials(username, password) {
 			throw new NotImplementedError("loginWithCredentials not implemented");
+		}
+
+		/**
+		 * @throws {Error}
+		 * @returns {Page}
+		 */
+		checkPage() {
+			if (!this.page) {
+				throw Error("page is not initialised");
+			}
+			return this.page;
 		}
 
 		/**
@@ -145,6 +159,7 @@ module.exports = (puppeteer) => {
 			if (!this.mainUrl) {
 				throw new Error("loginWithSession: mainUrl param is not set");
 			}
+			this.page = this.checkPage();
 			console.log(`Logging into ${this.appName()} using cookies`);
 			await this.page.setCookie(...cookies);
 			await this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
@@ -166,6 +181,8 @@ module.exports = (puppeteer) => {
 		 * @param {string} password
 		 */
 		async login(username, password) {
+			this.page = this.checkPage();
+
 			const cookies = await this.readCookiesFile();
 
 			try {
@@ -217,7 +234,7 @@ module.exports = (puppeteer) => {
 		 */
 		async readCookiesFile() {
 			return await this.cookieSaver.readCookies();
-			// return await helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
+			// return helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
 		}
 
 		async writeCookiesFile(cookiesJson) {
@@ -249,6 +266,8 @@ module.exports = (puppeteer) => {
 		}
 
 		async logIP() {
+			this.page = this.checkPage();
+			
 			await this.page.goto("http://checkip.amazonaws.com/");
 			const ip = await this.page.evaluate(() =>
 				document.body.textContent.trim()
@@ -288,7 +307,8 @@ module.exports = (puppeteer) => {
 			// eslint-disable-next-line no-useless-escape
 			return "SHOULD OVERRIDE ¯_(ツ)_/¯ SHOULD OVERRIDE";
 		}
-	}
+	
+}
 
 	return BotBase;
 };

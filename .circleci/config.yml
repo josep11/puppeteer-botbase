@@ -24,7 +24,10 @@ jobs:
             - ./node_modules
       - run:
           name: Run tests
-          command: npm run test:ci
+          command: make test-ci
+      - run:
+          name: Run Linting
+          command: make lint
       - store_test_results:
           path: test-results/mocha/
 workflows:
