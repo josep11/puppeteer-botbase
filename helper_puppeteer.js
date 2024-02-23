@@ -14,11 +14,10 @@ class HelperPuppeteer {
 		textElementOrChildren = "Aceptar y cerrar",
 		elementType = "*"
 	) {
-		const btn = await page.$x(
-			`//${elementType}[contains(., "${textElementOrChildren}")]`
-		);
+		const xPathSel = `::-p-xpath(//${elementType}[contains(., "${textElementOrChildren}")])`;
+		const btn = await page.$(xPathSel);
 
-		if (btn && btn.length == 0) {
+		if (!btn) {
 			console.debug(
 				`popup with text '${textElementOrChildren}' not found ... continuing`
 			);
@@ -26,7 +25,7 @@ class HelperPuppeteer {
 		}
 
 		try {
-			await btn[0].click();
+			await btn.click();
 			await waitForTimeout(1500);
 			return true;
 		} catch (err) {
@@ -112,6 +111,7 @@ class HelperPuppeteer {
 	 * Finds texts (ignoring case) on page text
 	 * @param {Page} page Puppeteer Page
 	 * @param {string} text Text to find
+	 * @param {boolean?} ignoreCase wether we should ignore the case or not
 	 * @returns {Promise<boolean>}
 	 */
 	static async isTextPresentOnWebpage(page, text, ignoreCase = true) {

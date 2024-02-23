@@ -63,6 +63,4 @@ module.exports = {
 
 TODO: unit test and fix the following
 
-- fix closePopupByTextContaining
-- fix closePopup
 - fix textExistsInPage
