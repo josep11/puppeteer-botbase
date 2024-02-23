@@ -14,7 +14,7 @@
 		"test": "NODE_ENV=test mocha --exit --colors --bail",
 		"test:fast": "NODE_ENV=test mocha --exit --colors --bail tests/*puppeteer*.*",
 		"test:ci": "NODE_ENV=test mocha --reporter mocha-junit-reporter --exit --reporter-options mochaFile=./test-results/mocha/results.xml",
-		"lint": "eslint .",
+		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "npm run lint -- --fix"
 	},
 	"mocha": {

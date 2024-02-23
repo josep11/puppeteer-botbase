@@ -14,6 +14,10 @@ test-tdd:
 lint:
 	npm run lint
 
+## Run linting fix
+lint-fix:
+	npm run lint:fix
+
 ## Run mocha (wrapper). Usage: make mocha PARAMS="-h"
 mocha:
 	./node_modules/.bin/mocha ${PARAMS}
