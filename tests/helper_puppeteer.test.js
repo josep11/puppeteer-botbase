@@ -12,7 +12,7 @@ async function initBrowser() {
 }
 
 async function closeBrowser() {
-	await browser.close();
+	await browser?.close();
 }
 
 async function reinitBrowser() {
