@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const { Page } = require("puppeteer");
 const assert = require("assert");
 const puppeteer = require("puppeteer");
@@ -96,7 +97,7 @@ describe("Module Helper Puppeteer Tests", () => {
 		// Verify that some text inside that cookies popup is not present anymore
 		const textThatShouldNotBeFound = "utilitzem galetes";
 
-		// TODO: verify warning on floating promises
+		// TODO: fix by adding the await call
 		const textNotFound = verifyTextIsNotPresent(page, textThatShouldNotBeFound);
 		assert.equal(textNotFound, true);
 	}).timeout(20000);
