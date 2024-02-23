@@ -126,6 +126,7 @@ module.exports = (puppeteer) => {
 		/**
 		 * Implementation required
 		 */
+		// eslint-disable-next-line require-await
 		async isLoggedIn() {
 			throw new NotImplementedError("isLoggedIn not implemented");
 		}
@@ -133,7 +134,7 @@ module.exports = (puppeteer) => {
 		/**
 		 * Implementation required
 		 */
-		// eslint-disable-next-line no-unused-vars
+		// eslint-disable-next-line no-unused-vars, require-await
 		async loginWithCredentials(username, password) {
 			throw new NotImplementedError("loginWithCredentials not implemented");
 		}

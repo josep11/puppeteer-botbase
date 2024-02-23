@@ -27,6 +27,7 @@ class LocalScreenshotSaver extends IScreenshotSaver {
         }
     }
 
+    // eslint-disable-next-line require-await
     async saveScreenshot({ imageBuffer, filename = 'default', type }) {
         //check for errors
         this._checkParams(imageBuffer);

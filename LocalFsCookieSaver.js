@@ -26,6 +26,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 	 *
 	 * @returns {Promise<*>}
 	 */
+	// eslint-disable-next-line require-await
 	async readCookies() {
 		try {
 			const jsonString = fs.readFileSync(this.cookiesFilePath);
