@@ -4,6 +4,7 @@ const helper = require("./helper");
 const ICookieSaver = require("./ICookieSaver");
 
 class LocalFsCookieSaver extends ICookieSaver {
+
 	/**
 	 *
 	 * @param {Object} param should have the following keys { cookiesFilePath }
@@ -54,6 +55,7 @@ class LocalFsCookieSaver extends ICookieSaver {
 	async removeCookies() {
 		await this.writeCookies("[]");
 	}
+
 }
 
 module.exports = LocalFsCookieSaver;

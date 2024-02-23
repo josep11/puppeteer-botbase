@@ -6,6 +6,7 @@ const util = require("util");
 const moment = require("moment");
 
 class Helper {
+
 	constructor() {
 		/**
 		 * @param {number} in miliseconds
@@ -302,6 +303,7 @@ class Helper {
 	getRanomisedUserAgent() {
 		return this.#getRanomisedUserAgentV0();
 	}
+
 }
 
 module.exports = new Helper();

@@ -1,6 +1,7 @@
 const { NotImplementedError } = require("./custom_errors");
 
 class ICookieSaver {
+
 	constructor() {}
 
 	/**
@@ -26,6 +27,7 @@ class ICookieSaver {
 	async removeCookies() {
 		throw new NotImplementedError("not implemented");
 	}
+
 }
 
 module.exports = ICookieSaver;

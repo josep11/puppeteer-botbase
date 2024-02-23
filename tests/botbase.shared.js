@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-/* global it, describe, before, after  */
 const assert = require('assert');
 // const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
 
 const shouldTestBotBase = ({
+    // eslint-disable-next-line no-unused-vars
     puppeteer,
     BotBase,
     basePath,
@@ -14,6 +14,7 @@ const shouldTestBotBase = ({
 }) => {
 
     class ExampleChild extends BotBase {
+
         constructor({ basePath }) {
             super({
                 mainUrl: 'http://dummy.com',
@@ -27,7 +28,8 @@ const shouldTestBotBase = ({
                 }
             })
         }
-    }
+    
+}
 
     let botbase = null;
     const mainUrl = 'http://sampleurl.com';
@@ -42,7 +44,7 @@ const shouldTestBotBase = ({
         assert.ok(botbase);
     });
 
-    it('should get enabled true as default option', async () => {
+    it('should get enabled true as default option', () => {
         const enabled = botbase.enabled();
         assert.ok(enabled);
     });
@@ -121,7 +123,7 @@ const shouldTestBotBase = ({
 
 
     // clean up screenshot tests
-    after(async () => {
+    after(() => {
         //list files in screenshot directory
         const imgExtGlobFilter = "*(*.png|*.jpeg|*.jpg)";
         const screenshotGlobFilter = `${basePath}/screenshots/${imgExtGlobFilter}`; //TODO: should move this if we parametrize screenshot taker

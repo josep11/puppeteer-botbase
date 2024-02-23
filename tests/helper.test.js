@@ -1,4 +1,3 @@
-/* global it, describe  */
 const assert = require('assert');
 const helper = require('../helper');
 const expect = require("chai").expect;
@@ -9,7 +8,7 @@ describe('Module Helper Tests', () => {
         var arr = [1, 2, 3, 4];
 
         function isThreeAsync(number) {
-            return new Promise((res, rej) => {
+            return new Promise((res) => {
                 setTimeout(() => {
                     res(number === 3);
                 }, 1);

@@ -4,6 +4,7 @@ const helper = require("./helper");
 const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
 const ICookieSaver = require("./ICookieSaver");
 const IScreenshotSaver = require("./IScreenshotSaver");
+// eslint-disable-next-line no-unused-vars
 const { Puppeteer, Page } = require("puppeteer");
 const { waitForTimeout } = require("./helper");
 
@@ -14,6 +15,7 @@ const { waitForTimeout } = require("./helper");
  */
 module.exports = (puppeteer) => {
 	class BotBase {
+
 		/**
 		 * @typedef {Object} BotBaseParams
 		 * @property {string} mainUrl
@@ -304,7 +306,8 @@ module.exports = (puppeteer) => {
 			// eslint-disable-next-line no-useless-escape
 			return "SHOULD OVERRIDE ¯_(ツ)_/¯ SHOULD OVERRIDE";
 		}
-	}
+	
+}
 
 	return BotBase;
 };
