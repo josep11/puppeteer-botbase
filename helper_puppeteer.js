@@ -1,7 +1,4 @@
-const glob = require("glob");
-const os = require("os");
-
-const { Page, executablePath } = require("puppeteer");
+const { Page } = require("puppeteer");
 const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
 class HelperPuppeteer {
 	/**

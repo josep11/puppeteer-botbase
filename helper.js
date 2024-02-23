@@ -109,10 +109,16 @@ class Helper {
 	 */
 	extractHorasFromString(timeStr) {
 		// 23 horas
-		if (!timeStr) return null;
+		if (!timeStr) {
+			return null;
+		}
 
 		if (timeStr.indexOf("hora") != -1) {
-			const horas = timeStr.match(/\d+/)[0];
+			const m = timeStr.match(/\d+/);
+			if (!m) {
+				return null;
+			}
+			const horas = m[0];
 
 			return parseInt(horas);
 		} else {
@@ -122,7 +128,7 @@ class Helper {
 			if (timeStr.indexOf("día") != -1) {
 				return 25;
 			}
-			throw `FIXME: Helper.extractHorasFromString: En la string the time no se encontró 'hora'. Input timeStr = ${timeStr}`;
+			throw `FIXME: Helper.extractHorasFromString: En la string timeStr no s'ha trobat 'hora'. Input timeStr = ${timeStr}`;
 		}
 	}
 
@@ -183,7 +189,7 @@ class Helper {
 	/**
 	 *
 	 * @param {string} filename
-	 * @returns {string} the content of the file
+	 * @returns {Promise<string>} the content of the file
 	 */
 	async readFile(filename) {
 		return await fs.readFile(filename, "utf-8");
