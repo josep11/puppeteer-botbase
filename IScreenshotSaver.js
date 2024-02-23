@@ -20,6 +20,7 @@ class IScreenshotSaver {
      * @param {Object} param0 
      * @returns {Promise<string>} the place where the image is stored
      */
+    // eslint-disable-next-line no-unused-vars, require-await
     async saveScreenshot({ imageBuffer, filename }) {
         this._checkParams(imageBuffer);
         throw new NotImplementedError('not implemented');

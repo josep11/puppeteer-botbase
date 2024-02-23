@@ -21,7 +21,7 @@ describe("LocalFsCookieSaver Tests", () => {
 
 	it("should throw an error on constructor because of first param type style", () => {
 		assert.throws(() => {
-			new LocalFsCookieSaver();
+			new LocalFsCookieSaver({});
 		}, "constructor param is not there");
 	});
 
@@ -54,13 +54,13 @@ describe("LocalFsCookieSaver Tests", () => {
     
         });
      */
-	it("should read cookies", async () => {
+	it("should read cookies", () => {
 		assert.doesNotThrow(async () => {
 			await cookieSaver.readCookies();
 		});
 	});
 
-	it("should read cookies", async () => {
+	it("should read cookies", () => {
 		// TODO: doesNotThrow, I think it does not throw but has some unexpected behaviors
 		assert.doesNotThrow(async () => {
 			await cookieSaver.removeCookies();
