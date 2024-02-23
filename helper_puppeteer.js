@@ -135,7 +135,8 @@ class HelperPuppeteer {
 	 * @returns {Promise<Number>} count
 	 */
 	static async countStringOccurrencesInPage(page, textToFind) {
-		return page.$eval(
+		// TODO: fix floating promises still not being detected when missing
+		return await page.$eval(
 			"body",
 			(el, textSearch) => {
 				let text = el.innerText;
