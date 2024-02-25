@@ -1,31 +1,27 @@
-const { NotImplementedError } = require('./custom_errors');
+const { NotImplementedError } = require("./custom_errors");
 
 class IScreenshotSaver {
+  constructor() {}
 
-    constructor() {
-
+  _checkParams(imageBuffer) {
+    if (!imageBuffer) {
+      throw new Error("Developer fix this: imageBuffer unexistent param");
     }
-
-    _checkParams(imageBuffer) {
-        if (!imageBuffer) {
-            throw new Error('Developer fix this: imageBuffer unexistent param');
-        }
-        if (!(imageBuffer instanceof Buffer)) {
-            throw new Error('imageBuffer is not of type Buffer');
-        }
+    if (!(imageBuffer instanceof Buffer)) {
+      throw new Error("imageBuffer is not of type Buffer");
     }
+  }
 
-    /**
-     * 
-     * @param {Object} param0 
-     * @returns {Promise<string>} the place where the image is stored
-     */
-    // eslint-disable-next-line no-unused-vars, require-await
-    async saveScreenshot({ imageBuffer, filename }) {
-        this._checkParams(imageBuffer);
-        throw new NotImplementedError('not implemented');
-    }
-
+  /**
+   *
+   * @param {Object} param0
+   * @returns {Promise<string>} the place where the image is stored
+   */
+  // eslint-disable-next-line no-unused-vars, require-await
+  async saveScreenshot({ imageBuffer, filename }) {
+    this._checkParams(imageBuffer);
+    throw new NotImplementedError("not implemented");
+  }
 }
 
 module.exports = IScreenshotSaver;
