@@ -160,7 +160,7 @@ class Helper {
 	 * @returns undefined if no error happened or string with error message otherwise
 	 */
 	async writeIPToFile(ip, date, basePath = __dirname) {
-		const ip_file = path.resolve(basePath, "./logs/ip.txt");
+		const ip_file = path.resolve(basePath, "../logs/ip.txt");
 		try {
 			await fs.appendFile(ip_file, `Data: ${date}\nIP: ${ip}\n\n`);
 		} catch (err) {
