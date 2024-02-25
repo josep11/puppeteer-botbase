@@ -67,7 +67,7 @@ module.exports = (puppeteer) => {
 			this.mainUrl = mainUrl;
 
 			//load default configuration options
-			this.config = require("./config/config.json");
+			this.config = require("../config/config.json");
 
 			//merging config options overriding with the upcoming ones
 			this.config = deepmerge(this.config, configChild);
@@ -289,7 +289,7 @@ module.exports = (puppeteer) => {
 		}
 
 		getVersion() {
-			const pjson = require("./package.json");
+			const pjson = require("../package.json");
 			return pjson.version;
 		}
 
