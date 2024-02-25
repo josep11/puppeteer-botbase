@@ -29,6 +29,8 @@ npm i github:josep11/puppeteer-botbase.git#semver:^3.0.10
 
 To use and import the BotBase import like so:
 
+TODO: update this
+
 ```js
     const BotBase = require('botbase');
     class Milanuncios extends BotBase { ... }
