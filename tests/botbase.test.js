@@ -2,14 +2,14 @@
 const assert = require('assert');
 const puppeteer = require('puppeteer');
 const { shouldTestBotBase } = require('./botbase.shared');
-const BotBase = require('../botbase')(puppeteer);
+const BotBase = require('../src/botbase-factory')(puppeteer);
 
 const path = require('path');
 const fs = require('fs');
 const basePath = path.resolve(__dirname, '../');
 
-const LocalFsCookieSaver = require('../LocalFsCookieSaver');
-const LocalScreenshotSaver = require('../LocalScreenshotSaver');
+const LocalFsCookieSaver = require('../src/LocalFsCookieSaver');
+const LocalScreenshotSaver = require('../src/LocalScreenshotSaver');
 const cookieSaver = new LocalFsCookieSaver({ cookiesFilePath: path.resolve(basePath, './res/cookies.json') });
 const screenshotSaver = new LocalScreenshotSaver({ screenshotBasepath: path.resolve(basePath, './screenshots') });
 

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const helper = require('../helper');
+const {helper} = require('../index');
 const expect = require("chai").expect;
 
 describe('Module Helper Tests', () => {

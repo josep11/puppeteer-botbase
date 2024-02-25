@@ -2,15 +2,15 @@ const assert = require("assert");
 // var expect = require("chai").expect;
 const path = require("path");
 const fs = require("fs");
-const LocalFsCookieSaver = require("../LocalFsCookieSaver");
-const { rmFileIfExists } = require("../helper");
+const {LocalFsCookieSaver} = require("../index");
+const { helper } = require("../index");
 let cookieSaver;
 
 const basePath = path.join(__dirname, "../");
 const cookiesFilePath = path.resolve(basePath, "./res/cookies_test.json");
 
 before(async () => {
-	await rmFileIfExists(cookiesFilePath);
+	await helper.rmFileIfExists(cookiesFilePath);
 });
 
 describe("LocalFsCookieSaver Tests", () => {

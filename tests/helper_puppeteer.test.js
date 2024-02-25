@@ -25,7 +25,7 @@ before(async () => {
 	await initBrowser();
 });
 
-const HelperPuppeteer = require("../helper_puppeteer");
+const { HelperPuppeteer } = require("../index");
 
 const POPUP_PAGE_URL = "https://www.bonarea.com/ca/";
 const POPUP_ACCEPT_COOKIES_BUTTON_TEXT = "Acceptar";

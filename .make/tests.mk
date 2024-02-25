@@ -6,7 +6,7 @@ test:
 test-ci:
 	npm run test:ci
 
-## Run test in tdd mode. Usage: make test-tdd PARAMS="test/*helper*"
+## Run test in tdd mode. Usage: make test-tdd PARAMS="tests/*helper*"
 test-tdd:
 	npm run test:fast -- ${PARAMS}
 
