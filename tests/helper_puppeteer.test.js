@@ -5,24 +5,24 @@ const puppeteer = require("puppeteer");
 let browser, page;
 
 async function initBrowser() {
-	browser = await puppeteer.launch({
-		// headless: false,
-	});
-	page = await browser.newPage();
+  browser = await puppeteer.launch({
+    // headless: false,
+  });
+  page = await browser.newPage();
 }
 
 async function closeBrowser() {
-	await browser?.close();
+  await browser?.close();
 }
 
 async function reinitBrowser() {
-	await closeBrowser();
-	await initBrowser();
+  await closeBrowser();
+  await initBrowser();
 }
 
 // In the Mocha "before" hook, create the browser and page objects.
 before(async () => {
-	await initBrowser();
+  await initBrowser();
 });
 
 const { HelperPuppeteer } = require("../index");
@@ -38,16 +38,16 @@ const POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR = "#onetrust-accept-btn-handler";
  * @returns {Promise<boolean>} true if the text is not found, false otherwise
  */
 async function verifyTextIsNotPresent(page, text) {
-	const pageContent = await page.content();
-	return !pageContent.includes(text);
+  const pageContent = await page.content();
+  return !pageContent.includes(text);
 }
 
 describe("Module Helper Puppeteer Tests", () => {
-	it("should import helper puppeteer", () => {
-		assert.ok(HelperPuppeteer);
-	});
+  it("should import helper puppeteer", () => {
+    assert.ok(HelperPuppeteer);
+  });
 
-	/* 
+  /* 
     it('should find element with text present (ignorecase)', async () => {
         const filenameExampleHtml = path.resolve(__dirname, './fixtures/test-page.html');
         // contentHtml = await fs.readFile(filenameExampleHtml, 'utf8');
@@ -57,67 +57,67 @@ describe("Module Helper Puppeteer Tests", () => {
     }).timeout(20000);
  */
 
-	it("isTextPresentOnWebpage: should find text in webpage (ignorecase)", async () => {
-		const url = "https://es.wikipedia.org/wiki/Wikipedia:Portada";
-		let textsTofind = ["la enciclopedia", "Acceder", "Al usar este sitio"];
+  it("isTextPresentOnWebpage: should find text in webpage (ignorecase)", async () => {
+    const url = "https://es.wikipedia.org/wiki/Wikipedia:Portada";
+    let textsTofind = ["la enciclopedia", "Acceder", "Al usar este sitio"];
 
-		await page.goto(url, { waitUntil: "networkidle0" });
+    await page.goto(url, { waitUntil: "networkidle0" });
 
-		for (const textTofind of textsTofind) {
-			if (!(await HelperPuppeteer.isTextPresentOnWebpage(page, textTofind))) {
-				assert.fail("Text not found " + textTofind);
-			}
-		}
-	}).timeout(20000);
+    for (const textTofind of textsTofind) {
+      if (!(await HelperPuppeteer.isTextPresentOnWebpage(page, textTofind))) {
+        assert.fail("Text not found " + textTofind);
+      }
+    }
+  }).timeout(20000);
 
-	it("closePopup: should close popup by text: BonArea - Cookies popup", async () => {
-		await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
+  it("closePopup: should close popup by text: BonArea - Cookies popup", async () => {
+    await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
 
-		await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
+    await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
 
-		const clicked = await HelperPuppeteer.closePopup(
-			page,
-			POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
-			POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE
-		);
+    const clicked = await HelperPuppeteer.closePopup(
+      page,
+      POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
+      POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE
+    );
 
-		assert.ok(clicked);
-	}).timeout(20000);
+    assert.ok(clicked);
+  }).timeout(20000);
 
-	it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
-		await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
+  it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
+    await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
 
-		await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
+    await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
 
-		await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
-			page,
-			POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
-			[],
-		);
+    await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
+      page,
+      POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
+      []
+    );
 
-		// Verify that some text inside that cookies popup is not present anymore
-		await assertThatCookiesTextIsNotPresent();
-	}).timeout(20000);
+    // Verify that some text inside that cookies popup is not present anymore
+    await assertThatCookiesTextIsNotPresent();
+  }).timeout(20000);
 
-	it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
-		// We set up both a wrong text and the css selectors to fully test the method to see if it can be found also
-		await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
+  it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
+    // We set up both a wrong text and the css selectors to fully test the method to see if it can be found also
+    await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
 
-		await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
+    await page.goto(POPUP_PAGE_URL, { waitUntil: "networkidle0" });
 
-		const wrongText = "Acccccccccccccceptar";
-		
-		await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
-			page,
-			wrongText,
-			[POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR],
-		);
+    const wrongText = "Acccccccccccccceptar";
 
-		// Verify that some text inside that cookies popup is not present anymore
-		await assertThatCookiesTextIsNotPresent();
-	}).timeout(20000);
+    await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
+      page,
+      wrongText,
+      [POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR]
+    );
 
-	/* 
+    // Verify that some text inside that cookies popup is not present anymore
+    await assertThatCookiesTextIsNotPresent();
+  }).timeout(20000);
+
+  /* 
 	// This test is failing as there is no cookies pop up anymore. Keeping it here as a reference.
 
 	it("closePopup: should close popup by text (in the root element)", async () => {
@@ -169,12 +169,14 @@ describe("Module Helper Puppeteer Tests", () => {
 });
 
 after(async () => {
-	await closeBrowser();
+  await closeBrowser();
 });
 async function assertThatCookiesTextIsNotPresent() {
-	const textThatShouldNotBeFound = "utilitzem galetes";
+  const textThatShouldNotBeFound = "utilitzem galetes";
 
-	const textNotFound = await verifyTextIsNotPresent(page, textThatShouldNotBeFound);
-	assert.equal(textNotFound, true);
+  const textNotFound = await verifyTextIsNotPresent(
+    page,
+    textThatShouldNotBeFound
+  );
+  assert.equal(textNotFound, true);
 }
-
