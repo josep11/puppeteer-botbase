@@ -5,12 +5,12 @@ const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
 const ICookieSaver = require("./ICookieSaver");
 const IScreenshotSaver = require("./IScreenshotSaver");
 // eslint-disable-next-line no-unused-vars
-const { Puppeteer, Page } = require("puppeteer");
+const { PuppeteerNode, Page } = require("puppeteer");
 const { waitForTimeout } = require("./helper");
 
 /**
  *
- * @param {Puppeteer} puppeteer
+ * @param {PuppeteerNode} puppeteer
  * @returns
  */
 module.exports = (puppeteer) => {
@@ -80,7 +80,7 @@ module.exports = (puppeteer) => {
       // const pjson = require('./package.json');
       // console.log(`init bot base v${pjson.version}`);
       if (this.browser != null) {
-        this.browser.close();
+        await this.browser.close();
         this.page = null;
       }
       // override the chromium executablePath if it was passed in the constructor
@@ -268,8 +268,8 @@ module.exports = (puppeteer) => {
       this.page = this.checkPage();
 
       await this.page.goto("http://checkip.amazonaws.com/");
-      const ip = await this.page.evaluate(() =>
-        document.body.textContent.trim()
+      const ip = await this.page.evaluate(
+        () => document.body.textContent?.trim() || ""
       );
       await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
       return ip;
