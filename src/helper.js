@@ -278,31 +278,6 @@ class Helper {
   /***************************************/
 
   /**
-   * This function is deprecated with the RenewManager no need to run this function in the browser context
-   * @param {*} timeStr
-   * @param {*} HOURS_NEED_TO_RENEW
-   */
-  needToRenew(timeStr, HOURS_NEED_TO_RENEW) {
-    if (timeStr.indexOf("min") != -1 || timeStr.indexOf("seg") != -1) {
-      return false;
-    }
-    if (timeStr.indexOf("día") != -1) {
-      return true;
-    }
-    if (timeStr.indexOf("horas") != -1) {
-      const horas = timeStr.match(/\d+/)[0];
-      if (horas >= HOURS_NEED_TO_RENEW) {
-        return true;
-      }
-    } else {
-      console.error(
-        "FIXME: En la string the time no se encontró ni 'min', 'seg', 'día', 'hora'"
-      );
-    }
-    return false;
-  }
-
-  /**
    * Used by the V1 version of user-agents.
    */
   #getRanomisedUserAgentV1() {
