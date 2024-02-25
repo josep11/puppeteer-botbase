@@ -85,7 +85,7 @@ class Helper {
 
   /**
    * @param {any[]} array
-   * @param {Function} callbackfn
+   * @param {(value: any, index: number, array: any[]) => any} callbackfn
    */
   mapAsync(array, callbackfn) {
     return Promise.all(array.map(callbackfn));
@@ -94,7 +94,7 @@ class Helper {
   /**
    *
    * @param {array} array array to filter
-   * @param {function} callbackfn should be a function that returns a Promise
+   * @param {(value: any, index: number, array: any[]) => any} callbackfn should be a function that returns a Promise
    * @returns
    */
   async filterAsync(array, callbackfn) {
