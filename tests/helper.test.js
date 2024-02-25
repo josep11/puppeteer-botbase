@@ -65,4 +65,19 @@ describe('Module Helper Tests', () => {
         expect(ua).to.be.a.string;
     });
 
+    it('dateFormatForLog: should return date in the format "yyyy-MM-DD_HH.mm.ss"', function() {
+        const result = helper.dateFormatForLog();
+
+        const date = new Date();
+        const pad = (n) => n < 10 ? '0' + n : n;
+
+        let expectedFormat = date.getFullYear() + "-"
+          + pad(date.getMonth() + 1) + "-"
+          + pad(date.getDate()) + "_"
+          + pad(date.getHours()) + "."
+          + pad(date.getMinutes()) + "."
+          + pad(date.getSeconds());
+
+        expect(result).to.equal(expectedFormat);
+    });
 });
