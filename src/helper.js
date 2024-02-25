@@ -304,7 +304,6 @@ class Helper {
 
   /**
    * Used by the V1 version of user-agents.
-   * TODO: use this one instead when the vulnerability has been fixed
    */
   #getRanomisedUserAgentV1() {
     const UserAgents = require("user-agents");
@@ -316,13 +315,13 @@ class Helper {
     return userAgents.random();
   }
 
-  #getRanomisedUserAgentV0() {
-    const userAgents = require("user-agents");
-    return userAgents.random();
-  }
+  // #getRanomisedUserAgentV0() {
+  //   const userAgents = require("user-agents");
+  //   return userAgents.random();
+  // }
 
   getRanomisedUserAgent() {
-    return this.#getRanomisedUserAgentV0();
+    return this.#getRanomisedUserAgentV1();
   }
 }
 
