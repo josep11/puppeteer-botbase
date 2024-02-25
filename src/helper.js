@@ -8,7 +8,6 @@ const { DateTime, Duration } = require("luxon");
 const { Puppeteer, Page } = require("puppeteer");
 
 class Helper {
-
   constructor() {
     /**
      * @param {number} in miliseconds
@@ -50,13 +49,13 @@ class Helper {
     const now = DateTime.local();
 
     let dateTimeStart;
-    if (typeof pastTime === 'string') {
+    if (typeof pastTime === "string") {
       dateTimeStart = DateTime.fromISO(pastTime);
     } else {
       dateTimeStart = DateTime.fromJSDate(pastTime);
     }
 
-    return Duration.fromMillis(now.diff(dateTimeStart).valueOf()).as('hours');
+    return Duration.fromMillis(now.diff(dateTimeStart).valueOf()).as("hours");
   }
 
   /**
@@ -262,7 +261,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`,
+      `data_${this.dateFormatForLog()}.json`
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);
@@ -297,7 +296,7 @@ class Helper {
       }
     } else {
       console.error(
-        "FIXME: En la string the time no se encontró ni 'min', 'seg', 'día', 'hora'",
+        "FIXME: En la string the time no se encontró ni 'min', 'seg', 'día', 'hora'"
       );
     }
     return false;
@@ -325,7 +324,6 @@ class Helper {
   getRanomisedUserAgent() {
     return this.#getRanomisedUserAgentV0();
   }
-
 }
 
 module.exports = new Helper();
