@@ -1,5 +1,8 @@
 class LoginError extends Error {
 
+    /**
+     * @param {string} message
+     */
     constructor(message) {
         super(message)
         Error.captureStackTrace(this, this.constructor);

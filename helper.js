@@ -37,7 +37,7 @@ class Helper {
 	}
 
 	/**
-	 * @param milliseconds - the number of milliseconds to wait.
+	 * @param {number} milliseconds - the number of milliseconds to wait.
 	 */
 	async waitForTimeout(milliseconds) {
 		await new Promise((r) => setTimeout(r, milliseconds));
@@ -68,12 +68,20 @@ class Helper {
 		return moment().subtract(hoursAgo, "hours").format();
 	}
 
+	/**
+	 * @param {number} min
+	 * @param {number} max
+	 */
 	getRandBetween(min, max) {
 		min = Math.ceil(min);
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
+	/**
+	 * @param {any[]} array
+	 * @param {Function} callbackfn
+	 */
 	mapAsync(array, callbackfn) {
 		return Promise.all(array.map(callbackfn));
 	}
@@ -103,7 +111,7 @@ class Helper {
 	/**
 	 *
 	 * @param {string} timeStr
-	 * @returns Number
+	 * @returns {number|null}
 	 */
 	extractHorasFromString(timeStr) {
 		// 23 horas
@@ -239,6 +247,9 @@ class Helper {
 		}
 	}
 
+	/**
+	 * @param {string} jsonStr
+	 */
 	async logJSONdebug(jsonStr, basePath = __dirname) {
 		const dir = path.resolve(basePath, `./logs/dataset`);
 		this.createDirIfNotExists(dir);
