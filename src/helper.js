@@ -28,7 +28,7 @@ class Helper {
 
   consoleListener(message) {
     const type = message.type().substr(0, 3).toUpperCase();
-    if (type == "WAR" || type == "INF") {
+    if (type === "WAR" || type === "INF") {
       return;
     }
     console.info(`${type} ${message.text()}`);
@@ -124,7 +124,7 @@ class Helper {
       return null;
     }
 
-    if (timeStr.indexOf("hora") != -1) {
+    if (timeStr.indexOf("hora") !== -1) {
       const m = timeStr.match(/\d+/);
       if (!m) {
         return null;
@@ -133,10 +133,10 @@ class Helper {
 
       return parseInt(horas);
     } else {
-      if (timeStr.indexOf("seg") != -1 || timeStr.indexOf("min") != -1) {
+      if (timeStr.indexOf("seg") !== -1 || timeStr.indexOf("min") !== -1) {
         return 0;
       }
-      if (timeStr.indexOf("día") != -1) {
+      if (timeStr.indexOf("día") !== -1) {
         return 25;
       }
       throw `FIXME: Helper.extractHorasFromString: En la string timeStr no s'ha trobat 'hora'. Input timeStr = ${timeStr}`;
@@ -245,7 +245,7 @@ class Helper {
       // console.log(`removing ${file}`);
       await fs.unlink(file);
     } catch (err) {
-      if (err.code == "ENOENT") {
+      if (err.code === "ENOENT") {
         // console.error(`The file ${file} does not exist`);
       } else {
         throw err;
@@ -278,33 +278,7 @@ class Helper {
   /***************************************/
 
   /**
-   * This function is deprecated with the RenewManager no need to run this function in the browser context
-   * @param {*} timeStr
-   * @param {*} HOURS_NEED_TO_RENEW
-   */
-  needToRenew(timeStr, HOURS_NEED_TO_RENEW) {
-    if (timeStr.indexOf("min") != -1 || timeStr.indexOf("seg") != -1) {
-      return false;
-    }
-    if (timeStr.indexOf("día") != -1) {
-      return true;
-    }
-    if (timeStr.indexOf("horas") != -1) {
-      const horas = timeStr.match(/\d+/)[0];
-      if (horas >= HOURS_NEED_TO_RENEW) {
-        return true;
-      }
-    } else {
-      console.error(
-        "FIXME: En la string the time no se encontró ni 'min', 'seg', 'día', 'hora'"
-      );
-    }
-    return false;
-  }
-
-  /**
    * Used by the V1 version of user-agents.
-   * TODO: use this one instead when the vulnerability has been fixed
    */
   #getRanomisedUserAgentV1() {
     const UserAgents = require("user-agents");
@@ -316,13 +290,13 @@ class Helper {
     return userAgents.random();
   }
 
-  #getRanomisedUserAgentV0() {
-    const userAgents = require("user-agents");
-    return userAgents.random();
-  }
+  // #getRanomisedUserAgentV0() {
+  //   const userAgents = require("user-agents");
+  //   return userAgents.random();
+  // }
 
   getRanomisedUserAgent() {
-    return this.#getRanomisedUserAgentV0();
+    return this.#getRanomisedUserAgentV1();
   }
 }
 
