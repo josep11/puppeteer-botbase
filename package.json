@@ -5,6 +5,7 @@
 	"main": "botbase.js",
 	"author": "Josep Alsina",
 	"license": "ISC",
+	"type": "module",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/josep11/puppeteer-botbase.git"

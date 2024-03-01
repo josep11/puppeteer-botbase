@@ -1,21 +1,28 @@
-const {
+import HelperPuppeteer from "./src/helper_puppeteer";
+
+import {
+  HTMLMarkupChangedError,
   LoginError,
   MyTimeoutError,
   NoInternetError,
   NotImplementedError,
-  HTMLMarkupChangedError,
-} = require("./src/custom_errors");
+} from "./src/custom_errors";
 
-const HelperPuppeteer = require("./src/helper_puppeteer");
-const helper = require("./src/helper");
-const ICookieSaver = require("./src/ICookieSaver");
-const IScreenshotSaver = require("./src/IScreenshotSaver");
-const LocalFsCookieSaver = require("./src/LocalFsCookieSaver");
-const LocalScreenshotSaver = require("./src/LocalScreenshotSaver");
+import helper from "./src/helper";
+
+import IScreenshotSaver from "./src/IScreenshotSaver";
+
+import ICookieSaver from "./src/ICookieSaver";
+
+import LocalFsCookieSaver from "./src/LocalFsCookieSaver";
+
+import LocalScreenshotSaver from "./src/LocalScreenshotSaver";
+
+import BotBaseFactory from "./src/botbase-factory";
 
 module.exports = {
   // BotBaseFactory
-  BotBaseFactory: require("./src/botbase-factory"),
+  BotBaseFactory,
 
   // Errors
   LoginError,

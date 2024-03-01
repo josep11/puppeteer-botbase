@@ -1,6 +1,6 @@
-const { NotImplementedError } = require("./custom_errors");
+import { NotImplementedError } from "./custom_errors";
 
-class ICookieSaver {
+export class ICookieSaver {
   constructor() {}
 
   /**
@@ -30,5 +30,3 @@ class ICookieSaver {
     throw new NotImplementedError("not implemented");
   }
 }
-
-module.exports = ICookieSaver;

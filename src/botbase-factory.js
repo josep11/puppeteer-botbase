@@ -1,19 +1,18 @@
-const deepmerge = require("deepmerge");
-
-const helper = require("./helper");
-const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
-const ICookieSaver = require("./ICookieSaver");
-const IScreenshotSaver = require("./IScreenshotSaver");
+import deepmerge from 'deepmerge';
+import * as helper from './helper';
+import { NotImplementedError, MyTimeoutError } from './custom_errors';
+import ICookieSaver from './ICookieSaver';
+import IScreenshotSaver from './IScreenshotSaver';
 // eslint-disable-next-line no-unused-vars
-const { PuppeteerNode, Page } = require("puppeteer");
-const { waitForTimeout } = require("./helper");
+import { PuppeteerNode, Page } from 'puppeteer';
+import { waitForTimeout } from './helper';
 
 /**
  *
  * @param {PuppeteerNode} puppeteer
  * @returns
  */
-module.exports = (puppeteer) => {
+export default (puppeteer) => {
   class BotBase {
     /**
      * @typedef {Object} BotBaseParams
@@ -188,7 +187,7 @@ module.exports = (puppeteer) => {
         if (cookies && Object.keys(cookies).length) {
           await this.loginWithSession(cookies).catch(async (error) => {
             console.error(`Unable to login using session: ${error}`);
-            if (error.name.indexOf("TimeoutError") != -1) {
+            if (error.name.indexOf("TimeoutError") !== -1) {
               throw error;
             }
             await this.loginWithCredentials(username, password);
@@ -197,7 +196,7 @@ module.exports = (puppeteer) => {
           await this.loginWithCredentials(username, password);
         }
       } catch (error) {
-        if (error.name.indexOf("TimeoutError") != -1) {
+        if (error.name.indexOf("TimeoutError") !== -1) {
           throw new MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
         }
         throw error;
@@ -309,4 +308,4 @@ module.exports = (puppeteer) => {
   }
 
   return BotBase;
-};
+}

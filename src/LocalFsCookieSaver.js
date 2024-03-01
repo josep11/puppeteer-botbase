@@ -1,9 +1,13 @@
-const fs = require("fs");
-const { dirname } = require("path");
-const helper = require("./helper");
-const ICookieSaver = require("./ICookieSaver");
+import fs from "fs";
 
-class LocalFsCookieSaver extends ICookieSaver {
+import { dirname } from "path";
+
+import helper from "./helper";
+
+// TODO: convert interfaces
+import ICookieSaver from "./ICookieSaver";
+
+export class LocalFsCookieSaver extends ICookieSaver {
   /**
    *
    * @param {Object} param should have the following keys { cookiesFilePath }

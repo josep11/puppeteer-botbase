@@ -1,11 +1,15 @@
-const path = require("path");
+// Node.js built-in modules
+import path from 'path';
+import { promises as fs } from 'fs';
+import util from 'util';
+import { exec as execAsync } from 'child-process-async';
 
-const { promises: fs } = require("fs");
-const { exec: execAsync } = require("child-process-async");
-const util = require("util");
-const { DateTime, Duration } = require("luxon");
+// Third-party libraries
+import { DateTime, Duration } from 'luxon';
+
 // eslint-disable-next-line no-unused-vars
-const { Puppeteer, Page } = require("puppeteer");
+import { Puppeteer, Page } from 'puppeteer';
+
 
 class Helper {
   constructor() {
@@ -300,4 +304,5 @@ class Helper {
   }
 }
 
-module.exports = new Helper();
+const helper = new Helper();
+export default helper;

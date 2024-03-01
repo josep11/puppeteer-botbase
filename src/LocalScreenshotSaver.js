@@ -1,9 +1,9 @@
-const { dirname } = require("path");
-const fs = require("fs");
-const helper = require("./helper");
-const IScreenshotSaver = require("./IScreenshotSaver");
+import { dirname } from "path";
+import fs from "fs";
+import helper from "./helper";
+import IScreenshotSaver from "./IScreenshotSaver";
 
-class LocalScreenshotSaver extends IScreenshotSaver {
+export class LocalScreenshotSaver extends IScreenshotSaver {
   constructor({ screenshotBasepath }) {
     super();
     if (!screenshotBasepath) {
@@ -21,7 +21,7 @@ class LocalScreenshotSaver extends IScreenshotSaver {
     if (!type) {
       throw new Error("type is not defined");
     }
-    if (this.allowedTypes.indexOf(type) == -1) {
+    if (this.allowedTypes.indexOf(type) === -1) {
       throw new Error(`Type ${type} not allowed.`);
     }
   }
@@ -38,5 +38,3 @@ class LocalScreenshotSaver extends IScreenshotSaver {
     return screenshotLocation;
   }
 }
-
-module.exports = LocalScreenshotSaver;
