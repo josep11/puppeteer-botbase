@@ -28,7 +28,7 @@ class Helper {
 
   consoleListener(message) {
     const type = message.type().substr(0, 3).toUpperCase();
-    if (type == "WAR" || type == "INF") {
+    if (type === "WAR" || type === "INF") {
       return;
     }
     console.info(`${type} ${message.text()}`);
@@ -124,7 +124,7 @@ class Helper {
       return null;
     }
 
-    if (timeStr.indexOf("hora") != -1) {
+    if (timeStr.indexOf("hora") !== -1) {
       const m = timeStr.match(/\d+/);
       if (!m) {
         return null;
@@ -133,10 +133,10 @@ class Helper {
 
       return parseInt(horas);
     } else {
-      if (timeStr.indexOf("seg") != -1 || timeStr.indexOf("min") != -1) {
+      if (timeStr.indexOf("seg") !== -1 || timeStr.indexOf("min") !== -1) {
         return 0;
       }
-      if (timeStr.indexOf("día") != -1) {
+      if (timeStr.indexOf("día") !== -1) {
         return 25;
       }
       throw `FIXME: Helper.extractHorasFromString: En la string timeStr no s'ha trobat 'hora'. Input timeStr = ${timeStr}`;
@@ -245,7 +245,7 @@ class Helper {
       // console.log(`removing ${file}`);
       await fs.unlink(file);
     } catch (err) {
-      if (err.code == "ENOENT") {
+      if (err.code === "ENOENT") {
         // console.error(`The file ${file} does not exist`);
       } else {
         throw err;
