@@ -1,6 +1,6 @@
-const { NotImplementedError } = require("./custom_errors");
+import { NotImplementedError } from "./custom-errors.js";
 
-class IScreenshotSaver {
+export class IScreenshotSaver {
   constructor() {}
 
   _checkParams(imageBuffer) {
@@ -23,5 +23,3 @@ class IScreenshotSaver {
     throw new NotImplementedError("not implemented");
   }
 }
-
-module.exports = IScreenshotSaver;

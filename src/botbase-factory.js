@@ -1,19 +1,26 @@
-const deepmerge = require("deepmerge");
-
-const helper = require("./helper");
-const { NotImplementedError, MyTimeoutError } = require("./custom_errors");
-const ICookieSaver = require("./ICookieSaver");
-const IScreenshotSaver = require("./IScreenshotSaver");
+import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
-const { PuppeteerNode, Page } = require("puppeteer");
-const { waitForTimeout } = require("./helper");
+import { Page, PuppeteerNode } from "puppeteer";
+
+import path from "path";
+import config from "../config/config.js";
+import { ICookieSaver } from "./ICookieSaver.js";
+import { IScreenshotSaver } from "./IScreenshotSaver.js";
+import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
+import { helper } from "./helper.js";
+
+const { waitForTimeout } = helper;
+
+// Load the package json
+const packageJsonPath = path.resolve("package.json");
+const pjson = helper.loadJson(packageJsonPath);
 
 /**
  *
  * @param {PuppeteerNode} puppeteer
- * @returns
+ * @returns {BotBase}
  */
-module.exports = (puppeteer) => {
+export function BotBaseFactory(puppeteer) {
   class BotBase {
     /**
      * @typedef {Object} BotBaseParams
@@ -66,7 +73,7 @@ module.exports = (puppeteer) => {
       this.mainUrl = mainUrl;
 
       //load default configuration options
-      this.config = require("../config/config.json");
+      this.config = config;
 
       //merging config options overriding with the upcoming ones
       this.config = deepmerge(this.config, configChild);
@@ -77,8 +84,6 @@ module.exports = (puppeteer) => {
     }
 
     async initialize(opts = {}) {
-      // const pjson = require('./package.json');
-      // console.log(`init bot base v${pjson.version}`);
       if (this.browser != null) {
         await this.browser.close();
         this.page = null;
@@ -120,6 +125,7 @@ module.exports = (puppeteer) => {
 
     /* *************** */
     /* LOGIN FUNCTIONS */
+
     /* *************** */
 
     /**
@@ -150,7 +156,7 @@ module.exports = (puppeteer) => {
     }
 
     /**
-     * Tries to log in using cookies or otherwise it throws error
+     * Tries to log in using cookies, or otherwise it throws error
      * It depends on implementation of isLoggedIn()
      * @param {*} cookies
      */
@@ -172,8 +178,8 @@ module.exports = (puppeteer) => {
     }
 
     /**
-     * Tries to login using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
-     * throws MyTimeoutError if could not connect for timeout or another Error for other ones
+     * Tries to log in using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
+     * throws MyTimeoutError, when unable to connect due to timeout or another Error for other ones
      * If login is ok it writes the cookies to the file, if it's not it deletes them
      * Careful this function depends on implementation of isLoggedIn
      * @param {*} username username for the website
@@ -188,7 +194,7 @@ module.exports = (puppeteer) => {
         if (cookies && Object.keys(cookies).length) {
           await this.loginWithSession(cookies).catch(async (error) => {
             console.error(`Unable to login using session: ${error}`);
-            if (error.name.indexOf("TimeoutError") != -1) {
+            if (error.name.indexOf("TimeoutError") !== -1) {
               throw error;
             }
             await this.loginWithCredentials(username, password);
@@ -197,7 +203,7 @@ module.exports = (puppeteer) => {
           await this.loginWithCredentials(username, password);
         }
       } catch (error) {
-        if (error.name.indexOf("TimeoutError") != -1) {
+        if (error.name.indexOf("TimeoutError") !== -1) {
           throw new MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
         }
         throw error;
@@ -226,6 +232,7 @@ module.exports = (puppeteer) => {
 
     /* ******************* */
     /* BEGIN I/O FUNCTIONS */
+
     /* ******************* */
 
     /**
@@ -233,7 +240,6 @@ module.exports = (puppeteer) => {
      */
     async readCookiesFile() {
       return await this.cookieSaver.readCookies();
-      // return helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
     }
 
     async writeCookiesFile(cookiesJson) {
@@ -267,16 +273,19 @@ module.exports = (puppeteer) => {
     async logIP() {
       this.page = this.checkPage();
 
-      await this.page.goto("http://checkip.amazonaws.com/");
+      await this.page.goto("https://checkip.amazonaws.com/");
       const ip = await this.page.evaluate(
         () => document.body.textContent?.trim() || ""
       );
-      await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
+
+      const ipFilePath = path.join(this.basePath, "/logs/ip.txt");
+      await helper.writeIPToFile(ip, helper.dateFormatForLog(), ipFilePath);
       return ip;
     }
 
     /* ******************* */
     /* END I/O FUNCTIONS */
+
     /* ******************* */
 
     enabled() {
@@ -287,8 +296,12 @@ module.exports = (puppeteer) => {
       return this.config;
     }
 
+    /**
+     * Retrieves the version number of the botbase.
+     *
+     * @return {string} The version number of the botbase.
+     */
     getVersion() {
-      const pjson = require("../package.json");
       return pjson.version;
     }
 
@@ -309,4 +322,4 @@ module.exports = (puppeteer) => {
   }
 
   return BotBase;
-};
+}

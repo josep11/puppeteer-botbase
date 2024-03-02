@@ -1,19 +1,27 @@
-const path = require("path");
+// Node.js built-in modules
+import { exec as callbackExec } from "child_process";
+import { existsSync, mkdirSync, promises as fs, readFileSync } from "fs";
+import path from "path";
+import { promisify } from "util";
 
-const { promises: fs } = require("fs");
-const { exec: execAsync } = require("child-process-async");
-const util = require("util");
-const { DateTime, Duration } = require("luxon");
+// Third-party libraries
+import { DateTime, Duration } from "luxon";
+
 // eslint-disable-next-line no-unused-vars
-const { Puppeteer, Page } = require("puppeteer");
+import UserAgents from "user-agents";
+import { dirname } from "./utils.js";
+
+const exec = promisify(callbackExec);
+
+const __dirname = dirname(import.meta.url);
 
 class Helper {
   constructor() {
     /**
-     * @param {number} in miliseconds
+     * @param {number} in milliseconds
      * @returns {function}
      */
-    this.delay = util.promisify(setTimeout);
+    this.delay = promisify(setTimeout);
   }
 
   printDate(channel = console.log) {
@@ -70,7 +78,9 @@ class Helper {
   }
 
   getNowMinus(hoursAgo = 0) {
-    return DateTime.local().minus({ hours: hoursAgo }).toISO();
+    const millis = hoursAgo * 60 * 60 * 1000;
+    const duration = Duration.fromMillis(millis);
+    return DateTime.local().minus(duration).toISO();
   }
 
   /**
@@ -144,7 +154,7 @@ class Helper {
   }
 
   async getIp() {
-    const { stdout, stderr } = await execAsync(`curl checkip.amazonaws.com`);
+    const { stdout, stderr } = await exec(`curl checkip.amazonaws.com`);
     if (!stdout) {
       console.error("IP no trobada a amazon");
       console.error(stderr);
@@ -155,36 +165,30 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
-
   /*****************************************/
 
   /**
-   *
    * @param {string} ip
    * @param {string} date
-   * @param {string} basePath defaults to current dir
-   * @returns undefined if no error happened or string with error message otherwise
+   * @param {string} ipFilePath the file where to save it
    */
-  async writeIPToFile(ip, date, basePath = __dirname) {
-    const ip_file = path.resolve(basePath, "../logs/ip.txt");
+  async writeIPToFile(ip, date, ipFilePath) {
     try {
-      await fs.appendFile(ip_file, `Data: ${date}\nIP: ${ip}\n\n`);
+      await fs.appendFile(ipFilePath, `Data: ${date}\nIP: ${ip}\n\n`);
     } catch (err) {
-      console.error(`cannot write to file ${ip_file}. Error: ${err}`);
-      return `cannot write to file ${ip_file}. Error: ${err}`;
+      console.error(`cannot write to file ${ipFilePath}. Error: ${err}`);
+      throw Error(`cannot write to file ${ipFilePath}. Error: ${err}`);
     }
-    return undefined;
   }
 
   /**
    *
    * @param {string} filename
    * @param {string} content
-   * @returns
    */
   async writeFile(filename, content) {
-    const nBytes = await fs.writeFile(filename, content);
-    return nBytes;
+    // noinspection UnnecessaryLocalVariableJS
+    await fs.writeFile(filename, content);
   }
 
   /**
@@ -194,17 +198,18 @@ class Helper {
    * @returns
    */
   async appendFile(filename, text) {
-    const nBytes = await fs.appendFile(filename, text, "utf-8");
-    return nBytes;
+    // noinspection UnnecessaryLocalVariableJS
+    await fs.appendFile(filename, text, "utf-8");
   }
 
   /**
-   *
    * @param {string} filename
    * @returns {Promise<string>} the content of the file
    */
   async readFile(filename) {
-    return await fs.readFile(filename, "utf-8");
+    const encoding = "utf-8";
+    const buffer = await fs.readFile(filename, { encoding });
+    return buffer.toString();
   }
 
   async emptyFile(filename) {
@@ -212,26 +217,21 @@ class Helper {
   }
 
   /**
-   * @param {string} cookiesFile
+   * @param {string} filePath - The path to the JSON file to load.
+   * @return {object} the parsed JSON object.
+   * @throws {SyntaxError} when the JSON is malformed
    */
-  readJsonFile(cookiesFile) {
-    try {
-      const myJsonObject = require(cookiesFile);
-      return myJsonObject;
-    } catch (err) {
-      console.error("Reading cookie error. Defaulting to [] \n\n" + err);
-      return [];
-    }
+  loadJson(filePath) {
+    const jsonString = readFileSync(filePath);
+    return JSON.parse(jsonString.toString());
   }
 
   /**
    * @param {fs.PathLike} dir
    */
   createDirIfNotExists(dir) {
-    const fs = require("fs");
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    if (!existsSync(dir)) {
+      mkdirSync(dir, { recursive: true });
     }
   }
 
@@ -255,6 +255,7 @@ class Helper {
 
   /**
    * @param {string} jsonStr
+   * @param basePath
    */
   async logJSONdebug(jsonStr, basePath = __dirname) {
     const dir = path.resolve(basePath, `./logs/dataset`);
@@ -281,7 +282,6 @@ class Helper {
    * Used by the V1 version of user-agents.
    */
   #getRanomisedUserAgentV1() {
-    const UserAgents = require("user-agents");
     const userAgents = new UserAgents({
       deviceCategory: "desktop",
       platform: "MacIntel", //"Linux x86_64",
@@ -300,4 +300,4 @@ class Helper {
   }
 }
 
-module.exports = new Helper();
+export const helper = new Helper();

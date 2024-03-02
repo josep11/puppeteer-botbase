@@ -1,13 +1,14 @@
-const assert = require("assert");
-// var expect = require("chai").expect;
-const path = require("path");
-const fs = require("fs");
-const { LocalFsCookieSaver } = require("../index");
-const { helper } = require("../index");
+import assert from "assert";
+import path from "path";
+
+import fs from "fs";
+
+import { LocalFsCookieSaver } from "../src/LocalFsCookieSaver.js";
+import { helper } from "../index.js";
+
 let cookieSaver;
 
-const basePath = path.join(__dirname, "../");
-const cookiesFilePath = path.resolve(basePath, "./res/cookies_test.json");
+const cookiesFilePath = path.resolve("./res/cookies_test.json");
 
 before(async () => {
   await helper.rmFileIfExists(cookiesFilePath);

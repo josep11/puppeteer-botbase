@@ -1,9 +1,11 @@
-const fs = require("fs");
-const { dirname } = require("path");
-const helper = require("./helper");
-const ICookieSaver = require("./ICookieSaver");
+import fs from "fs";
+import { dirname } from "path";
 
-class LocalFsCookieSaver extends ICookieSaver {
+import { helper } from "./helper.js";
+// TODO: convert interfaces
+import { ICookieSaver } from "./ICookieSaver.js";
+
+export class LocalFsCookieSaver extends ICookieSaver {
   /**
    *
    * @param {Object} param should have the following keys { cookiesFilePath }
@@ -28,10 +30,9 @@ class LocalFsCookieSaver extends ICookieSaver {
   // eslint-disable-next-line require-await
   async readCookies() {
     try {
-      const jsonString = fs.readFileSync(this.cookiesFilePath);
-      return JSON.parse(jsonString.toString());
+      return helper.loadJson(this.cookiesFilePath);
     } catch (err) {
-      if (err.code != "ENOENT") {
+      if (err.code !== "ENOENT") {
         console.error("Reading cookie error. Defaulting to [] \n\n" + err);
       }
     }
@@ -57,5 +58,3 @@ class LocalFsCookieSaver extends ICookieSaver {
     await this.writeCookies("[]");
   }
 }
-
-module.exports = LocalFsCookieSaver;

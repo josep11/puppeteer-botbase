@@ -1,4 +1,4 @@
-class LoginError extends Error {
+export class LoginError extends Error {
   /**
    * @param {string} message
    */
@@ -10,7 +10,7 @@ class LoginError extends Error {
   }
 }
 
-class MyTimeoutError extends Error {
+export class MyTimeoutError extends Error {
   constructor(message = "Conexió Lenta ❌") {
     super(message);
     Error.captureStackTrace(this, this.constructor);
@@ -19,7 +19,7 @@ class MyTimeoutError extends Error {
   }
 }
 
-class NotImplementedError extends Error {
+export class NotImplementedError extends Error {
   constructor(message = "Method not implemented") {
     super(message);
     Error.captureStackTrace(this, this.constructor);
@@ -28,7 +28,7 @@ class NotImplementedError extends Error {
   }
 }
 
-class NoInternetError extends Error {
+export class NoInternetError extends Error {
   constructor(message = "No Tens Internet ❌") {
     super(message);
     Error.captureStackTrace(this, this.constructor);
@@ -37,7 +37,7 @@ class NoInternetError extends Error {
   }
 }
 
-class HTMLMarkupChangedError extends Error {
+export class HTMLMarkupChangedError extends Error {
   constructor(message = "Markup: The page HTML changed. Need to fix it") {
     super(message);
     Error.captureStackTrace(this, this.constructor);
@@ -45,11 +45,3 @@ class HTMLMarkupChangedError extends Error {
     this.name = this.constructor.name;
   }
 }
-
-module.exports = {
-  LoginError,
-  MyTimeoutError,
-  NoInternetError,
-  NotImplementedError,
-  HTMLMarkupChangedError,
-};

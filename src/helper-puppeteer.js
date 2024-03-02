@@ -1,7 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-const { Page } = require("puppeteer");
-const { waitForTimeout, writeFile, getRandBetween } = require("./helper");
-class HelperPuppeteer {
+import { helper } from "./helper.js";
+// eslint-disable-next-line no-unused-vars
+import { Page } from "puppeteer";
+
+const { getRandBetween, waitForTimeout, writeFile } = helper;
+
+export class HelperPuppeteer {
   /**
    * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
    * That's why it is recommended to set the @elementType param to narrow down the search
@@ -192,5 +196,3 @@ class HelperPuppeteer {
     });
   }
 }
-
-module.exports = HelperPuppeteer;

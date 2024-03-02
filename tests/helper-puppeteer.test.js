@@ -1,7 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-const { Page } = require("puppeteer");
-const assert = require("assert");
-const puppeteer = require("puppeteer");
+import puppeteer, { Page } from "puppeteer";
+import assert from "assert";
+
+import { HelperPuppeteer } from "../index.js";
+
 let browser, page;
 
 async function initBrowser() {
@@ -24,8 +26,6 @@ async function reinitBrowser() {
 before(async () => {
   await initBrowser();
 });
-
-const { HelperPuppeteer } = require("../index");
 
 const POPUP_PAGE_URL = "https://www.bonarea.com/ca/";
 const POPUP_ACCEPT_COOKIES_BUTTON_TEXT = "Acceptar";
@@ -171,6 +171,7 @@ describe("Module Helper Puppeteer Tests", () => {
 after(async () => {
   await closeBrowser();
 });
+
 async function assertThatCookiesTextIsNotPresent() {
   const textThatShouldNotBeFound = "utilitzem galetes";
 
