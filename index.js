@@ -1,4 +1,4 @@
-export * from "./src/helper_puppeteer.js";
+export * from "./src/helper-puppeteer.js";
 
 export {
   HTMLMarkupChangedError,
