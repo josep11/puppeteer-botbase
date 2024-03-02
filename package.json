@@ -22,7 +22,6 @@
 		"timeout": 55000
 	},
 	"dependencies": {
-		"child-process-async": "^1.0.1",
 		"deepmerge": "^4.3.1",
 		"fs": "0.0.1-security",
 		"glob": "^10.3.10",

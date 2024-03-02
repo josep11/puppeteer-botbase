@@ -1,5 +1,10 @@
-// Node.js built-in modulesimport path from "path";
-import { exec as execAsync } from "child-process-async";
+// Node.js built-in modules
+import path from "path";
+import { exec as callbackExec } from "child_process";
+import { promisify } from "util";
+
+const exec = promisify(callbackExec);
+
 import { promises as fs } from "fs";
 import util from "util";
 
