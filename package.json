@@ -26,7 +26,6 @@
 		"fs": "0.0.1-security",
 		"glob": "^10.3.10",
 		"luxon": "^3.4.4",
-		"splendid-ui": "^0.11.0-alpha.4",
 		"user-agents": "^1.1.124"
 	},
 	"optionalDependencies": {
