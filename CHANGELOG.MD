@@ -4,6 +4,7 @@
 
 ### Changed
 
+- `helper.writeIPToFile` is expecting the output full file path, instead
 - By default, config is expected at `./config/config.js` instead of `./config/config.json`
 
 ### Removed

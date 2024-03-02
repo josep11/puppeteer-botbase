@@ -1,16 +1,19 @@
 // Node.js built-in modules
-import path from "path";
 import { exec as callbackExec } from "child_process";
+import { existsSync, promises as fs, mkdirSync, readFileSync } from "fs";
+import path from "path";
 import { promisify } from "util";
-import { existsSync, mkdirSync, promises as fs, readFileSync } from "fs";
 
 // Third-party libraries
 import { DateTime, Duration } from "luxon";
 
 // eslint-disable-next-line no-unused-vars
 import UserAgents from "user-agents";
+import { dirname } from "./utils.js";
 
 const exec = promisify(callbackExec);
+
+const __dirname = dirname(import.meta.url);
 
 class Helper {
   constructor() {
@@ -160,37 +163,30 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
-
   /*****************************************/
 
   /**
-   *
    * @param {string} ip
    * @param {string} date
-   * @param {string} basePath defaults to current dir
-   * @returns undefined if no error happened or string with error message otherwise
+   * @param {string} ipFilePath the file where to save it
    */
-  async writeIPToFile(ip, date, basePath = __dirname) {
-    const ip_file = path.resolve(basePath, "../logs/ip.txt");
+  async writeIPToFile(ip, date, ipFilePath) {
     try {
-      await fs.appendFile(ip_file, `Data: ${date}\nIP: ${ip}\n\n`);
+      await fs.appendFile(ipFilePath, `Data: ${date}\nIP: ${ip}\n\n`);
     } catch (err) {
-      console.error(`cannot write to file ${ip_file}. Error: ${err}`);
-      return `cannot write to file ${ip_file}. Error: ${err}`;
+      console.error(`cannot write to file ${ipFilePath}. Error: ${err}`);
+      throw Error(`cannot write to file ${ipFilePath}. Error: ${err}`);
     }
-    return undefined;
   }
 
   /**
    *
    * @param {string} filename
    * @param {string} content
-   * @returns
    */
   async writeFile(filename, content) {
     // noinspection UnnecessaryLocalVariableJS
-    const nBytes = await fs.writeFile(filename, content);
-    return nBytes;
+    await fs.writeFile(filename, content);
   }
 
   /**
@@ -201,17 +197,17 @@ class Helper {
    */
   async appendFile(filename, text) {
     // noinspection UnnecessaryLocalVariableJS
-    const nBytes = await fs.appendFile(filename, text, "utf-8");
-    return nBytes;
+    await fs.appendFile(filename, text, "utf-8");
   }
 
   /**
-   *
    * @param {string} filename
    * @returns {Promise<string>} the content of the file
    */
   async readFile(filename) {
-    return await fs.readFile(filename, "utf-8");
+    const encoding = "utf-8";
+    const buffer = await fs.readFile(filename, { encoding });
+    return buffer.toString();
   }
 
   async emptyFile(filename) {
@@ -264,7 +260,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`,
+      `data_${this.dateFormatForLog()}.json`
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);

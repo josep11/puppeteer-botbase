@@ -48,7 +48,7 @@ export const shouldTestBotBase = ({
 
   it("should get enabled false as default option for child class", () => {
     const myChildCls = new ExampleChild({
-      basePath: __dirname,
+      basePath: "example/base/path",
     });
     const enabled = myChildCls.enabled();
     assert.strictEqual(false, enabled);
@@ -56,7 +56,7 @@ export const shouldTestBotBase = ({
 
   it("should override default config properties", () => {
     const myChildCls = new ExampleChild({
-      basePath: __dirname,
+      basePath: "example/base/path",
     });
     const config = myChildCls.getConfig();
     const errMsg =

@@ -2,12 +2,12 @@ import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
 import { Page, PuppeteerNode } from "puppeteer";
 
-import { helper } from "./helper.js";
-import { MyTimeoutError, NotImplementedError } from "./custom_errors.js";
+import path from "path";
+import config from "../config/config.js";
 import { ICookieSaver } from "./ICookieSaver.js";
 import { IScreenshotSaver } from "./IScreenshotSaver.js";
-import config from "../config/config.js";
-import path from "path";
+import { MyTimeoutError, NotImplementedError } from "./custom_errors.js";
+import { helper } from "./helper.js";
 
 const { waitForTimeout } = helper;
 
@@ -37,16 +37,16 @@ export function BotBaseFactory(puppeteer) {
      */
     // @ts-ignore
     constructor({
-                  mainUrl,
-                  basePath,
-                  cookieSaver,
-                  screenshotSaver,
-                  configChild = {},
-                  chromiumExecutablePath = null,
-                } = {}) {
+      mainUrl,
+      basePath,
+      cookieSaver,
+      screenshotSaver,
+      configChild = {},
+      chromiumExecutablePath = null,
+    } = {}) {
       if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes("http")) {
         throw new Error(
-          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js",
+          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js"
         );
       }
 
@@ -56,13 +56,13 @@ export function BotBaseFactory(puppeteer) {
 
       if (!(cookieSaver instanceof ICookieSaver)) {
         throw new Error(
-          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver",
+          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver"
         );
       }
 
       if (!(screenshotSaver instanceof IScreenshotSaver)) {
         throw new Error(
-          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver",
+          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver"
         );
       }
 
@@ -275,9 +275,11 @@ export function BotBaseFactory(puppeteer) {
 
       await this.page.goto("http://checkip.amazonaws.com/");
       const ip = await this.page.evaluate(
-        () => document.body.textContent?.trim() || "",
+        () => document.body.textContent?.trim() || ""
       );
-      await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
+
+      const ipFilePath = path.join(this.basePath, "/logs/ip.txt");
+      await helper.writeIPToFile(ip, helper.dateFormatForLog(), ipFilePath);
       return ip;
     }
 

@@ -1,6 +1,6 @@
 // Node.js built-in modules
 import assert from "assert";
-import path, { dirname } from "path";
+import path from "path";
 import fs from "fs";
 
 // Third-party libraries
@@ -9,17 +9,12 @@ import puppeteer from "puppeteer";
 import { shouldTestBotBase } from "./botbase.shared.js";
 import { BotBaseFactory } from "../src/botbase-factory.js";
 
-import { fileURLToPath } from "url";
 import { LocalFsCookieSaver } from "../src/LocalFsCookieSaver.js";
 import { LocalScreenshotSaver } from "../src/LocalScreenshotSaver.js";
+import { dirname } from "../src/utils.js";
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(import.meta.url);
 const basePath = path.resolve(__dirname, "../");
-
-// TODO: verify it's working
-console.log(basePath);
 
 const BotBase = BotBaseFactory(puppeteer);
 
