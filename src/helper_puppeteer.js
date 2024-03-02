@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import { getRandBetween, waitForTimeout, writeFile } from "./helper.js";
-
+import { helper } from "./helper.js";
 // eslint-disable-next-line no-unused-vars
 import { Page } from "puppeteer";
+
+const { getRandBetween, waitForTimeout, writeFile } = helper;
 
 export class HelperPuppeteer {
   /**
@@ -16,14 +17,14 @@ export class HelperPuppeteer {
   static async closePopupByTextContaining(
     page,
     textElementOrChildren = "Aceptar y cerrar",
-    elementType = "*"
+    elementType = "*",
   ) {
     const xPathSel = `::-p-xpath(//${elementType}[contains(., "${textElementOrChildren}")])`;
     const btn = await page.$(xPathSel);
 
     if (!btn) {
       console.debug(
-        `popup with text '${textElementOrChildren}' not found ... continuing`
+        `popup with text '${textElementOrChildren}' not found ... continuing`,
       );
       return false;
     }
@@ -34,7 +35,7 @@ export class HelperPuppeteer {
       return true;
     } catch (err) {
       console.error(
-        `error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`
+        `error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`,
       );
     }
 
@@ -50,14 +51,14 @@ export class HelperPuppeteer {
   static async closePopup(
     page,
     elementText = "Aceptar y cerrar",
-    elementType = "*"
+    elementType = "*",
   ) {
     const xPathSel = `::-p-xpath(//${elementType}[contains(text(), "${elementText}")])`;
     const btn = await page.$(xPathSel);
 
     if (!btn) {
       console.debug(
-        `popup with text '${elementText}' not found ... continuing`
+        `popup with text '${elementText}' not found ... continuing`,
       );
       return false;
     }
@@ -70,7 +71,7 @@ export class HelperPuppeteer {
       await waitForTimeout(1500);
     } catch (err) {
       console.error(
-        `error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`
+        `error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`,
       );
       console.error(err);
     }
@@ -86,7 +87,7 @@ export class HelperPuppeteer {
   static async tryToClickElementByTextOrCssSelectors(
     page,
     elementText = null,
-    cssSelectorArray = []
+    cssSelectorArray = [],
   ) {
     if (
       elementText &&
@@ -126,7 +127,7 @@ export class HelperPuppeteer {
       return true;
     }
     console.error(
-      `Text "${text}" is not found in document body on ${page.url()}`
+      `Text "${text}" is not found in document body on ${page.url()}`,
     );
     return false;
   }
@@ -145,7 +146,7 @@ export class HelperPuppeteer {
         const re = new RegExp(textSearch, "gi");
         return (text.match(re) || []).length;
       },
-      textToFind
+      textToFind,
     );
   }
 

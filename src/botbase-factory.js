@@ -4,9 +4,9 @@ import { PuppeteerNode, Page } from 'puppeteer';
 
 import { helper } from './helper.js';
 import { NotImplementedError, MyTimeoutError } from './custom_errors.js';
-import ICookieSaver from './ICookieSaver.js';
-import IScreenshotSaver from './IScreenshotSaver.js';
-import { waitForTimeout } from './helper.js';
+import { ICookieSaver } from './ICookieSaver.js';
+import { IScreenshotSaver } from './IScreenshotSaver.js';
+const { waitForTimeout } = helper;
 
 
 import config from "../config/config.js";

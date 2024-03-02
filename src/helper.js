@@ -2,11 +2,7 @@
 import path from "path";
 import { exec as callbackExec } from "child_process";
 import { promisify } from "util";
-
-const exec = promisify(callbackExec);
-
-import { promises as fs } from "fs";
-import util from "util";
+import { promises as fs, readFileSync, existsSync, mkdirSync } from "fs";
 
 // Third-party libraries
 import { DateTime, Duration } from "luxon";
@@ -14,13 +10,15 @@ import { DateTime, Duration } from "luxon";
 // eslint-disable-next-line no-unused-vars
 import UserAgents from "user-agents";
 
+const exec = promisify(callbackExec);
+
 class Helper {
   constructor() {
     /**
      * @param {number} in milliseconds
      * @returns {function}
      */
-    this.delay = util.promisify(setTimeout);
+    this.delay = promisify(setTimeout);
   }
 
   printDate(channel = console.log) {
@@ -151,7 +149,7 @@ class Helper {
   }
 
   async getIp() {
-    const { stdout, stderr } = await execAsync(`curl checkip.amazonaws.com`);
+    const { stdout, stderr } = await exec(`curl checkip.amazonaws.com`);
     if (!stdout) {
       console.error("IP no trobada a amazon");
       console.error(stderr);
@@ -162,6 +160,7 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
+
   /*****************************************/
 
   /**
@@ -189,6 +188,7 @@ class Helper {
    * @returns
    */
   async writeFile(filename, content) {
+    // noinspection UnnecessaryLocalVariableJS
     const nBytes = await fs.writeFile(filename, content);
     return nBytes;
   }
@@ -200,6 +200,7 @@ class Helper {
    * @returns
    */
   async appendFile(filename, text) {
+    // noinspection UnnecessaryLocalVariableJS
     const nBytes = await fs.appendFile(filename, text, "utf-8");
     return nBytes;
   }
@@ -223,7 +224,7 @@ class Helper {
    * @throws {SyntaxError} when the JSON is malformed
    */
   loadJson(filePath) {
-    const jsonString = fs.readFileSync(filePath);
+    const jsonString = readFileSync(filePath);
     return JSON.parse(jsonString.toString());
   }
 
@@ -231,8 +232,8 @@ class Helper {
    * @param {fs.PathLike} dir
    */
   createDirIfNotExists(dir) {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    if (!existsSync(dir)) {
+     mkdirSync(dir, { recursive: true });
     }
   }
 
@@ -263,7 +264,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`
+      `data_${this.dateFormatForLog()}.json`,
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);
