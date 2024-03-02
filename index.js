@@ -6,7 +6,7 @@ export {
   MyTimeoutError,
   NoInternetError,
   NotImplementedError,
-} from "./src/custom_errors.js";
+} from "./src/custom-errors.js";
 
 export * from "./src/helper.js";
 

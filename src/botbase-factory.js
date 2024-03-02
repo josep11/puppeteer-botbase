@@ -6,7 +6,7 @@ import path from "path";
 import config from "../config/config.js";
 import { ICookieSaver } from "./ICookieSaver.js";
 import { IScreenshotSaver } from "./IScreenshotSaver.js";
-import { MyTimeoutError, NotImplementedError } from "./custom_errors.js";
+import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
 import { helper } from "./helper.js";
 
 const { waitForTimeout } = helper;

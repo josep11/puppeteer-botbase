@@ -1,4 +1,4 @@
-import { NotImplementedError } from "./custom_errors.js";
+import { NotImplementedError } from "./custom-errors.js";
 
 export class IScreenshotSaver {
   constructor() {}
