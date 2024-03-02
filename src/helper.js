@@ -1,6 +1,6 @@
 // Node.js built-in modules
 import { exec as callbackExec } from "child_process";
-import { existsSync, promises as fs, mkdirSync, readFileSync } from "fs";
+import { existsSync, mkdirSync, promises as fs, readFileSync } from "fs";
 import path from "path";
 import { promisify } from "util";
 
@@ -262,7 +262,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`
+      `data_${this.dateFormatForLog()}.json`,
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);

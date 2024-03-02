@@ -1,7 +1,8 @@
 import { NotImplementedError } from "./custom_errors.js";
 
 export class ICookieSaver {
-  constructor() {}
+  constructor() {
+  }
 
   /**
    * @param {*} cookies

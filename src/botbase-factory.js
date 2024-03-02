@@ -37,16 +37,16 @@ export function BotBaseFactory(puppeteer) {
      */
     // @ts-ignore
     constructor({
-      mainUrl,
-      basePath,
-      cookieSaver,
-      screenshotSaver,
-      configChild = {},
-      chromiumExecutablePath = null,
-    } = {}) {
+                  mainUrl,
+                  basePath,
+                  cookieSaver,
+                  screenshotSaver,
+                  configChild = {},
+                  chromiumExecutablePath = null,
+                } = {}) {
       if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes("http")) {
         throw new Error(
-          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js"
+          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js",
         );
       }
 
@@ -56,13 +56,13 @@ export function BotBaseFactory(puppeteer) {
 
       if (!(cookieSaver instanceof ICookieSaver)) {
         throw new Error(
-          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver"
+          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver",
         );
       }
 
       if (!(screenshotSaver instanceof IScreenshotSaver)) {
         throw new Error(
-          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver"
+          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver",
         );
       }
 
@@ -275,7 +275,7 @@ export function BotBaseFactory(puppeteer) {
 
       await this.page.goto("https://checkip.amazonaws.com/");
       const ip = await this.page.evaluate(
-        () => document.body.textContent?.trim() || ""
+        () => document.body.textContent?.trim() || "",
       );
 
       const ipFilePath = path.join(this.basePath, "/logs/ip.txt");

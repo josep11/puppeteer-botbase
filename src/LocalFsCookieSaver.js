@@ -14,7 +14,7 @@ export class LocalFsCookieSaver extends ICookieSaver {
     super();
     if (!cookiesFilePath || typeof cookiesFilePath != "string") {
       throw new Error(
-        "Developer fix this: cookiesFilePath is undefined or not string"
+        "Developer fix this: cookiesFilePath is undefined or not string",
       );
     }
 
