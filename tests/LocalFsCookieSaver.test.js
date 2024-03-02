@@ -8,8 +8,7 @@ import { helper } from "../index.js";
 
 let cookieSaver;
 
-const basePath = path.join(__dirname, "../");
-const cookiesFilePath = path.resolve(basePath, "./res/cookies_test.json");
+const cookiesFilePath = path.resolve("./res/cookies_test.json");
 
 before(async () => {
   await helper.rmFileIfExists(cookiesFilePath);

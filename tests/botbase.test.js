@@ -6,12 +6,22 @@ import fs from 'fs';
 // Third-party libraries
 import puppeteer from 'puppeteer';
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const basePath = path.resolve(__dirname, '../');
+
+// TODO: verify it's working
+console.log(basePath);
+
 // Application-specific modules
-import { shouldTestBotBase } from './botbase.shared';
-import BotBaseFactory from '../src/botbase-factory';
+import { shouldTestBotBase } from './botbase.shared.js';
+import { BotBaseFactory } from '../src/botbase-factory.js';
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const BotBase = BotBaseFactory(puppeteer);
-const basePath = path.resolve(__dirname, '../');
 
 describe("Botbase Tests", () => {
   shouldTestBotBase({

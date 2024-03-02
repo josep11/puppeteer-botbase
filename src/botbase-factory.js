@@ -1,24 +1,26 @@
-import deepmerge from 'deepmerge';
+import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
-import { PuppeteerNode, Page } from 'puppeteer';
+import { Page, PuppeteerNode } from "puppeteer";
 
-import { helper } from './helper.js';
-import { NotImplementedError, MyTimeoutError } from './custom_errors.js';
-import { ICookieSaver } from './ICookieSaver.js';
-import { IScreenshotSaver } from './IScreenshotSaver.js';
+import { helper } from "./helper.js";
+import { MyTimeoutError, NotImplementedError } from "./custom_errors.js";
+import { ICookieSaver } from "./ICookieSaver.js";
+import { IScreenshotSaver } from "./IScreenshotSaver.js";
+import config from "../config/config.js";
+import path from "path";
+
 const { waitForTimeout } = helper;
 
-
-import config from "../config/config.js";
 // Load the package json
-const pjson = helper.loadJson("../package.json");
+const packageJsonPath = path.resolve("package.json");
+const pjson = helper.loadJson(packageJsonPath);
 
 /**
  *
  * @param {PuppeteerNode} puppeteer
- * @returns
+ * @returns {BotBase}
  */
-export default (puppeteer) => {
+export function BotBaseFactory(puppeteer) {
   class BotBase {
     /**
      * @typedef {Object} BotBaseParams
@@ -35,16 +37,16 @@ export default (puppeteer) => {
      */
     // @ts-ignore
     constructor({
-      mainUrl,
-      basePath,
-      cookieSaver,
-      screenshotSaver,
-      configChild = {},
-      chromiumExecutablePath = null,
-    } = {}) {
+                  mainUrl,
+                  basePath,
+                  cookieSaver,
+                  screenshotSaver,
+                  configChild = {},
+                  chromiumExecutablePath = null,
+                } = {}) {
       if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes("http")) {
         throw new Error(
-          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js"
+          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js",
         );
       }
 
@@ -54,13 +56,13 @@ export default (puppeteer) => {
 
       if (!(cookieSaver instanceof ICookieSaver)) {
         throw new Error(
-          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver"
+          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver",
         );
       }
 
       if (!(screenshotSaver instanceof IScreenshotSaver)) {
         throw new Error(
-          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver"
+          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver",
         );
       }
 
@@ -123,6 +125,7 @@ export default (puppeteer) => {
 
     /* *************** */
     /* LOGIN FUNCTIONS */
+
     /* *************** */
 
     /**
@@ -229,6 +232,7 @@ export default (puppeteer) => {
 
     /* ******************* */
     /* BEGIN I/O FUNCTIONS */
+
     /* ******************* */
 
     /**
@@ -271,7 +275,7 @@ export default (puppeteer) => {
 
       await this.page.goto("http://checkip.amazonaws.com/");
       const ip = await this.page.evaluate(
-        () => document.body.textContent?.trim() || ""
+        () => document.body.textContent?.trim() || "",
       );
       await helper.writeIPToFile(ip, helper.dateFormatForLog(), this.basePath);
       return ip;
@@ -279,6 +283,7 @@ export default (puppeteer) => {
 
     /* ******************* */
     /* END I/O FUNCTIONS */
+
     /* ******************* */
 
     enabled() {
@@ -289,6 +294,11 @@ export default (puppeteer) => {
       return this.config;
     }
 
+    /**
+     * Retrieves the version number of the botbase.
+     *
+     * @return {string} The version number of the botbase.
+     */
     getVersion() {
       return pjson.version;
     }

@@ -2,7 +2,7 @@
 import path from "path";
 import { exec as callbackExec } from "child_process";
 import { promisify } from "util";
-import { promises as fs, readFileSync, existsSync, mkdirSync } from "fs";
+import { existsSync, mkdirSync, promises as fs, readFileSync } from "fs";
 
 // Third-party libraries
 import { DateTime, Duration } from "luxon";
@@ -233,7 +233,7 @@ class Helper {
    */
   createDirIfNotExists(dir) {
     if (!existsSync(dir)) {
-     mkdirSync(dir, { recursive: true });
+      mkdirSync(dir, { recursive: true });
     }
   }
 
