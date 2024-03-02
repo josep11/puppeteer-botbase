@@ -1,11 +1,9 @@
 import fs from "fs";
-
 import { dirname } from "path";
 
-import helper from "./helper";
-
+import { helper } from "./helper.js";
 // TODO: convert interfaces
-import ICookieSaver from "./ICookieSaver";
+import { ICookieSaver } from "./ICookieSaver.js";
 
 export class LocalFsCookieSaver extends ICookieSaver {
   /**
@@ -35,7 +33,7 @@ export class LocalFsCookieSaver extends ICookieSaver {
       const jsonString = fs.readFileSync(this.cookiesFilePath);
       return JSON.parse(jsonString.toString());
     } catch (err) {
-      if (err.code != "ENOENT") {
+      if (err.code !== "ENOENT") {
         console.error("Reading cookie error. Defaulting to [] \n\n" + err);
       }
     }
@@ -61,5 +59,3 @@ export class LocalFsCookieSaver extends ICookieSaver {
     await this.writeCookies("[]");
   }
 }
-
-module.exports = LocalFsCookieSaver;

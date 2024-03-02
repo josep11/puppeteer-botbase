@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { getRandBetween, waitForTimeout, writeFile } from "./helper";
+import { getRandBetween, waitForTimeout, writeFile } from "./helper.js";
 
 // eslint-disable-next-line no-unused-vars
 import { Page } from "puppeteer";

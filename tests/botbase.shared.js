@@ -1,17 +1,17 @@
 // eslint-disable-next-line no-unused-vars
 import assert from "assert";
 import fs from "fs";
-import glob from "glob";
+import { glob } from "glob";
 // import path from "path";
 
-const shouldTestBotBase = ({
-  // eslint-disable-next-line no-unused-vars
-  puppeteer,
-  BotBase,
-  basePath,
-  cookieSaver,
-  screenshotSaver,
-}) => {
+export const shouldTestBotBase = ({
+                                    // eslint-disable-next-line no-unused-vars
+                                    puppeteer,
+                                    BotBase,
+                                    basePath,
+                                    cookieSaver,
+                                    screenshotSaver,
+                                  }) => {
   class ExampleChild extends BotBase {
     constructor({ basePath }) {
       super({
@@ -123,8 +123,4 @@ const shouldTestBotBase = ({
       fs.unlinkSync(file);
     }
   });
-};
-
-module.exports = {
-  shouldTestBotBase,
 };

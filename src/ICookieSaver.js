@@ -1,4 +1,4 @@
-import { NotImplementedError } from "./custom_errors";
+import { NotImplementedError } from "./custom_errors.js";
 
 export class ICookieSaver {
   constructor() {}

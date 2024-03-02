@@ -12,7 +12,7 @@
 	},
 	"scripts": {
 		"start": "node index.js",
-		"test": "NODE_ENV=test mocha --exit --colors --bail tests/*",
+		"test": "NODE_ENV=test mocha --require esm --exit --colors --bail tests/*",
 		"test:fast": "NODE_ENV=test mocha --exit --colors --bail tests/*puppeteer*.*",
 		"test:ci": "NODE_ENV=test mocha  --check-leaks --exit \"tests/!(*botbase*|*helper_puppeteer*).js\" --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results/mocha/results.xml",
 		"lint": "eslint . --ext .js,.ts",
@@ -41,6 +41,7 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.3",
+		"esm": "^3.2.25",
 		"mocha": "^10.3.0",
 		"mocha-junit-reporter": "^2.2.1",
 		"puppeteer": "^22.2.0",

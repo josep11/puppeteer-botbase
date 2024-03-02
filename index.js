@@ -1,45 +1,22 @@
-import HelperPuppeteer from "./src/helper_puppeteer";
+export * from "./src/helper_puppeteer.js";
 
-import {
+export {
   HTMLMarkupChangedError,
   LoginError,
   MyTimeoutError,
   NoInternetError,
   NotImplementedError,
-} from "./src/custom_errors";
+} from "./src/custom_errors.js";
 
-import helper from "./src/helper";
+// export { helper } from "./src/helper.js";
+export * from "./src/helper.js";
 
-import IScreenshotSaver from "./src/IScreenshotSaver";
+export * from "./src/IScreenshotSaver.js";
 
-import ICookieSaver from "./src/ICookieSaver";
+export * from "./src/ICookieSaver.js";
 
-import LocalFsCookieSaver from "./src/LocalFsCookieSaver";
+export * from "./src/LocalFsCookieSaver.js";
 
-import LocalScreenshotSaver from "./src/LocalScreenshotSaver";
+export * from "./src/LocalScreenshotSaver.js";
 
-import BotBaseFactory from "./src/botbase-factory";
-
-module.exports = {
-  // BotBaseFactory
-  BotBaseFactory,
-
-  // Errors
-  LoginError,
-  MyTimeoutError,
-  NoInternetError,
-  NotImplementedError,
-  HTMLMarkupChangedError,
-
-  // Helper Puppeteer
-  HelperPuppeteer,
-
-  // Helper
-  helper,
-
-  // Savers
-  ICookieSaver,
-  IScreenshotSaver,
-  LocalFsCookieSaver,
-  LocalScreenshotSaver,
-};
+export * from "./src/botbase-factory.js";

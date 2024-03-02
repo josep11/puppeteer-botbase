@@ -1,11 +1,13 @@
 import deepmerge from 'deepmerge';
-import * as helper from './helper';
-import { NotImplementedError, MyTimeoutError } from './custom_errors';
-import ICookieSaver from './ICookieSaver';
-import IScreenshotSaver from './IScreenshotSaver';
 // eslint-disable-next-line no-unused-vars
 import { PuppeteerNode, Page } from 'puppeteer';
-import { waitForTimeout } from './helper';
+
+import { helper } from './helper.js';
+import { NotImplementedError, MyTimeoutError } from './custom_errors.js';
+import ICookieSaver from './ICookieSaver.js';
+import IScreenshotSaver from './IScreenshotSaver.js';
+import { waitForTimeout } from './helper.js';
+
 
 import config from "../config/config.json";
 import pjson from "../package.json";
@@ -233,7 +235,6 @@ export default (puppeteer) => {
      */
     async readCookiesFile() {
       return await this.cookieSaver.readCookies();
-      // return helper.readJsonFile(this.cookiesFile); // Load cookies from previous session
     }
 
     async writeCookiesFile(cookiesJson) {

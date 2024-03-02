@@ -1,16 +1,12 @@
-// Node.js built-in modules
-import path from "path";
+// Node.js built-in modulesimport path from "path";
+import { exec as execAsync } from "child-process-async";
 import { promises as fs } from "fs";
 import util from "util";
-import { exec as execAsync } from "child-process-async";
 
 // Third-party libraries
 import { DateTime, Duration } from "luxon";
 
 // eslint-disable-next-line no-unused-vars
-
-
-import fs from "fs";
 
 import UserAgents from "user-agents";
 
@@ -219,15 +215,12 @@ class Helper {
   }
 
   /**
-   * @param {string} cookiesFile
+   * @param {string} filePath - The path to the JSON file to load.
+   * @return {Promise<object>} A Promise that resolves with the parsed JSON object.
    */
-  readJsonFile(cookiesFile) {
-    try {
-      return require(cookiesFile);
-    } catch (err) {
-      console.error("Reading cookie error. Defaulting to [] \n\n" + err);
-      return [];
-    }
+  async loadJson(filePath) {
+    const jsonString = await readFile(filePath, 'utf8');
+    return JSON.parse(jsonString);
   }
 
   /**
@@ -303,5 +296,4 @@ class Helper {
   }
 }
 
-const helper = new Helper();
-export default helper;
+export const helper = new Helper();

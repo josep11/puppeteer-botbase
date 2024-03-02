@@ -3,9 +3,8 @@ import path from "path";
 
 import fs from "fs";
 
-import { helper, LocalFsCookieSaver } from "../index";
-
-import { expect } from "chai";
+import { LocalFsCookieSaver } from "../src/LocalFsCookieSaver.js";
+import { helper } from "../index.js";
 
 let cookieSaver;
 

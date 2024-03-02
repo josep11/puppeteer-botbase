@@ -1,15 +1,35 @@
 # Puppeteer BotBase
 
+## 8.0.0
+
+### Changed
+
+- By default, config is expected at `./config/config.js` instead of `./config/config.json`
+
+### Removed
+
+- `helper.readJsonFile`
+
+### Added
+
+- `helper.loadJson`: async function to load a json
+
+## 7.0.0
+
+### Changed
+
+- Improved imports: all of them can be imported from the index file.
+
 ## 6.0.0
 
 ### Removed
 
 - `HelperPuppeteer.getLocalPuppeteerInstallation` is removed. We should use `executablePath` from puppeteer instead.
-- `Helper.textExistsInPage` is removed. We should use `HelperPuppeteer.isTextPresentOnWebpage`.
+- `helper.textExistsInPage` is removed. We should use `HelperPuppeteer.isTextPresentOnWebpage`.
 
 ### Changed
 
-- `Helper.readJsonFile` is not async anymore.
+- `helper.readJsonFile` is not async anymore.
 
 ## 3.0.7
 
