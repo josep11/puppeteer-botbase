@@ -9,7 +9,7 @@ describe("Module Helper Tests", () => {
   let filePath;
 
   // This will run after each test in the "Module Helper Tests" block
-  afterEach(async function() {
+  afterEach(async function () {
     if (fs.existsSync(filePath)) {
       await pfs.unlink(filePath); // Delete file
     }
@@ -51,7 +51,7 @@ describe("Module Helper Tests", () => {
     const nowMinusMom = helper.getNowMinus(hours);
     assert.strictEqual(
       Math.round(helper.getDiferenceInHours(nowMinusMom)),
-      hours,
+      hours
     );
   });
 
@@ -62,7 +62,7 @@ describe("Module Helper Tests", () => {
     assert.ok(ip);
     assert.match(
       ip,
-      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
     );
   });
 
@@ -76,7 +76,7 @@ describe("Module Helper Tests", () => {
     expect(ua).to.be.a.string;
   });
 
-  it("dateFormatForLog: should return date in the format \"yyyy-MM-DD_HH.mm.ss\"", function() {
+  it('dateFormatForLog: should return date in the format "yyyy-MM-DD_HH.mm.ss"', function () {
     const result = helper.dateFormatForLog();
 
     const date = new Date();

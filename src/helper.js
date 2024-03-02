@@ -262,7 +262,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`,
+      `data_${this.dateFormatForLog()}.json`
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);

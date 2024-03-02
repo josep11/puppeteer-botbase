@@ -1,8 +1,7 @@
 import { NotImplementedError } from "./custom_errors.js";
 
 export class IScreenshotSaver {
-  constructor() {
-  }
+  constructor() {}
 
   _checkParams(imageBuffer) {
     if (!imageBuffer) {

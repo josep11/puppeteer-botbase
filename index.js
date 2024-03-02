@@ -8,7 +8,6 @@ export {
   NotImplementedError,
 } from "./src/custom_errors.js";
 
-// export { helper } from "./src/helper.js";
 export * from "./src/helper.js";
 
 export * from "./src/IScreenshotSaver.js";

@@ -5,11 +5,11 @@ import { glob } from "glob";
 // import path from "path";
 
 export const shouldTestBotBase = ({
-                                    BotBase,
-                                    basePath,
-                                    cookieSaver,
-                                    screenshotSaver,
-                                  }) => {
+  BotBase,
+  basePath,
+  cookieSaver,
+  screenshotSaver,
+}) => {
   class ExampleChild extends BotBase {
     constructor({ basePath }) {
       super({

@@ -78,7 +78,7 @@ describe("Module Helper Puppeteer Tests", () => {
     const clicked = await HelperPuppeteer.closePopup(
       page,
       POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
-      POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE,
+      POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE
     );
 
     assert.ok(clicked);
@@ -92,7 +92,7 @@ describe("Module Helper Puppeteer Tests", () => {
     await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
       page,
       POPUP_ACCEPT_COOKIES_BUTTON_TEXT,
-      [],
+      []
     );
 
     // Verify that some text inside that cookies popup is not present anymore
@@ -110,7 +110,7 @@ describe("Module Helper Puppeteer Tests", () => {
     await HelperPuppeteer.tryToClickElementByTextOrCssSelectors(
       page,
       wrongText,
-      [POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR],
+      [POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR]
     );
 
     // Verify that some text inside that cookies popup is not present anymore
@@ -177,7 +177,7 @@ async function assertThatCookiesTextIsNotPresent() {
 
   const textNotFound = await verifyTextIsNotPresent(
     page,
-    textThatShouldNotBeFound,
+    textThatShouldNotBeFound
   );
   assert.equal(textNotFound, true);
 }
