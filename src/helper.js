@@ -78,7 +78,9 @@ class Helper {
   }
 
   getNowMinus(hoursAgo = 0) {
-    return DateTime.local().minus({ hours: hoursAgo }).toISO();
+    const millis = hoursAgo * 60 * 60 * 1000;
+    const duration = Duration.fromMillis(millis);
+    return DateTime.local().minus(duration).toISO();
   }
 
   /**

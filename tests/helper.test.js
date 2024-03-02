@@ -16,7 +16,7 @@ describe("Module Helper Tests", () => {
   });
 
   it("should filter async", async () => {
-    var arr = [1, 2, 3, 4];
+    const arr = [1, 2, 3, 4];
 
     function isThreeAsync(number) {
       return new Promise((res) => {
@@ -36,12 +36,12 @@ describe("Module Helper Tests", () => {
     assert.strictEqual(Math.round(res), 0);
   });
   it("should be 15 hours difference", () => {
-    var d = new Date();
+    const d = new Date();
     d.setHours(d.getHours() - 15);
     assert.strictEqual(Math.round(helper.getDiferenceInHours(d)), 15);
   });
   it("should be 24 hours difference", () => {
-    var d = new Date();
+    const d = new Date();
     d.setDate(d.getDate() - 1);
     assert.strictEqual(Math.round(helper.getDiferenceInHours(d)), 24);
   });
@@ -51,7 +51,7 @@ describe("Module Helper Tests", () => {
     const nowMinusMom = helper.getNowMinus(hours);
     assert.strictEqual(
       Math.round(helper.getDiferenceInHours(nowMinusMom)),
-      hours
+      hours,
     );
   });
 
@@ -67,6 +67,7 @@ describe("Module Helper Tests", () => {
   });
 
   it("should wait 10ms", async () => {
+    // noinspection JSCheckFunctionSignatures
     await helper.delay(10);
   });
 

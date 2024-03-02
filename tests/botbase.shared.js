@@ -5,8 +5,6 @@ import { glob } from "glob";
 // import path from "path";
 
 export const shouldTestBotBase = ({
-                                    // eslint-disable-next-line no-unused-vars
-                                    puppeteer,
                                     BotBase,
                                     basePath,
                                     cookieSaver,

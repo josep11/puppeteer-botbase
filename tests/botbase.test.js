@@ -27,7 +27,6 @@ const screenshotSaver = new LocalScreenshotSaver({
 
 describe("Botbase Tests", () => {
   shouldTestBotBase({
-    puppeteer,
     BotBase,
     basePath,
     cookieSaver,

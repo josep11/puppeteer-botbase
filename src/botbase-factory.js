@@ -273,7 +273,7 @@ export function BotBaseFactory(puppeteer) {
     async logIP() {
       this.page = this.checkPage();
 
-      await this.page.goto("http://checkip.amazonaws.com/");
+      await this.page.goto("https://checkip.amazonaws.com/");
       const ip = await this.page.evaluate(
         () => document.body.textContent?.trim() || ""
       );
