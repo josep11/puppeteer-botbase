@@ -7,6 +7,9 @@ import IScreenshotSaver from './IScreenshotSaver';
 import { PuppeteerNode, Page } from 'puppeteer';
 import { waitForTimeout } from './helper';
 
+import config from "../config/config.json";
+import pjson from "../package.json";
+
 /**
  *
  * @param {PuppeteerNode} puppeteer
@@ -65,7 +68,7 @@ export default (puppeteer) => {
       this.mainUrl = mainUrl;
 
       //load default configuration options
-      this.config = require("../config/config.json");
+      this.config = config;
 
       //merging config options overriding with the upcoming ones
       this.config = deepmerge(this.config, configChild);
@@ -76,8 +79,6 @@ export default (puppeteer) => {
     }
 
     async initialize(opts = {}) {
-      // const pjson = require('./package.json');
-      // console.log(`init bot base v${pjson.version}`);
       if (this.browser != null) {
         await this.browser.close();
         this.page = null;
@@ -287,7 +288,6 @@ export default (puppeteer) => {
     }
 
     getVersion() {
-      const pjson = require("../package.json");
       return pjson.version;
     }
 

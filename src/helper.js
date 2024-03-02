@@ -1,15 +1,18 @@
 // Node.js built-in modules
-import path from 'path';
-import { promises as fs } from 'fs';
-import util from 'util';
-import { exec as execAsync } from 'child-process-async';
+import path from "path";
+import { promises as fs } from "fs";
+import util from "util";
+import { exec as execAsync } from "child-process-async";
 
 // Third-party libraries
-import { DateTime, Duration } from 'luxon';
+import { DateTime, Duration } from "luxon";
 
 // eslint-disable-next-line no-unused-vars
-import { Puppeteer, Page } from 'puppeteer';
 
+
+import fs from "fs";
+
+import UserAgents from "user-agents";
 
 class Helper {
   constructor() {
@@ -220,8 +223,7 @@ class Helper {
    */
   readJsonFile(cookiesFile) {
     try {
-      const myJsonObject = require(cookiesFile);
-      return myJsonObject;
+      return require(cookiesFile);
     } catch (err) {
       console.error("Reading cookie error. Defaulting to [] \n\n" + err);
       return [];
@@ -232,8 +234,6 @@ class Helper {
    * @param {fs.PathLike} dir
    */
   createDirIfNotExists(dir) {
-    const fs = require("fs");
-
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -285,7 +285,6 @@ class Helper {
    * Used by the V1 version of user-agents.
    */
   #getRanomisedUserAgentV1() {
-    const UserAgents = require("user-agents");
     const userAgents = new UserAgents({
       deviceCategory: "desktop",
       platform: "MacIntel", //"Linux x86_64",

@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
-const assert = require("assert");
-// const path = require('path');
-const fs = require("fs");
-const glob = require("glob");
+import assert from "assert";
+import fs from "fs";
+import glob from "glob";
+// import path from "path";
 
 const shouldTestBotBase = ({
   // eslint-disable-next-line no-unused-vars

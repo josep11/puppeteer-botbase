@@ -1,6 +1,6 @@
-const assert = require("assert");
-const { helper } = require("../index");
-const expect = require("chai").expect;
+import assert from "assert";
+import { expect } from "chai";
+import { helper } from "../index";
 
 describe("Module Helper Tests", () => {
   it("should filter async", async () => {

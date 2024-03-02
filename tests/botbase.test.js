@@ -1,21 +1,17 @@
-// eslint-disable-next-line no-unused-vars
-const assert = require("assert");
-const puppeteer = require("puppeteer");
-const { shouldTestBotBase } = require("./botbase.shared");
-const BotBase = require("../src/botbase-factory")(puppeteer);
+// Node.js built-in modules
+import assert from 'assert';
+import path from 'path';
+import fs from 'fs';
 
-const path = require("path");
-const fs = require("fs");
-const basePath = path.resolve(__dirname, "../");
+// Third-party libraries
+import puppeteer from 'puppeteer';
 
-const LocalFsCookieSaver = require("../src/LocalFsCookieSaver");
-const LocalScreenshotSaver = require("../src/LocalScreenshotSaver");
-const cookieSaver = new LocalFsCookieSaver({
-  cookiesFilePath: path.resolve(basePath, "./res/cookies.json"),
-});
-const screenshotSaver = new LocalScreenshotSaver({
-  screenshotBasepath: path.resolve(basePath, "./screenshots"),
-});
+// Application-specific modules
+import { shouldTestBotBase } from './botbase.shared';
+import BotBaseFactory from '../src/botbase-factory';
+
+const BotBase = BotBaseFactory(puppeteer);
+const basePath = path.resolve(__dirname, '../');
 
 describe("Botbase Tests", () => {
   shouldTestBotBase({
@@ -48,7 +44,7 @@ describe("Botbase Tests", () => {
     try {
       fs.statSync(screenshotPath);
     } catch (err) {
-      if (err.code == "ENOENT") {
+      if (err.code === "ENOENT") {
         assert.fail(`The file "${screenshotPath}" does not exist`);
       } else {
         throw err;

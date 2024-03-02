@@ -1,9 +1,12 @@
-const assert = require("assert");
-// var expect = require("chai").expect;
-const path = require("path");
-const fs = require("fs");
-const { LocalFsCookieSaver } = require("../index");
-const { helper } = require("../index");
+import assert from "assert";
+import path from "path";
+
+import fs from "fs";
+
+import { helper, LocalFsCookieSaver } from "../index";
+
+import { expect } from "chai";
+
 let cookieSaver;
 
 const basePath = path.join(__dirname, "../");
