@@ -1,6 +1,6 @@
 import assert from "assert";
 import { expect } from "chai";
-import { helper } from "../index";
+import { helper } from "../index.js";
 
 describe("Module Helper Tests", () => {
   it("should filter async", async () => {
