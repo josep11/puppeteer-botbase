@@ -30,8 +30,7 @@ export class LocalFsCookieSaver extends ICookieSaver {
   // eslint-disable-next-line require-await
   async readCookies() {
     try {
-      const jsonString = fs.readFileSync(this.cookiesFilePath);
-      return JSON.parse(jsonString.toString());
+      return helper.loadJson(this.cookiesFilePath);
     } catch (err) {
       if (err.code !== "ENOENT") {
         console.error("Reading cookie error. Defaulting to [] \n\n" + err);

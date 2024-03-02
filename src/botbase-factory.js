@@ -10,7 +10,8 @@ import { waitForTimeout } from './helper.js';
 
 
 import config from "../config/config.js";
-import pjson from "../package.json";
+// Load the package json
+const pjson = helper.loadJson("../package.json");
 
 /**
  *

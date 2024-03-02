@@ -7,13 +7,12 @@ import util from "util";
 import { DateTime, Duration } from "luxon";
 
 // eslint-disable-next-line no-unused-vars
-
 import UserAgents from "user-agents";
 
 class Helper {
   constructor() {
     /**
-     * @param {number} in miliseconds
+     * @param {number} in milliseconds
      * @returns {function}
      */
     this.delay = util.promisify(setTimeout);
@@ -158,7 +157,6 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
-
   /*****************************************/
 
   /**
@@ -216,11 +214,12 @@ class Helper {
 
   /**
    * @param {string} filePath - The path to the JSON file to load.
-   * @return {Promise<object>} A Promise that resolves with the parsed JSON object.
+   * @return {object} the parsed JSON object.
+   * @throws {SyntaxError} when the JSON is malformed
    */
-  async loadJson(filePath) {
-    const jsonString = await readFile(filePath, 'utf8');
-    return JSON.parse(jsonString);
+  loadJson(filePath) {
+    const jsonString = fs.readFileSync(filePath);
+    return JSON.parse(jsonString.toString());
   }
 
   /**
@@ -252,6 +251,7 @@ class Helper {
 
   /**
    * @param {string} jsonStr
+   * @param basePath
    */
   async logJSONdebug(jsonStr, basePath = __dirname) {
     const dir = path.resolve(basePath, `./logs/dataset`);

@@ -12,7 +12,7 @@
 
 ### Added
 
-- `helper.loadJson`: async function to load a json
+- `helper.loadJson`: function to load a json
 
 ## 7.0.0
 
