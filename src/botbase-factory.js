@@ -156,7 +156,7 @@ export function BotBaseFactory(puppeteer) {
     }
 
     /**
-     * Tries to log in using cookies or otherwise it throws error
+     * Tries to log in using cookies, or otherwise it throws error
      * It depends on implementation of isLoggedIn()
      * @param {*} cookies
      */
@@ -178,8 +178,8 @@ export function BotBaseFactory(puppeteer) {
     }
 
     /**
-     * Tries to login using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
-     * throws MyTimeoutError if could not connect for timeout or another Error for other ones
+     * Tries to log in using cookies file (this.cookiesFile) and if unsuccessful it tries with credentials
+     * throws MyTimeoutError, when unable to connect due to timeout or another Error for other ones
      * If login is ok it writes the cookies to the file, if it's not it deletes them
      * Careful this function depends on implementation of isLoggedIn
      * @param {*} username username for the website
