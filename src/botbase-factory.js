@@ -9,7 +9,7 @@ import IScreenshotSaver from './IScreenshotSaver.js';
 import { waitForTimeout } from './helper.js';
 
 
-import config from "../config/config.json";
+import config from "../config/config.js";
 import pjson from "../package.json";
 
 /**
