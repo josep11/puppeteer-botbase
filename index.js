@@ -23,3 +23,5 @@ export * from "./src/puppeteer-utils.js";
 export * from "./src/botbase.js";
 
 export * from "./src/browser-launcher.js";
+
+export * from "./src/utils.js";
