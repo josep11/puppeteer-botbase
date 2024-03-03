@@ -1,8 +1,8 @@
 {
 	"name": "botbase",
-	"version": "8.0.2",
+	"version": "8.0.3",
 	"description": "",
-	"main": "botbase.js",
+	"main": "index.js",
 	"author": "Josep Alsina",
 	"license": "ISC",
 	"type": "module",
