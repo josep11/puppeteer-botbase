@@ -8,6 +8,7 @@ import { ICookieSaver } from "./ICookieSaver.js";
 import { IScreenshotSaver } from "./IScreenshotSaver.js";
 import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
 import { helper } from "./helper.js";
+import { semiRandomiseViewPort } from "./puppeteer-utils.js";
 
 const { waitForTimeout } = helper;
 
@@ -33,21 +34,29 @@ export function BotBaseFactory(puppeteer) {
      */
 
     /**
-     * @param {BotBaseParams} botBaseParams
+     * @param {BotBaseParams} params
      */
     // @ts-ignore
-    constructor({
-      mainUrl,
-      basePath,
-      cookieSaver,
-      screenshotSaver,
-      configChild = {},
-      chromiumExecutablePath = null,
-    } = {}) {
-      if (!mainUrl || typeof mainUrl != "string" || !mainUrl.includes("http")) {
-        throw new Error(
-          "Developer fix this: mainUrl is undefined or not string or not a valid url. \nCheck constructor types: https://github.com/josep11/puppeteer-botbase/blob/main/botbase.js"
-        );
+    constructor(params) {
+      this.validateParams(params);
+      this.browser = null;
+      /** @type {Page|null} */
+      this.page = null;
+      this.basePath = params.basePath;
+      this.mainUrl = params.mainUrl;
+      this.config = deepmerge(config, params.configChild);
+      this.cookieSaver = params.cookieSaver;
+      this.screenshotSaver = params.screenshotSaver;
+      this.chromiumExecutablePath = params.chromiumExecutablePath;
+    }
+
+    validateParams({ mainUrl, basePath, cookieSaver, screenshotSaver } = {}) {
+      if (
+        !mainUrl ||
+        typeof mainUrl !== "string" ||
+        !mainUrl.includes("http")
+      ) {
+        throw new Error("Invalid mainUrl");
       }
 
       if (!basePath) {
@@ -55,32 +64,12 @@ export function BotBaseFactory(puppeteer) {
       }
 
       if (!(cookieSaver instanceof ICookieSaver)) {
-        throw new Error(
-          "Developer fix this: cookieSaver is not defined or not of type ICookieSaver"
-        );
+        throw new Error("Invalid cookieSaver");
       }
 
       if (!(screenshotSaver instanceof IScreenshotSaver)) {
-        throw new Error(
-          "Developer fix this: screenshotSaver is not defined or not of type IScreenshotSaver"
-        );
+        throw new Error("Invalid screenshotSaver");
       }
-
-      this.browser = null;
-      /** @type {Page|null} */
-      this.page = null;
-      this.basePath = basePath;
-      this.mainUrl = mainUrl;
-
-      //load default configuration options
-      this.config = config;
-
-      //merging config options overriding with the upcoming ones
-      this.config = deepmerge(this.config, configChild);
-
-      this.cookieSaver = cookieSaver;
-      this.screenshotSaver = screenshotSaver;
-      this.chromiumExecutablePath = chromiumExecutablePath;
     }
 
     async initialize(opts = {}) {
@@ -97,14 +86,11 @@ export function BotBaseFactory(puppeteer) {
       });
       [this.page] = await this.browser.pages();
 
-      await this.semiRandomiseViewPort();
-    }
-
-    async semiRandomiseViewPort() {
-      await this.page?.setViewport({
-        width: this.config.settings.width + helper.getRandBetween(1, 100),
-        height: this.config.settings.height + helper.getRandBetween(1, 100),
-      });
+      await semiRandomiseViewPort(
+        this.page,
+        config.settings.width,
+        config.settings.height
+      );
     }
 
     /**
