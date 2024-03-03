@@ -118,7 +118,6 @@ export class BotBase {
 
   /* *************** */
   /* LOGIN FUNCTIONS */
-
   /* *************** */
 
   /**
@@ -225,7 +224,6 @@ export class BotBase {
 
   /* ******************* */
   /* BEGIN I/O FUNCTIONS */
-
   /* ******************* */
 
   /**
@@ -278,7 +276,6 @@ export class BotBase {
 
   /* ******************* */
   /* END I/O FUNCTIONS */
-
   /* ******************* */
 
   enabled() {
