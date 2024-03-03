@@ -9,6 +9,7 @@ export const shouldTestBotBase = ({
   basePath,
   cookieSaver,
   screenshotSaver,
+  browserLauncher,
 }) => {
   class ExampleChild extends BotBase {
     constructor({ basePath }) {
@@ -17,6 +18,7 @@ export const shouldTestBotBase = ({
         basePath,
         cookieSaver,
         screenshotSaver,
+        browserLauncher,
         configChild: {
           settings: {
             enabled: false,
@@ -35,6 +37,7 @@ export const shouldTestBotBase = ({
       basePath,
       cookieSaver,
       screenshotSaver,
+      browserLauncher,
     });
     assert.ok(botbase);
   });
@@ -63,17 +66,6 @@ export const shouldTestBotBase = ({
     assert.ok(config.settings, errMsg);
     assert.ok(config.settings.width, errMsg);
   });
-
-  // This is not needed anymore
-  // it('should throw an error on constructor because of first param type style', () => {
-  //     const mainUrl = 'http://google.com';
-  //     assert.throws(() => {
-  //         new BotBase({
-  //             mainUrl,
-  //             basePath,
-  //         });
-  //     }, 'botbase constructor param is wrong');
-  // })
 
   it("should throw on instantiation BotBase", () => {
     const mainUrl = {};
