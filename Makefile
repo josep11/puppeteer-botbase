@@ -34,6 +34,12 @@ tag:
 posttag:
 	git push && git push --tags
 
+## Delete a git tag. make tag/delete TAG=8.0.0
+tag/delete:
+	git tag -d ${TAG}
+	git push --delete origin ${TAG}
+	
+
 .PHONY: list test
 .PHONY: tag 
 .PHONY: all install node_modules
