@@ -6,6 +6,8 @@ import path from "path";
 import config from "../config/config.js";
 import { ICookieSaver } from "./ICookieSaver.js";
 import { IScreenshotSaver } from "./IScreenshotSaver.js";
+// eslint-disable-next-line no-unused-vars
+import { BrowserLauncher } from "./browser-launcher.js";
 import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
 import { helper } from "./helper.js";
 import { semiRandomiseViewPort } from "./puppeteer-utils.js";
@@ -23,7 +25,7 @@ export class BotBase {
    * @property {string} basePath
    * @property {ICookieSaver} cookieSaver the delegate to save cookies
    * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
-   * @property {import("./puppeteer-utils.js").BrowserLauncher} launchBrowser function to launch a browser
+   * @property {BrowserLauncher} browserLauncher class responsible to launch a browser
    * @property {*} configChild optional
    * @property {string|null} chromiumExecutablePath
    */
@@ -41,8 +43,9 @@ export class BotBase {
     this.mainUrl = params.mainUrl;
     this.cookieSaver = params.cookieSaver;
     this.screenshotSaver = params.screenshotSaver;
-    this.launchBrowser = params.launchBrowser;
-    this.config = deepmerge(config, params.configChild);
+    this.browserLauncher = params.browserLauncher;
+    const configChild = params.configChild || {};
+    this.config = deepmerge(config, configChild);
     this.chromiumExecutablePath = params.chromiumExecutablePath;
   }
 
@@ -51,7 +54,7 @@ export class BotBase {
     basePath,
     cookieSaver,
     screenshotSaver,
-    launchBrowser,
+    browserLauncher,
   } = {}) {
     if (!mainUrl || typeof mainUrl !== "string" || !mainUrl.includes("http")) {
       throw new Error("Invalid mainUrl");
@@ -69,8 +72,7 @@ export class BotBase {
       throw new Error("Invalid screenshotSaver");
     }
 
-    if (!launchBrowser) {
-      // if (!(launchBrowser instanceof BrowserLauncher)) {
+    if (!(browserLauncher instanceof BrowserLauncher)) {
       throw new Error("Invalid BrowserLauncher");
     }
   }
@@ -81,12 +83,15 @@ export class BotBase {
       this.page = null;
     }
 
+    const { chromiumExecutablePath } = this;
+
     // Use BrowserLauncher to initialize the browser.
-    this.browser = await this.launchBrowser(opts, this.chromiumExecutablePath);
+    this.browser = await this.browserLauncher.launch(
+      opts,
+      chromiumExecutablePath
+    );
 
     [this.page] = await this.browser.pages();
-
-    this.page = this.checkPage();
 
     await semiRandomiseViewPort(
       this.page,
@@ -113,6 +118,7 @@ export class BotBase {
 
   /* *************** */
   /* LOGIN FUNCTIONS */
+
   /* *************** */
 
   /**

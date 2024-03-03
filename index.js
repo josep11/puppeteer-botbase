@@ -18,4 +18,6 @@ export * from "./src/LocalFsCookieSaver.js";
 
 export * from "./src/LocalScreenshotSaver.js";
 
-export * from "./src/botbase-factory.js";
+export * from "./src/puppeteer-utils.js";
+
+export * from "./src/botbase.js";

@@ -1,17 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import { Page } from "puppeteer";
+import { Page, Browser } from "puppeteer";
 import { helper } from "./helper.js";
-
-// TODO: test it
-export function getBrowserLauncher(puppeteer) {
-  return async (options, chromiumExecutablePath) => {
-    if (chromiumExecutablePath) {
-      options = { ...options, executablePath: chromiumExecutablePath };
-    }
-
-    return await puppeteer.launch(options);
-  };
-}
 
 /**
  * @param {Page} page Puppeteer page

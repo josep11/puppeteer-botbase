@@ -9,6 +9,7 @@ export const shouldTestBotBase = ({
   basePath,
   cookieSaver,
   screenshotSaver,
+  browserLauncher,
 }) => {
   class ExampleChild extends BotBase {
     constructor({ basePath }) {
@@ -17,6 +18,7 @@ export const shouldTestBotBase = ({
         basePath,
         cookieSaver,
         screenshotSaver,
+        browserLauncher,
         configChild: {
           settings: {
             enabled: false,
@@ -35,6 +37,7 @@ export const shouldTestBotBase = ({
       basePath,
       cookieSaver,
       screenshotSaver,
+      browserLauncher,
     });
     assert.ok(botbase);
   });
@@ -47,6 +50,8 @@ export const shouldTestBotBase = ({
   it("should get enabled false as default option for child class", () => {
     const myChildCls = new ExampleChild({
       basePath: "example/base/path",
+      // TODO: see if it's needed
+      browserLauncher,
     });
     const enabled = myChildCls.enabled();
     assert.strictEqual(false, enabled);
@@ -55,6 +60,8 @@ export const shouldTestBotBase = ({
   it("should override default config properties", () => {
     const myChildCls = new ExampleChild({
       basePath: "example/base/path",
+      // TODO: see if it's needed
+      browserLauncher,
     });
     const config = myChildCls.getConfig();
     const errMsg =
