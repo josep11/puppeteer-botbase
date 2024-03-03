@@ -50,8 +50,6 @@ export const shouldTestBotBase = ({
   it("should get enabled false as default option for child class", () => {
     const myChildCls = new ExampleChild({
       basePath: "example/base/path",
-      // TODO: see if it's needed
-      browserLauncher,
     });
     const enabled = myChildCls.enabled();
     assert.strictEqual(false, enabled);
@@ -60,8 +58,6 @@ export const shouldTestBotBase = ({
   it("should override default config properties", () => {
     const myChildCls = new ExampleChild({
       basePath: "example/base/path",
-      // TODO: see if it's needed
-      browserLauncher,
     });
     const config = myChildCls.getConfig();
     const errMsg =
@@ -70,17 +66,6 @@ export const shouldTestBotBase = ({
     assert.ok(config.settings, errMsg);
     assert.ok(config.settings.width, errMsg);
   });
-
-  // This is not needed anymore
-  // it('should throw an error on constructor because of first param type style', () => {
-  //     const mainUrl = 'http://google.com';
-  //     assert.throws(() => {
-  //         new BotBase({
-  //             mainUrl,
-  //             basePath,
-  //         });
-  //     }, 'botbase constructor param is wrong');
-  // })
 
   it("should throw on instantiation BotBase", () => {
     const mainUrl = {};
