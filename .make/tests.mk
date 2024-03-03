@@ -8,7 +8,7 @@ test-ci:
 
 ## Run test in tdd mode. Usage: make test-tdd PARAMS="tests/*helper*"
 test-tdd:
-	npm run test:fast -- ${PARAMS}
+	npm run test:tdd -- ${PARAMS}
 
 ## Run linting
 lint:
