@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { Page, Browser } from "puppeteer";
+import { Page } from "puppeteer";
 import { helper } from "./helper.js";
 
 /**
