@@ -21,3 +21,5 @@ export * from "./src/LocalScreenshotSaver.js";
 export * from "./src/puppeteer-utils.js";
 
 export * from "./src/botbase.js";
+
+export * from "./src/browser-launcher.js";
