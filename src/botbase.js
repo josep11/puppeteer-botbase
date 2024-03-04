@@ -9,7 +9,7 @@ import { IScreenshotSaver } from "./IScreenshotSaver.js";
 // eslint-disable-next-line no-unused-vars
 import { BrowserLauncher } from "./browser-launcher.js";
 import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
-import { helper } from "./helper.js";
+import { helper } from "../index.js";
 import { semiRandomiseViewPort } from "./puppeteer-utils.js";
 
 const { waitForTimeout } = helper;

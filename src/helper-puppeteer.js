@@ -1,4 +1,4 @@
-import { helper } from "./helper.js";
+import { helper } from "../index.js";
 // eslint-disable-next-line no-unused-vars
 import { Page } from "puppeteer";
 
