@@ -1,8 +1,6 @@
-import { helper } from "./helper.js";
+import { helper } from "../index.js";
 // eslint-disable-next-line no-unused-vars
 import { Page } from "puppeteer";
-
-const { getRandBetween, waitForTimeout, writeFile } = helper;
 
 export class HelperPuppeteer {
   /**
@@ -30,7 +28,7 @@ export class HelperPuppeteer {
 
     try {
       await btn.click();
-      await waitForTimeout(1500);
+      await helper.waitForTimeout(1500);
       return true;
     } catch (err) {
       console.error(
@@ -67,7 +65,7 @@ export class HelperPuppeteer {
       await btn.click();
       clicked = true;
       // TODO: parametrise timeout as optional param defaulting to 1500
-      await waitForTimeout(1500);
+      await helper.waitForTimeout(1500);
     } catch (err) {
       console.error(
         `error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`,
@@ -181,7 +179,7 @@ export class HelperPuppeteer {
    */
   static async dumpPageContentToFile(page, filename) {
     const content = await page.content();
-    await writeFile(filename, content);
+    await helper.writeFile(filename, content);
   }
 
   /**
@@ -191,7 +189,7 @@ export class HelperPuppeteer {
    */
   static async typeDelayed(page, selector, text) {
     await page.type(selector, text, {
-      delay: getRandBetween(10, 20),
+      delay: helper.getRandBetween(10, 20),
     });
   }
 }

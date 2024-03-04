@@ -1,10 +1,9 @@
 import fs from "fs";
 import { dirname } from "path";
 
-import { helper } from "./helper.js";
-// TODO: convert interfaces
-import { ICookieSaver } from "./ICookieSaver.js";
+import { helper, ICookieSaver } from "../index.js";
 
+// TODO: convert interfaces
 export class LocalFsCookieSaver extends ICookieSaver {
   /**
    *

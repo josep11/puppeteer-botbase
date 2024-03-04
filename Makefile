@@ -47,3 +47,21 @@ tag/delete:
 ## Run update deps for all of them
 update-deps:
 	ncu -x chai -u && npm i && npm test
+
+.PHONY: build prebuild ncp
+
+## Node copy
+ncp:
+	npm run ncp
+
+## prebuild scripts
+prebuild:
+	npm run prebuild
+
+## build the app
+build:
+	npm run build
+
+## build the app in watch mode
+watch:
+	npm run build-watch

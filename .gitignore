@@ -1,10 +1,7 @@
 node_modules/
-apify_storage/
 
 .vscode/
 .idea/
-
-config/user.json
 
 logs/*
 !logs/.gitkeep
@@ -13,7 +10,6 @@ screenshots/*
 !screenshots/.gitkeep
 
 res
-db/*
 
 test-results/*
 !test-results/.gitkeep
@@ -25,5 +21,6 @@ playground.*
 
 node_modules.*
 
-process.yml
 .env.test
+
+dist/

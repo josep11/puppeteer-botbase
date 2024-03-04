@@ -1,8 +1,7 @@
 import { dirname } from "path";
 import fs from "fs";
 
-import { helper } from "./helper.js";
-import { IScreenshotSaver } from "./IScreenshotSaver.js";
+import { helper, IScreenshotSaver } from "../index.js";
 
 export class LocalScreenshotSaver extends IScreenshotSaver {
   constructor({ screenshotBasepath }) {
