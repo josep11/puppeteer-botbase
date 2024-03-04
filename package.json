@@ -2,10 +2,11 @@
 	"name": "botbase",
 	"version": "8.0.6",
 	"description": "",
-	"main": "index.js",
 	"author": "Josep Alsina",
 	"license": "ISC",
 	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/josep11/puppeteer-botbase.git"
@@ -16,7 +17,10 @@
 		"test:tdd": "NODE_ENV=test mocha --exit --colors --bail",
 		"test:ci": "NODE_ENV=test mocha  --check-leaks --exit \"tests/!(*botbase*|*helper-puppeteer*).js\" --reporter mocha-junit-reporter --reporter-options mochaFile=./test-results/mocha/results.xml",
 		"lint": "eslint . --ext .js,.ts",
-		"lint:fix": "npm run lint -- --fix"
+		"lint:fix": "npm run lint -- --fix",
+		"ncp": "ncp src dist",
+		"prebuild": "npm run ncp",
+		"build": "tsc"
 	},
 	"mocha": {
 		"timeout": 55000
@@ -43,7 +47,9 @@
 		"esm": "^3.2.25",
 		"mocha": "^10.3.0",
 		"mocha-junit-reporter": "^2.2.1",
+		"ncp": "^2.0.0",
 		"puppeteer": "^22.2.0",
-		"puppeteer-core": "^22.2.0"
+		"puppeteer-core": "^22.2.0",
+		"typescript": "^5.3.3"
 	}
 }
