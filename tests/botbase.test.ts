@@ -12,8 +12,8 @@ import {
   LocalFsCookieSaver,
   LocalScreenshotSaver,
   dirname,
-} from "../index.js";
-import { shouldTestBotBase } from "./botbase.shared.js";
+} from "../index";
+import { shouldTestBotBase } from "./botbase.shared";
 
 const __dirname = dirname(import.meta.url);
 const basePath = path.resolve(__dirname, "../");

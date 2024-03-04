@@ -1,5 +1,4 @@
-import { helper } from "../index.js";
-// eslint-disable-next-line no-unused-vars
+import { helper } from "../index";
 import { Page } from "puppeteer";
 
 export class HelperPuppeteer {
@@ -12,7 +11,7 @@ export class HelperPuppeteer {
    * @returns {Promise<boolean>} true if the element was clicked, false otherwise
    */
   static async closePopupByTextContaining(
-    page,
+    page: Page,
     textElementOrChildren = "Aceptar y cerrar",
     elementType = "*",
   ) {
@@ -46,7 +45,7 @@ export class HelperPuppeteer {
    * @returns {Promise<boolean>} true if the element was clicked, false otherwise
    */
   static async closePopup(
-    page,
+    page: Page,
     elementText = "Aceptar y cerrar",
     elementType = "*",
   ) {
@@ -82,7 +81,7 @@ export class HelperPuppeteer {
    * @param {Array} cssSelectorArray
    */
   static async tryToClickElementByTextOrCssSelectors(
-    page,
+    page: Page,
     elementText = null,
     cssSelectorArray = [],
   ) {
@@ -116,7 +115,7 @@ export class HelperPuppeteer {
    * @param {boolean?} ignoreCase wether we should ignore the case or not
    * @returns {Promise<boolean>}
    */
-  static async isTextPresentOnWebpage(page, text, ignoreCase = true) {
+  static async isTextPresentOnWebpage(page: Page, text: string, ignoreCase = true) {
     const options = ignoreCase ? "gi" : "g";
     const innerText = await page.evaluate(() => document.body.innerText);
     const regex = new RegExp(text, options);
@@ -134,7 +133,7 @@ export class HelperPuppeteer {
    * @param {string} textToFind
    * @returns {Promise<Number>} count
    */
-  static async countStringOccurrencesInPage(page, textToFind) {
+  static async countStringOccurrencesInPage(page: Page, textToFind: string) {
     // TODO: fix floating promises still not being detected when missing
     return await page.$eval(
       "body",
@@ -177,7 +176,7 @@ export class HelperPuppeteer {
    * @param {string} filename
    * @returns {Promise<void>}
    */
-  static async dumpPageContentToFile(page, filename) {
+  static async dumpPageContentToFile(page: Page, filename: string) {
     const content = await page.content();
     await helper.writeFile(filename, content);
   }
@@ -187,7 +186,7 @@ export class HelperPuppeteer {
    * @param {string} selector
    * @param {string} text
    */
-  static async typeDelayed(page, selector, text) {
+  static async typeDelayed(page: Page, selector: string, text: string) {
     await page.type(selector, text, {
       delay: helper.getRandBetween(10, 20),
     });

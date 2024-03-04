@@ -2,7 +2,7 @@
 import puppeteer, { Page } from "puppeteer";
 import assert from "assert";
 
-import { HelperPuppeteer } from "../index.js";
+import { HelperPuppeteer } from "../index";
 
 let browser, page;
 

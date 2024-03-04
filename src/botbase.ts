@@ -1,16 +1,20 @@
 import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
-import { Page } from "puppeteer";
+import { Browser, Page } from "puppeteer";
 
 import path from "path";
-import config from "../config/config.js";
-import { ICookieSaver } from "./ICookieSaver.js";
-import { IScreenshotSaver } from "./IScreenshotSaver.js";
+import { config } from "../config/config";
 // eslint-disable-next-line no-unused-vars
-import { BrowserLauncher } from "./browser-launcher.js";
-import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
-import { helper } from "../index.js";
-import { semiRandomiseViewPort } from "./puppeteer-utils.js";
+import {
+  BrowserLauncher,
+  helper,
+  ICookieSaver,
+  IScreenshotSaver,
+  MyTimeoutError,
+  NotImplementedError,
+  semiRandomiseViewPort,
+} from "../index";
+import BotBaseParams from "./types/BotBaseParams";
 
 const { waitForTimeout } = helper;
 
@@ -19,25 +23,31 @@ const packageJsonPath = path.resolve("package.json");
 const pjson = helper.loadJson(packageJsonPath);
 
 export class BotBase {
-  /**
-   * @typedef {Object} BotBaseParams
-   * @property {string} mainUrl
-   * @property {string} basePath
-   * @property {ICookieSaver} cookieSaver the delegate to save cookies
-   * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
-   * @property {BrowserLauncher} browserLauncher class responsible to launch a browser
-   * @property {*} configChild optional
-   * @property {string|null} chromiumExecutablePath
-   */
+  private browser: Browser | null;
+
+  private page: Page | null;
+
+  private basePath: string;
+
+  private mainUrl: string;
+
+  private cookieSaver: ICookieSaver;
+
+  private screenshotSaver: IScreenshotSaver;
+
+  private browserLauncher: BrowserLauncher;
+
+  private config: any;
+
+  private chromiumExecutablePath: string | null;
 
   /**
    * @param {BotBaseParams} params
    */
   // @ts-ignore
-  constructor(params) {
+  constructor(params: BotBaseParams) {
     this.validateParams(params);
     this.browser = null;
-    /** @type {Page|null} */
     this.page = null;
     this.basePath = params.basePath;
     this.mainUrl = params.mainUrl;
@@ -52,9 +62,6 @@ export class BotBase {
   validateParams({
     mainUrl,
     basePath,
-    cookieSaver,
-    screenshotSaver,
-    browserLauncher,
   } = {}) {
     if (!mainUrl || typeof mainUrl !== "string" || !mainUrl.includes("http")) {
       throw new Error("Invalid mainUrl");
@@ -62,18 +69,6 @@ export class BotBase {
 
     if (!basePath) {
       throw new Error("Developer fix this: basePath is undefined");
-    }
-
-    if (!(cookieSaver instanceof ICookieSaver)) {
-      throw new Error("Invalid cookieSaver");
-    }
-
-    if (!(screenshotSaver instanceof IScreenshotSaver)) {
-      throw new Error("Invalid screenshotSaver");
-    }
-
-    if (!(browserLauncher instanceof BrowserLauncher)) {
-      throw new Error("Invalid BrowserLauncher");
     }
   }
 
@@ -91,7 +86,7 @@ export class BotBase {
       chromiumExecutablePath
     );
 
-    [this.page] = await this.browser.pages();
+    [this.page] = await this.browser!.pages();
 
     await semiRandomiseViewPort(
       this.page,
@@ -103,9 +98,9 @@ export class BotBase {
   /**
    * Prevents loading images to save CPU, memory and bandwidth
    * Careful, it will raise an error if another function already intercepted the request like in this issue (https://github.com/berstend/puppeteer-extra/issues/600)
-   * @param {*} page
+   * @param {Page} page
    */
-  async interceptImages(page) {
+  async interceptImages(page: Page) {
     await page.setRequestInterception(true);
     page.on("request", (req) => {
       if (req.resourceType() === "image") {
@@ -118,6 +113,7 @@ export class BotBase {
 
   /* *************** */
   /* LOGIN FUNCTIONS */
+
   /* *************** */
 
   /**
@@ -132,15 +128,14 @@ export class BotBase {
    * Implementation required
    */
   // eslint-disable-next-line no-unused-vars, require-await
-  async loginWithCredentials(username, password) {
+  async loginWithCredentials(username: string, password: string) {
     throw new NotImplementedError("loginWithCredentials not implemented");
   }
 
   /**
    * @throws {Error}
-   * @returns {Page}
    */
-  checkPage() {
+  checkPage(): Page {
     if (!this.page) {
       throw Error("page is not initialised");
     }
@@ -224,6 +219,7 @@ export class BotBase {
 
   /* ******************* */
   /* BEGIN I/O FUNCTIONS */
+
   /* ******************* */
 
   /**
@@ -276,6 +272,7 @@ export class BotBase {
 
   /* ******************* */
   /* END I/O FUNCTIONS */
+
   /* ******************* */
 
   enabled() {

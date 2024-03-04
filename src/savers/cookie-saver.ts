@@ -1,22 +1,13 @@
 import fs from "fs";
 import { dirname } from "path";
 
-import { helper, ICookieSaver } from "../index.js";
+import { helper } from "../helper";
+import { CookieSaverInterface } from "./cookie-saver-interface";
 
-// TODO: convert interfaces
-export class LocalFsCookieSaver extends ICookieSaver {
-  /**
-   *
-   * @param {Object} param should have the following keys { cookiesFilePath }
-   */
-  constructor({ cookiesFilePath }) {
-    super();
-    if (!cookiesFilePath || typeof cookiesFilePath != "string") {
-      throw new Error(
-        "Developer fix this: cookiesFilePath is undefined or not string"
-      );
-    }
+export class CookieSaver implements CookieSaverInterface {
+  private readonly cookiesFilePath: string;
 
+  constructor(cookiesFilePath: string) {
     this.cookiesFilePath = cookiesFilePath;
 
     helper.createDirIfNotExists(dirname(this.cookiesFilePath));
@@ -30,7 +21,7 @@ export class LocalFsCookieSaver extends ICookieSaver {
   async readCookies() {
     try {
       return helper.loadJson(this.cookiesFilePath);
-    } catch (err) {
+    } catch (err: any) {
       if (err.code !== "ENOENT") {
         console.error("Reading cookie error. Defaulting to [] \n\n" + err);
       }
@@ -38,16 +29,15 @@ export class LocalFsCookieSaver extends ICookieSaver {
     return [];
   }
 
-  /**
-   * @param {*} cookies
-   * @return {Promise<void>}
-   */
   // eslint-disable-next-line require-await
-  async writeCookies(cookies) {
-    let cookiesText = cookies;
-    if (typeof cookies == "object") {
+  async writeCookies(cookies: object | string): Promise<void> {
+    let cookiesText: string;
+    if (typeof cookies === "object") {
       cookiesText = JSON.stringify(cookies, null, 2);
+    } else {
+      cookiesText = cookies;
     }
+
     fs.writeFileSync(this.cookiesFilePath, cookiesText);
   }
 

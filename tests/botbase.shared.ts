@@ -28,8 +28,8 @@ export const shouldTestBotBase = ({
     }
   }
 
-  let botbase = null;
-  const mainUrl = "http://sampleurl.com";
+  let botbase: BotBase | null = null;
+  const mainUrl = "https://sampleurl.com";
 
   it("should intantiate BotBase", () => {
     botbase = new BotBase({

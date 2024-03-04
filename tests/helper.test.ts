@@ -4,7 +4,7 @@ import fs, { promises as pfs } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
-import { helper } from "../index.js";
+import { helper } from "../index";
 
 describe("Module Helper Tests", () => {
   let filePath;

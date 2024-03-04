@@ -1,11 +1,15 @@
 import { dirname } from "path";
 import fs from "fs";
 
-import { helper, IScreenshotSaver } from "../index.js";
+import { ScreenshotSaverInterface } from "./screenshot-saver-interface";
+import { helper } from "../helper";
 
-export class LocalScreenshotSaver extends IScreenshotSaver {
-  constructor({ screenshotBasepath }) {
-    super();
+export class ScreenshotSaver implements ScreenshotSaverInterface {
+  private readonly screenshotBasepath: string;
+
+  private allowedTypes: string[];
+
+  constructor(screenshotBasepath: string) {
     if (!screenshotBasepath) {
       throw new Error("screenshotBasepath parameter not defined");
     }
@@ -17,7 +21,7 @@ export class LocalScreenshotSaver extends IScreenshotSaver {
     helper.createDirIfNotExists(dirname(this.screenshotBasepath));
   }
 
-  _checkType(type) {
+  _checkType(type: string) {
     if (!type) {
       throw new Error("type is not defined");
     }
@@ -27,9 +31,12 @@ export class LocalScreenshotSaver extends IScreenshotSaver {
   }
 
   // eslint-disable-next-line require-await
-  async saveScreenshot({ imageBuffer, filename = "default", type }) {
+  async saveScreenshot(
+    imageBuffer: Buffer,
+    type: string,
+    filename = "default"
+  ) {
     //check for errors
-    this._checkParams(imageBuffer);
     this._checkType(type);
 
     const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.${type}`;
