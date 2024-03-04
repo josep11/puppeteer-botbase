@@ -50,8 +50,9 @@ class Helper {
   }
 
   /**
-   * This function gets the difference in hours from the param with the actual datetime
-   * @param {string | Date} pastTime
+   * This function calculates the difference in hours between the pastTime parameter and the current datetime.
+   * @param {string | Date} pastTime - The past time to compare with the current datetime. It can be either a string in ISO 8601 format or a Date object.
+   * @return {number} - The difference in hours between the pastTime and the current datetime.
    */
   getDiferenceInHours(pastTime) {
     const now = DateTime.local();
@@ -73,10 +74,21 @@ class Helper {
     return DateTime.local().toFormat("yyyy-LL-dd");
   }
 
+  /**
+   * @return {string} The ISO formatted string representation of now
+   */
   getNow() {
     return DateTime.local().toISO();
   }
 
+  /**
+   * Returns the ISO formatted string representation of the current date and time
+   * minus the specified number of hours.
+   *
+   * @param {number} [hoursAgo=0] - The number of hours to subtract from the current date and time.
+   * @return {string} The ISO formatted string representation of the current date and time
+   * minus the specified number of hours.
+   */
   getNowMinus(hoursAgo = 0) {
     const millis = this.hoursToMillis(hoursAgo);
     const duration = Duration.fromMillis(millis);
@@ -173,7 +185,6 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
-
   /*****************************************/
 
   /**
