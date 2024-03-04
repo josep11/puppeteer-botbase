@@ -6,13 +6,14 @@ import path from "path";
 // Third-party libraries
 import puppeteer from "puppeteer";
 // Application-specific modules
-import { BotBase } from "../src/botbase.js";
+import {
+  BotBase,
+  BrowserLauncher,
+  LocalFsCookieSaver,
+  LocalScreenshotSaver,
+  dirname,
+} from "../index.js";
 import { shouldTestBotBase } from "./botbase.shared.js";
-
-import { LocalFsCookieSaver } from "../src/LocalFsCookieSaver.js";
-import { LocalScreenshotSaver } from "../src/LocalScreenshotSaver.js";
-import { BrowserLauncher } from "../src/browser-launcher.js";
-import { dirname } from "../src/utils.js";
 
 const __dirname = dirname(import.meta.url);
 const basePath = path.resolve(__dirname, "../");

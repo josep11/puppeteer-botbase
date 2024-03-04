@@ -3,8 +3,7 @@ import path from "path";
 
 import fs from "fs";
 
-import { LocalFsCookieSaver } from "../src/LocalFsCookieSaver.js";
-import { helper } from "../index.js";
+import { LocalFsCookieSaver, helper } from "../index.js";
 
 let cookieSaver;
 
