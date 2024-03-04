@@ -78,9 +78,17 @@ class Helper {
   }
 
   getNowMinus(hoursAgo = 0) {
-    const millis = hoursAgo * 60 * 60 * 1000;
+    const millis = this.hoursToMillis(hoursAgo);
     const duration = Duration.fromMillis(millis);
     return DateTime.local().minus(duration).toISO();
+  }
+
+  /**
+   * @param {number} hours
+   * @return {number} milliseconds
+   */
+  hoursToMillis(hours) {
+    return hours * 60 * 60 * 1000;
   }
 
   /**
@@ -165,6 +173,7 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
+
   /*****************************************/
 
   /**
@@ -262,7 +271,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`
+      `data_${this.dateFormatForLog()}.json`,
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);
