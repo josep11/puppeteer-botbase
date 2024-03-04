@@ -19,8 +19,9 @@
 		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "npm run lint -- --fix",
 		"ncp": "ncp src dist",
-		"prebuild": "npm run ncp",
-		"build": "tsc"
+		"prebuild": "rm -rf dist/* && npm run ncp",
+		"build": "tsc",
+		"build-watch": "tsc --watch"
 	},
 	"mocha": {
 		"timeout": 55000
@@ -37,6 +38,8 @@
 		"puppeteer-core": "^22.2.0"
 	},
 	"devDependencies": {
+		"@types/luxon": "^3.4.2",
+		"@types/user-agents": "^1.0.4",
 		"@typescript-eslint/eslint-plugin": "^7.0.2",
 		"@typescript-eslint/parser": "^7.0.2",
 		"chai": "^4.3.10",
