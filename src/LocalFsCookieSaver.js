@@ -41,6 +41,7 @@ export class LocalFsCookieSaver extends ICookieSaver {
 
   /**
    * @param {*} cookies
+   * @return {Promise<void>}
    */
   // eslint-disable-next-line require-await
   async writeCookies(cookies) {
@@ -48,7 +49,7 @@ export class LocalFsCookieSaver extends ICookieSaver {
     if (typeof cookies == "object") {
       cookiesText = JSON.stringify(cookies, null, 2);
     }
-    return fs.writeFileSync(this.cookiesFilePath, cookiesText);
+    fs.writeFileSync(this.cookiesFilePath, cookiesText);
   }
 
   /**

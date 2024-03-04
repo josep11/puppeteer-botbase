@@ -80,7 +80,7 @@ export class HelperPuppeteer {
 
   /**
    * @param {Page} page Puppeteer page
-   * @param {string?} elementText the text to find
+   * @param {?string} elementText the text to find
    * @param {Array} cssSelectorArray
    */
   static async tryToClickElementByTextOrCssSelectors(

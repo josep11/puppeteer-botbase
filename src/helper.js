@@ -35,7 +35,7 @@ class Helper {
   }
 
   consoleListener(message) {
-    const type = message.type().substr(0, 3).toUpperCase();
+    const type = message.type().substring(0, 3).toUpperCase();
     if (type === "WAR" || type === "INF") {
       return;
     }
@@ -247,7 +247,7 @@ class Helper {
   }
 
   /**
-   * @param {fs.PathLike} dir
+   * @param {string} dir
    */
   createDirIfNotExists(dir) {
     if (!existsSync(dir)) {
