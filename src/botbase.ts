@@ -83,7 +83,7 @@ export class BotBase {
     // Use BrowserLauncher to initialize the browser.
     this.browser = await this.browserLauncher.launch(
       opts,
-      chromiumExecutablePath,
+      chromiumExecutablePath
     );
 
     [this.page] = await this.browser!.pages();
@@ -93,7 +93,7 @@ export class BotBase {
       // @ts-ignore
       config.settings.width,
       // @ts-ignore
-      config.settings.height,
+      config.settings.height
     );
   }
 
@@ -254,11 +254,7 @@ export class BotBase {
       console.error("cannot take screenshot");
       return "";
     }
-    return this.screenshotSaver.saveScreenshot(
-      imageBuffer,
-      type,
-      filename,
-    );
+    return this.screenshotSaver.saveScreenshot(imageBuffer, type, filename);
   }
 
   async logIP() {
@@ -266,7 +262,7 @@ export class BotBase {
 
     await this.page.goto("https://checkip.amazonaws.com/");
     const ip = await this.page.evaluate(
-      () => document.body.textContent?.trim() || "",
+      () => document.body.textContent?.trim() || ""
     );
 
     const ipFilePath = path.join(this.basePath, "/logs/ip.txt");

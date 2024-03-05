@@ -13,14 +13,14 @@ export class HelperPuppeteer {
   static async closePopupByTextContaining(
     page: Page,
     textElementOrChildren = "Aceptar y cerrar",
-    elementType = "*",
+    elementType = "*"
   ) {
     const xPathSel = `::-p-xpath(//${elementType}[contains(., "${textElementOrChildren}")])`;
     const btn = await page.$(xPathSel);
 
     if (!btn) {
       console.debug(
-        `popup with text '${textElementOrChildren}' not found ... continuing`,
+        `popup with text '${textElementOrChildren}' not found ... continuing`
       );
       return false;
     }
@@ -31,7 +31,7 @@ export class HelperPuppeteer {
       return true;
     } catch (err: any) {
       console.error(
-        `error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`,
+        `error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`
       );
     }
 
@@ -47,14 +47,14 @@ export class HelperPuppeteer {
   static async closePopup(
     page: Page,
     elementText = "Aceptar y cerrar",
-    elementType = "*",
+    elementType = "*"
   ) {
     const xPathSel = `::-p-xpath(//${elementType}[contains(text(), "${elementText}")])`;
     const btn = await page.$(xPathSel);
 
     if (!btn) {
       console.debug(
-        `popup with text '${elementText}' not found ... continuing`,
+        `popup with text '${elementText}' not found ... continuing`
       );
       return false;
     }
@@ -67,7 +67,7 @@ export class HelperPuppeteer {
       await helper.waitForTimeout(1500);
     } catch (err: any) {
       console.error(
-        `error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`,
+        `error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`
       );
       console.error(err);
     }
@@ -115,7 +115,11 @@ export class HelperPuppeteer {
    * @param {boolean?} ignoreCase wether we should ignore the case or not
    * @returns {Promise<boolean>}
    */
-  static async isTextPresentOnWebpage(page: Page, text: string, ignoreCase = true) {
+  static async isTextPresentOnWebpage(
+    page: Page,
+    text: string,
+    ignoreCase = true
+  ) {
     const options = ignoreCase ? "gi" : "g";
     const innerText = await page.evaluate(() => document.body.innerText);
     const regex = new RegExp(text, options);
@@ -123,7 +127,7 @@ export class HelperPuppeteer {
       return true;
     }
     console.error(
-      `Text "${text}" is not found in document body on ${page.url()}`,
+      `Text "${text}" is not found in document body on ${page.url()}`
     );
     return false;
   }
@@ -142,7 +146,7 @@ export class HelperPuppeteer {
         const re = new RegExp(textSearch, "gi");
         return (text.match(re) || []).length;
       },
-      textToFind,
+      textToFind
     );
   }
 

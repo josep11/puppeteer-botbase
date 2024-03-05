@@ -17,14 +17,16 @@ export function objectToCookieParam(obj: object): CookieParam {
 
   // The name and value properties are mandatory
   if (!newObj.name || !newObj.value) {
-    throw new Error('Missing mandatory properties');
+    throw new Error("Missing mandatory properties");
   }
 
   // If all properties are present, cast to CookieParam and return
   return newObj as CookieParam;
 }
 
-export function objectArrayToCookieParamArray(cookies: object[]): CookieParam[] {
+export function objectArrayToCookieParamArray(
+  cookies: object[]
+): CookieParam[] {
   const cookiesValidated = [];
   for (const cookie of cookies) {
     cookiesValidated.push(objectToCookieParam(cookies));

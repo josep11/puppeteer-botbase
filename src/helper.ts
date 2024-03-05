@@ -1,6 +1,12 @@
 // Node.js built-in modules
 import { exec as callbackExec } from "child_process";
-import { existsSync, mkdirSync, PathLike, promises as fs, readFileSync } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  PathLike,
+  promises as fs,
+  readFileSync,
+} from "fs";
 import path from "path";
 import { promisify } from "util";
 
@@ -117,7 +123,7 @@ class Helper {
   mapAsync<T, R>(
     array: T[],
     // eslint-disable-next-line no-unused-vars
-    callbackfn: (value: T, index: number, array: T[]) => Promise<R>,
+    callbackfn: (value: T, index: number, array: T[]) => Promise<R>
   ): Promise<R[]> {
     return Promise.all(array.map(callbackfn));
   }
@@ -131,7 +137,7 @@ class Helper {
   async filterAsync<T>(
     array: T[],
     // eslint-disable-next-line no-unused-vars
-    callbackfn: (value: T, index: number, array: T[]) => Promise<any>,
+    callbackfn: (value: T, index: number, array: T[]) => Promise<any>
   ): Promise<T[]> {
     const filterMap = await this.mapAsync<T, T>(array, callbackfn);
     return array.filter((_, index) => filterMap[index]);
@@ -281,7 +287,7 @@ class Helper {
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`,
+      `data_${this.dateFormatForLog()}.json`
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);
