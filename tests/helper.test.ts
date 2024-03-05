@@ -7,7 +7,7 @@ import { join } from "path";
 import { helper } from "../index";
 
 describe("Module Helper Tests", () => {
-  let filePath;
+  let filePath: fs.PathLike;
 
   // This will run after each test in the "Module Helper Tests" block
   afterEach(async function () {
@@ -19,7 +19,7 @@ describe("Module Helper Tests", () => {
   it("should filter async", async () => {
     const arr = [1, 2, 3, 4];
 
-    function isThreeAsync(number) {
+    function isThreeAsync(number: number) {
       return new Promise((res) => {
         setTimeout(() => {
           res(number === 3);
@@ -69,6 +69,7 @@ describe("Module Helper Tests", () => {
 
   it("should wait 10ms", async () => {
     // noinspection JSCheckFunctionSignatures
+    // @ts-ignore
     await helper.delay(10);
   });
 
@@ -81,7 +82,7 @@ describe("Module Helper Tests", () => {
     const result = helper.dateFormatForLog();
 
     const date = new Date();
-    const pad = (n) => (n < 10 ? "0" + n : n);
+    const pad = (n: number) => (n < 10 ? "0" + n : n);
 
     let expectedFormat =
       date.getFullYear() +

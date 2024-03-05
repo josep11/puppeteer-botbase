@@ -1,12 +1,6 @@
 // Node.js built-in modules
 import { exec as callbackExec } from "child_process";
-import {
-  existsSync,
-  mkdirSync,
-  promises as fs,
-  readFileSync,
-  PathLike,
-} from "fs";
+import { existsSync, mkdirSync, PathLike, promises as fs, readFileSync } from "fs";
 import path from "path";
 import { promisify } from "util";
 
@@ -21,7 +15,7 @@ const exec = promisify(callbackExec);
 const __dirname = path.dirname(__filename);
 
 class Helper {
-  private delay: () => Promise<void>;
+  delay: () => Promise<void>;
 
   constructor() {
     /**
@@ -123,7 +117,7 @@ class Helper {
   mapAsync<T, R>(
     array: T[],
     // eslint-disable-next-line no-unused-vars
-    callbackfn: (value: T, index: number, array: T[]) => Promise<R>
+    callbackfn: (value: T, index: number, array: T[]) => Promise<R>,
   ): Promise<R[]> {
     return Promise.all(array.map(callbackfn));
   }
@@ -137,7 +131,7 @@ class Helper {
   async filterAsync<T>(
     array: T[],
     // eslint-disable-next-line no-unused-vars
-    callbackfn: (value: T, index: number, array: T[]) => Promise<any>
+    callbackfn: (value: T, index: number, array: T[]) => Promise<any>,
   ): Promise<T[]> {
     const filterMap = await this.mapAsync<T, T>(array, callbackfn);
     return array.filter((_, index) => filterMap[index]);
@@ -196,6 +190,7 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
+
   /*****************************************/
 
   /**
@@ -206,7 +201,7 @@ class Helper {
   async writeIPToFile(ip: string, date: string, ipFilePath: PathLike) {
     try {
       await fs.appendFile(ipFilePath, `Data: ${date}\nIP: ${ip}\n\n`);
-    } catch (err) {
+    } catch (err: any) {
       console.error(`cannot write to file ${ipFilePath}. Error: ${err}`);
       throw Error(`cannot write to file ${ipFilePath}. Error: ${err}`);
     }
@@ -292,7 +287,7 @@ class Helper {
       await fs.writeFile(filenameFullPath, jsonStr);
       console.log(`file written successfully to ${filenameFullPath}`);
       return filenameFullPath;
-    } catch (err) {
+    } catch (err: any) {
       console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);
     }
   }

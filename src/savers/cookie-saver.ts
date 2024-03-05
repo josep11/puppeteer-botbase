@@ -10,6 +10,10 @@ export class CookieSaver implements CookieSaverInterface {
   constructor(cookiesFilePath: string) {
     this.cookiesFilePath = cookiesFilePath;
 
+    if (!cookiesFilePath.length) {
+      throw new Error("cookiesFilePath is invalid");
+    }
+
     helper.createDirIfNotExists(dirname(this.cookiesFilePath));
   }
 

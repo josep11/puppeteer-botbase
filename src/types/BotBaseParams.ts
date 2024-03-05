@@ -1,15 +1,15 @@
-import { ICookieSaver } from "../ICookieSaver";
-import { IScreenshotSaver } from "../IScreenshotSaver";
 import { BrowserLauncher } from "../browser-launcher";
+import { ScreenshotSaverInterface } from "../savers/screenshot-saver-interface";
+import { CookieSaverInterface } from "../savers/cookie-saver-interface";
 
 class BotBaseParams {
   mainUrl: string;
 
   basePath: string;
 
-  cookieSaver: ICookieSaver;
+  cookieSaver: CookieSaverInterface;
 
-  screenshotSaver: IScreenshotSaver;
+  screenshotSaver: ScreenshotSaverInterface;
 
   browserLauncher: BrowserLauncher;
 
@@ -20,11 +20,11 @@ class BotBaseParams {
   constructor(
     mainUrl: string,
     basePath: string,
-    cookieSaver: ICookieSaver,
-    screenshotSaver: IScreenshotSaver,
+    cookieSaver: CookieSaverInterface,
+    screenshotSaver: ScreenshotSaverInterface,
     browserLauncher: BrowserLauncher,
     configChild: any,
-    chromiumExecutablePath: string | null
+    chromiumExecutablePath?: string | null
   ) {
     this.mainUrl = mainUrl;
     this.basePath = basePath;
@@ -32,7 +32,7 @@ class BotBaseParams {
     this.screenshotSaver = screenshotSaver;
     this.browserLauncher = browserLauncher;
     this.configChild = configChild;
-    this.chromiumExecutablePath = chromiumExecutablePath;
+    this.chromiumExecutablePath = chromiumExecutablePath || null;
   }
 }
 

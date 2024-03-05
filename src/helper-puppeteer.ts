@@ -29,7 +29,7 @@ export class HelperPuppeteer {
       await btn.click();
       await helper.waitForTimeout(1500);
       return true;
-    } catch (err) {
+    } catch (err: any) {
       console.error(
         `error clicking popup button. '${textElementOrChildren}' (element="${elementType}"). Continuing ...`,
       );
@@ -65,7 +65,7 @@ export class HelperPuppeteer {
       clicked = true;
       // TODO: parametrise timeout as optional param defaulting to 1500
       await helper.waitForTimeout(1500);
-    } catch (err) {
+    } catch (err: any) {
       console.error(
         `error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`,
       );
@@ -82,8 +82,8 @@ export class HelperPuppeteer {
    */
   static async tryToClickElementByTextOrCssSelectors(
     page: Page,
-    elementText = null,
-    cssSelectorArray = [],
+    elementText: string | null = null,
+    cssSelectorArray: string[] = []
   ) {
     if (
       elementText &&

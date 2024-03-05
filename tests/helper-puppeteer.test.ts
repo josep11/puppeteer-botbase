@@ -1,10 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import puppeteer, { Page } from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 import assert from "assert";
 
 import { HelperPuppeteer } from "../index";
 
-let browser, page;
+let browser: Browser, page: Page;
 
 async function initBrowser() {
   browser = await puppeteer.launch({
@@ -37,7 +37,7 @@ const POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR = "#onetrust-accept-btn-handler";
  * @param {string} text text to be checked
  * @returns {Promise<boolean>} true if the text is not found, false otherwise
  */
-async function verifyTextIsNotPresent(page, text) {
+async function verifyTextIsNotPresent(page: Page, text: string) {
   const pageContent = await page.content();
   return !pageContent.includes(text);
 }

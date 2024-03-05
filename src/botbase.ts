@@ -1,17 +1,16 @@
 import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
 import { Browser, Page } from "puppeteer";
-
 import path from "path";
-import { config } from "../config/config";
+
 // eslint-disable-next-line no-unused-vars
 import {
   BrowserLauncher,
+  CookieSaverInterface,
   helper,
-  ICookieSaver,
-  IScreenshotSaver,
   MyTimeoutError,
   NotImplementedError,
+  ScreenshotSaverInterface,
   semiRandomiseViewPort,
 } from "../index";
 import BotBaseParams from "./types/BotBaseParams";
@@ -21,19 +20,21 @@ const { waitForTimeout } = helper;
 // Load the package json
 const packageJsonPath = path.resolve("package.json");
 const pjson = helper.loadJson(packageJsonPath);
+const configJsonPath = path.resolve("config/config.json");
+const config = helper.loadJson(configJsonPath);
 
 export class BotBase {
   private browser: Browser | null;
 
-  private page: Page | null;
+  page: Page | null;
 
-  private basePath: string;
+  private readonly basePath: string;
 
-  private mainUrl: string;
+  private readonly mainUrl: string;
 
-  private cookieSaver: ICookieSaver;
+  private cookieSaver: CookieSaverInterface;
 
-  private screenshotSaver: IScreenshotSaver;
+  private screenshotSaver: ScreenshotSaverInterface;
 
   private browserLauncher: BrowserLauncher;
 
@@ -59,11 +60,9 @@ export class BotBase {
     this.chromiumExecutablePath = params.chromiumExecutablePath;
   }
 
-  validateParams({
-    mainUrl,
-    basePath,
-  } = {}) {
-    if (!mainUrl || typeof mainUrl !== "string" || !mainUrl.includes("http")) {
+  validateParams(params: BotBaseParams) {
+    const { mainUrl, basePath } = params;
+    if (!mainUrl || !mainUrl.includes("http")) {
       throw new Error("Invalid mainUrl");
     }
 
@@ -83,15 +82,17 @@ export class BotBase {
     // Use BrowserLauncher to initialize the browser.
     this.browser = await this.browserLauncher.launch(
       opts,
-      chromiumExecutablePath
+      chromiumExecutablePath,
     );
 
     [this.page] = await this.browser!.pages();
 
     await semiRandomiseViewPort(
       this.page,
+      // @ts-ignore
       config.settings.width,
-      config.settings.height
+      // @ts-ignore
+      config.settings.height,
     );
   }
 
@@ -104,8 +105,10 @@ export class BotBase {
     await page.setRequestInterception(true);
     page.on("request", (req) => {
       if (req.resourceType() === "image") {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         req.abort();
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         req.continue();
       }
     });
@@ -146,7 +149,7 @@ export class BotBase {
    * It depends on implementation of isLoggedIn()
    * @param {*} cookies
    */
-  async loginWithSession(cookies) {
+  async loginWithSession(cookies: object) {
     if (!this.mainUrl) {
       throw new Error("loginWithSession: mainUrl param is not set");
     }
@@ -168,10 +171,8 @@ export class BotBase {
    * throws MyTimeoutError, when unable to connect due to timeout or another Error for other ones
    * If login is ok it writes the cookies to the file, if it's not it deletes them
    * Careful this function depends on implementation of isLoggedIn
-   * @param {*} username username for the website
-   * @param {string} password
    */
-  async login(username, password) {
+  async login(username: string, password: string) {
     this.page = this.checkPage();
 
     const cookies = await this.readCookiesFile();
@@ -188,7 +189,7 @@ export class BotBase {
       } else {
         await this.loginWithCredentials(username, password);
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.name.indexOf("TimeoutError") !== -1) {
         throw new MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
       }
@@ -204,7 +205,7 @@ export class BotBase {
       throw error;
     }
 
-    // Save our freshest cookies that contain our Milanuncios session
+    // Save our freshest cookies that contain our target page session
     await this.page.cookies().then(async (freshCookies) => {
       await this.writeCookiesFile(freshCookies);
     });
@@ -227,7 +228,7 @@ export class BotBase {
     return await this.cookieSaver.readCookies();
   }
 
-  async writeCookiesFile(cookiesJson) {
+  async writeCookiesFile(cookiesJson: string | object) {
     await this.cookieSaver.writeCookies(cookiesJson);
   }
 
@@ -236,7 +237,7 @@ export class BotBase {
    * @param {string} filename just the name of the file without extension
    * @returns {Promise<string>} screenshotLocation full screenshot location
    */
-  async takeScreenshot(filename) {
+  async takeScreenshot(filename: string) {
     const type = "jpeg";
     const imageBuffer = await this.page?.screenshot({
       type,
@@ -248,11 +249,15 @@ export class BotBase {
     //     path: screenshotLocation,
     //     fullPage: true
     // });
-    return this.screenshotSaver.saveScreenshot({
+    if (!imageBuffer) {
+      console.error("cannot take screenshot");
+      return "";
+    }
+    return this.screenshotSaver.saveScreenshot(
       imageBuffer,
       filename,
       type,
-    });
+    );
   }
 
   async logIP() {
@@ -260,7 +265,7 @@ export class BotBase {
 
     await this.page.goto("https://checkip.amazonaws.com/");
     const ip = await this.page.evaluate(
-      () => document.body.textContent?.trim() || ""
+      () => document.body.textContent?.trim() || "",
     );
 
     const ipFilePath = path.join(this.basePath, "/logs/ip.txt");
@@ -286,7 +291,8 @@ export class BotBase {
    * @return {string} The version number of the botbase.
    */
   getVersion() {
-    return pjson.version;
+    // @ts-ignore
+    return pjson.version as string;
   }
 
   async shutDown() {
