@@ -29,7 +29,7 @@ export function objectArrayToCookieParamArray(
 ): CookieParam[] {
   const cookiesValidated = [];
   for (const cookie of cookies) {
-    cookiesValidated.push(objectToCookieParam(cookies));
+    cookiesValidated.push(objectToCookieParam(cookie));
   }
   return cookiesValidated;
 }
