@@ -15,7 +15,7 @@
 		"start": "node index.js",
 		"test": "NODE_ENV=test jest --testTimeout=50000 --runInBand tests/*",
 		"test:tdd": "NODE_ENV=test jest --bail --colors --detectOpenHandles --detectLeaks --runInBand",
-		"test:ci": "NODE_ENV=test jest --testPathIgnorePatterns \"tests/*botbase*\" \"tests/*helper-puppeteer*\" --runInBand --reporters=default --reporters=jest-junit",
+		"test:ci": "NODE_ENV=test jest --testPathIgnorePatterns \"tests/*botbase*\" \"tests/*helper-puppeteer*\" --detectLeaks --runInBand --reporters=default --reporters=jest-junit",
 		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "npm run lint -- --fix",
 		"prebuild": "rm -rf dist/*",
