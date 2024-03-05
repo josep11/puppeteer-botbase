@@ -28,7 +28,7 @@ jobs:
             - ./node_modules
       - run:
           name: Run tests
-          command: make test
+          command: make test-ci
       - run:
           name: Run Linting
           command: make lint
