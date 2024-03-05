@@ -111,10 +111,9 @@ export class BotBase {
     });
   }
 
-  /* *************** */
-  /* LOGIN FUNCTIONS */
-
-  /* *************** */
+  // ********************
+  // BEGIN LOGIN FUNCTIONS
+  // ********************
 
   /**
    * Implementation required
@@ -213,14 +212,13 @@ export class BotBase {
     console.log("Login ok");
   }
 
-  /* ******************* */
-  /* END LOGIN FUNCTIONS */
-  /* ******************* */
+  // ********************
+  // END LOGIN FUNCTIONS
+  // ********************
 
-  /* ******************* */
-  /* BEGIN I/O FUNCTIONS */
-
-  /* ******************* */
+  // ********************
+  // BEGIN I/O FUNCTIONS
+  // ********************
 
   /**
    * reads from local filesystem
@@ -270,10 +268,9 @@ export class BotBase {
     return ip;
   }
 
-  /* ******************* */
-  /* END I/O FUNCTIONS */
-
-  /* ******************* */
+  // ********************
+  // END I/O FUNCTIONS
+  // ********************
 
   enabled() {
     return this.config.settings.enabled;
