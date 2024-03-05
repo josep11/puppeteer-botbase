@@ -14,8 +14,8 @@ beforeAll(async () => {
   await helper.rmFileIfExists(cookiesFilePath);
 });
 
-describe("LocalFsCookieSaver Tests", () => {
-  it("should intantiate LocalFsCookieSaver", () => {
+describe("CookieSaver Tests", () => {
+  it("should intantiate CookieSaver", () => {
     cookieSaver = new CookieSaver(cookiesFilePath);
     assert.ok(cookieSaver);
   });

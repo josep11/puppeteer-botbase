@@ -24,7 +24,6 @@ async function reinitBrowser() {
   await initBrowser();
 }
 
-// In the Mocha "before" hook, create the browser and page objects.
 beforeAll(async () => {
   await initBrowser();
 });
