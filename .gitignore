@@ -13,9 +13,10 @@ res
 
 test-results/*
 !test-results/.gitkeep
-!test-results/mocha/
-test-results/mocha/*
-!test-results/mocha/.gitkeep
+!test-results/junit/
+test-results/junit/*
+!test-results/junit/.gitkeep
+/junit.xml
 
 playground.*
 

@@ -1,56 +1,59 @@
-// Node.js built-in modules
 import assert from "assert";
 import fs from "fs";
 import path from "path";
-
-// Third-party libraries
 import puppeteer from "puppeteer";
+import { expect } from "chai";
+import { glob } from "glob";
+
 // Application-specific modules
 import { BotBase, BrowserLauncher, CookieSaver, ScreenshotSaver } from "../index";
-import { glob } from "glob";
-import { CookieSaverInterface } from "../src/savers/cookie-saver-interface";
-import { ScreenshotSaverInterface } from "../src/savers/screenshot-saver-interface";
 import BotBaseParams from "../src/types/BotBaseParams";
-import { expect } from "chai";
 
-const shouldTestBotBase = (
+const mainUrl = "https://sampleurl.com";
+
+// const __dirname = dirname(import.meta.url);
+const basePath = path.resolve(__dirname, "../");
+
+const browserLauncher = new BrowserLauncher(puppeteer);
+
+const cookieSaver = new CookieSaver(
+  path.resolve(basePath, "./res/cookies.json"),
+);
+const screenshotSaver = new ScreenshotSaver(
+  path.resolve(basePath, "./screenshots"),
+);
+
+function buildBotBaseParams(
+  mainUrl: string,
   basePath: string,
-  cookieSaver: CookieSaverInterface,
-  screenshotSaver: ScreenshotSaverInterface,
-  browserLauncher: BrowserLauncher,
-) => {
+  configChild: object = {},
+) {
+  return new BotBaseParams(
+    mainUrl,
+    basePath,
+    cookieSaver,
+    screenshotSaver,
+    browserLauncher,
+    configChild,
+  );
+}
 
-  function builBotBaseParams(
-    mainUrl: string,
-    basePath: string,
-    configChild: object = {},
-  ) {
-    return new BotBaseParams(
-      mainUrl,
-      basePath,
-      cookieSaver,
-      screenshotSaver,
-      browserLauncher,
-      configChild,
-    );
+class ExampleChild extends BotBase {
+  constructor(basePath: string) {
+    const configChild = {
+      settings: {
+        enabled: false,
+      },
+    };
+    super(buildBotBaseParams("https://dummy.com", basePath, configChild));
   }
+}
 
-  class ExampleChild extends BotBase {
-    constructor(basePath: string) {
-      const configChild = {
-        settings: {
-          enabled: false,
-        },
-      };
-      super(builBotBaseParams("https://dummy.com", basePath, configChild));
-    }
-  }
-
+describe("Botbase Tests", () => {
   let botbase: BotBase | null = null;
-  const mainUrl = "https://sampleurl.com";
 
   it("should intantiate BotBase", () => {
-    const botBaseParams = builBotBaseParams(mainUrl, basePath);
+    const botBaseParams = buildBotBaseParams(mainUrl, basePath);
     botbase = new BotBase(botBaseParams);
     assert.ok(botbase);
   });
@@ -109,40 +112,6 @@ const shouldTestBotBase = (
     });
   });
 
-  // clean up screenshot tests
-  afterAll(() => {
-    //list files in screenshot directory
-    const imgExtGlobFilter = "*(*.png|*.jpeg|*.jpg)";
-    const screenshotGlobFilter = `${basePath}/screenshots/${imgExtGlobFilter}`;
-    const results = glob.sync(screenshotGlobFilter);
-    for (const file of results) {
-      // console.log(`cleaning up ${file}`);
-      fs.unlinkSync(file);
-    }
-  });
-};
-
-
-// const __dirname = dirname(import.meta.url);
-const basePath = path.resolve(__dirname, "../");
-
-const browserLauncher = new BrowserLauncher(puppeteer);
-
-const cookieSaver = new CookieSaver(
-  path.resolve(basePath, "./res/cookies.json"),
-);
-const screenshotSaver = new ScreenshotSaver(
-  path.resolve(basePath, "./screenshots"),
-);
-
-describe("Botbase Tests", () => {
-  shouldTestBotBase(
-    basePath,
-    cookieSaver,
-    screenshotSaver,
-    browserLauncher,
-  );
-
   it("should take a screenshot with puppeteer", async () => {
     const mainUrl = "https://google.com";
     const botBaseParams = new BotBaseParams(
@@ -153,7 +122,7 @@ describe("Botbase Tests", () => {
       browserLauncher,
       {},
     );
-    const botbase = new BotBase(botBaseParams);
+    botbase = new BotBase(botBaseParams);
     let screenshotPath;
     await botbase.initialize();
     await botbase.page?.goto(mainUrl, { waitUntil: "networkidle2" });
@@ -163,6 +132,8 @@ describe("Botbase Tests", () => {
     } catch (err: any) {
       console.error(err);
       assert.fail("screenshot not successful");
+    } finally {
+      await botbase?.shutDown();
     }
 
     try {
@@ -174,5 +145,19 @@ describe("Botbase Tests", () => {
         throw err;
       }
     }
+  });
+
+  // clean up screenshot tests
+  afterAll(async () => {
+    //list files in screenshot directory
+    const imgExtGlobFilter = "*(*.png|*.jpeg|*.jpg)";
+    const screenshotGlobFilter = `${basePath}/screenshots/${imgExtGlobFilter}`;
+    const results = glob.sync(screenshotGlobFilter);
+    for (const file of results) {
+      // console.log(`cleaning up ${file}`);
+      fs.unlinkSync(file);
+    }
+    console.log("shutting down botbase browser");
+    await botbase?.shutDown();
   });
 });
