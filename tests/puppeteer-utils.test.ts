@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { CookieParam } from "puppeteer";
 
-import { objectArrayToCookieParamArray } from "../index";
+import { objectArrayToCookieParamArray } from "../src";
 
 describe("objectArrayToCookieParamArray Function", () => {
   /* Test 01: Validate that the function correctly processes valid input. */

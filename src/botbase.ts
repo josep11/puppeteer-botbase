@@ -13,7 +13,7 @@ import {
   objectArrayToCookieParamArray,
   ScreenshotSaverInterface,
   semiRandomiseViewPort,
-} from "../index";
+} from "./index";
 import BotBaseParams from "./types/BotBaseParams";
 
 const { waitForTimeout } = helper;

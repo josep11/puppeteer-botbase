@@ -1,4 +1,4 @@
-import { helper } from "../index";
+import { helper } from "./index";
 import { Page } from "puppeteer";
 
 export class HelperPuppeteer {

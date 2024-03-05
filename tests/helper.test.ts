@@ -4,7 +4,7 @@ import fs, { promises as pfs } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
-import { helper } from "../index";
+import { helper } from "../src";
 
 describe("Module Helper Tests", () => {
   let filePath: fs.PathLike;
