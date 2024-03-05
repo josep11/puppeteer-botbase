@@ -1,12 +1,17 @@
 import assert from "assert";
+import { expect } from "chai";
 import fs from "fs";
+import { glob } from "glob";
 import path from "path";
 import puppeteer from "puppeteer";
-import { expect } from "chai";
-import { glob } from "glob";
 
 // Application-specific modules
-import { BotBase, BrowserLauncher, CookieSaver, ScreenshotSaver } from "../index";
+import {
+  BotBase,
+  BrowserLauncher,
+  CookieSaver,
+  ScreenshotSaver,
+} from "../index";
 import BotBaseParams from "../src/types/BotBaseParams";
 
 const mainUrl = "https://sampleurl.com";
@@ -17,16 +22,16 @@ const basePath = path.resolve(__dirname, "../");
 const browserLauncher = new BrowserLauncher(puppeteer);
 
 const cookieSaver = new CookieSaver(
-  path.resolve(basePath, "./res/cookies.json"),
+  path.resolve(basePath, "./res/cookies.json")
 );
 const screenshotSaver = new ScreenshotSaver(
-  path.resolve(basePath, "./screenshots"),
+  path.resolve(basePath, "./screenshots")
 );
 
 function buildBotBaseParams(
   mainUrl: string,
   basePath: string,
-  configChild: object = {},
+  configChild: object = {}
 ) {
   return new BotBaseParams(
     mainUrl,
@@ -34,7 +39,7 @@ function buildBotBaseParams(
     cookieSaver,
     screenshotSaver,
     browserLauncher,
-    configChild,
+    configChild
   );
 }
 
@@ -80,6 +85,12 @@ describe("Botbase Tests", () => {
     assert.ok(config.settings.width, errMsg);
   });
 
+  it("should get the version", () => {
+    assert.ok(botbase);
+    const version = botbase.getVersion();
+    expect(version).to.have.lengthOf.at.least(3);
+  });
+
   it("should call successfully initialise", async () => {
     assert.ok(botbase);
     await botbase.initialize();
@@ -88,12 +99,6 @@ describe("Botbase Tests", () => {
   it("should log ip to text file", async () => {
     assert.ok(botbase);
     await botbase.logIP();
-  });
-
-  it("should get the version", () => {
-    assert.ok(botbase);
-    const version = botbase.getVersion();
-    expect(version).to.have.lengthOf.at.least(3);
   });
 
   it("should get a sample website with puppeteer", async () => {
@@ -113,6 +118,7 @@ describe("Botbase Tests", () => {
   });
 
   it("should take a screenshot with puppeteer", async () => {
+    // Configure botbase
     const mainUrl = "https://google.com";
     const botBaseParams = new BotBaseParams(
       mainUrl,
@@ -120,12 +126,14 @@ describe("Botbase Tests", () => {
       cookieSaver,
       screenshotSaver,
       browserLauncher,
-      {},
+      {}
     );
-    botbase = new BotBase(botBaseParams);
+    let botbase = new BotBase(botBaseParams);
+
     let screenshotPath;
     await botbase.initialize();
-    await botbase.page?.goto(mainUrl, { waitUntil: "networkidle2" });
+    assert.ok(botbase.page);
+    await botbase.page.goto(mainUrl, { waitUntil: "domcontentloaded" });
     try {
       screenshotPath = await botbase.takeScreenshot("tests");
       assert.equal(typeof screenshotPath, "string");
