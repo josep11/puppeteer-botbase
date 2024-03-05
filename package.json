@@ -14,7 +14,7 @@
 	"scripts": {
 		"start": "node index.js",
 		"test": "NODE_ENV=test jest --testTimeout=50000 tests/*",
-		"test:tdd": "NODE_ENV=test jest --bail --colors",
+		"test:tdd": "NODE_ENV=test jest --bail --colors --detectOpenHandles",
 		"test:ci": "NODE_ENV=test jest --detectLeaks \"tests/!(*botbase*|*helper-puppeteer*).js\" --runInBand --reporters=default --reporters=jest-junit",
 		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "npm run lint -- --fix",
