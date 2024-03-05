@@ -26,7 +26,7 @@ export class ScreenshotSaver implements ScreenshotSaverInterface {
       throw new Error("type is not defined");
     }
     if (this.allowedTypes.indexOf(type) === -1) {
-      throw new Error(`Type ${type} not allowed.`);
+      throw new Error(`Type "${type}" not allowed.`);
     }
   }
 

@@ -6,7 +6,7 @@ import path from "path";
 // Third-party libraries
 import puppeteer from "puppeteer";
 // Application-specific modules
-import { BotBase, BrowserLauncher, CookieSaver, dirname, ScreenshotSaver } from "../index";
+import { BotBase, BrowserLauncher, CookieSaver, ScreenshotSaver } from "../index";
 import { glob } from "glob";
 import { CookieSaverInterface } from "../src/savers/cookie-saver-interface";
 import { ScreenshotSaverInterface } from "../src/savers/screenshot-saver-interface";
@@ -110,7 +110,7 @@ const shouldTestBotBase = (
   });
 
   // clean up screenshot tests
-  after(() => {
+  afterAll(() => {
     //list files in screenshot directory
     const imgExtGlobFilter = "*(*.png|*.jpeg|*.jpg)";
     const screenshotGlobFilter = `${basePath}/screenshots/${imgExtGlobFilter}`;
@@ -123,7 +123,7 @@ const shouldTestBotBase = (
 };
 
 
-const __dirname = dirname(import.meta.url);
+// const __dirname = dirname(import.meta.url);
 const basePath = path.resolve(__dirname, "../");
 
 const browserLauncher = new BrowserLauncher(puppeteer);

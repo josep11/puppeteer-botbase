@@ -256,8 +256,8 @@ export class BotBase {
     }
     return this.screenshotSaver.saveScreenshot(
       imageBuffer,
-      filename,
       type,
+      filename,
     );
   }
 

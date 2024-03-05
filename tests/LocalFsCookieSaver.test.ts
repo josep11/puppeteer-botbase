@@ -10,7 +10,7 @@ let cookieSaver: CookieSaverInterface;
 
 const cookiesFilePath = path.resolve("./res/cookies_test.json");
 
-before(async () => {
+beforeAll(async () => {
   await helper.rmFileIfExists(cookiesFilePath);
 });
 
