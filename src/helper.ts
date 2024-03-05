@@ -12,7 +12,7 @@ import UserAgents from "user-agents";
 
 const exec = promisify(callbackExec);
 
-const __dirname = path.dirname(__filename);
+// const __dirname = path.dirname(__filename);
 
 class Helper {
   delay: () => Promise<void>;

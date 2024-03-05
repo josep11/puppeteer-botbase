@@ -10,6 +10,7 @@ import {
   helper,
   MyTimeoutError,
   NotImplementedError,
+  objectArrayToCookieParamArray,
   ScreenshotSaverInterface,
   semiRandomiseViewPort,
 } from "../index";
@@ -147,15 +148,15 @@ export class BotBase {
   /**
    * Tries to log in using cookies, or otherwise it throws error
    * It depends on implementation of isLoggedIn()
-   * @param {*} cookies
    */
-  async loginWithSession(cookies: object) {
+  async loginWithSession(cookies: object[]) {
     if (!this.mainUrl) {
       throw new Error("loginWithSession: mainUrl param is not set");
     }
     this.page = this.checkPage();
     console.log(`Logging into ${this.appName()} using cookies`);
-    await this.page.setCookie(...cookies);
+
+    await this.page.setCookie(...objectArrayToCookieParamArray(cookies));
     await this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
     await waitForTimeout(helper.getRandBetween(1500, 4000));
 

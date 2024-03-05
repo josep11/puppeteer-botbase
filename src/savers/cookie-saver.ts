@@ -19,12 +19,27 @@ export class CookieSaver implements CookieSaverInterface {
 
   /**
    *
-   * @returns {Promise<*>}
+   * @returns {Promise<object[]>}
    */
   // eslint-disable-next-line require-await
-  async readCookies() {
+  async readCookies(): Promise<object[]> {
     try {
-      return helper.loadJson(this.cookiesFilePath);
+      const cookies = helper.loadJson(this.cookiesFilePath);
+      
+      // Check if cookies is an array
+      if (!(cookies instanceof Array)) {
+        // noinspection ExceptionCaughtLocallyJS
+        throw new Error('cookies is not an array');
+      }
+
+      // Check if all elements in the array are objects
+      for (const cookie of cookies) {
+        if (typeof cookie !== 'object') {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new Error('Array contains non-object elements');
+        }
+      }
+      
     } catch (err: any) {
       if (err.code !== "ENOENT") {
         console.error("Reading cookie error. Defaulting to [] \n\n" + err);

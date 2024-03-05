@@ -3,9 +3,9 @@ export interface CookieSaverInterface {
   writeCookies(cookies: object | string): Promise<void>;
 
   /**
-   * @returns {Promise<*>}
+   * @returns {Promise<object[]>}
    */
-  readCookies(): Promise<any>;
+  readCookies(): Promise<object[]>;
 
   /**
    * When extending it, should save "[]" as empty cookie
