@@ -48,11 +48,7 @@ tag/delete:
 update-deps:
 	ncu -x chai -u && npm i && npm test
 
-.PHONY: build prebuild ncp
-
-## Node copy
-ncp:
-	npm run ncp
+.PHONY: build prebuild
 
 ## prebuild scripts
 prebuild:

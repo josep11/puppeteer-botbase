@@ -165,7 +165,6 @@ describe("Botbase Tests", () => {
       // console.log(`cleaning up ${file}`);
       fs.unlinkSync(file);
     }
-    console.log("shutting down botbase browser");
     await botbase?.shutDown();
   });
 });
