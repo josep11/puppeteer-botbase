@@ -1,5 +1,13 @@
 # Puppeteer BotBase
 
+## 9.0.0 - Typescript build
+
+### Changed
+
+- Codebase moved to typescript
+- By default, config is expected at `./config/config.json`
+
+
 ## 8.0.0
 
 ### Changed
