@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-import puppeteer, { Page } from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 import assert from "assert";
 
-import { HelperPuppeteer } from "../index.js";
+import { HelperPuppeteer } from "../index";
 
-let browser, page;
+jest.setTimeout(20000); // globally set timeout for all tests
+
+let browser: Browser, page: Page;
 
 async function initBrowser() {
   browser = await puppeteer.launch({
@@ -22,8 +24,7 @@ async function reinitBrowser() {
   await initBrowser();
 }
 
-// In the Mocha "before" hook, create the browser and page objects.
-before(async () => {
+beforeAll(async () => {
   await initBrowser();
 });
 
@@ -37,7 +38,7 @@ const POPUP_ACCEPT_COOKIES_BUTTON_CSS_SELECTOR = "#onetrust-accept-btn-handler";
  * @param {string} text text to be checked
  * @returns {Promise<boolean>} true if the text is not found, false otherwise
  */
-async function verifyTextIsNotPresent(page, text) {
+async function verifyTextIsNotPresent(page: Page, text: string) {
   const pageContent = await page.content();
   return !pageContent.includes(text);
 }
@@ -54,7 +55,7 @@ describe("Module Helper Puppeteer Tests", () => {
         await page.setContent(contentHtml);
         // const elements = await HelperPuppeteer.
         assert.strictEqual(elements.length, 2);
-    }).timeout(20000);
+    });
  */
 
   it("isTextPresentOnWebpage: should find text in webpage (ignorecase)", async () => {
@@ -68,7 +69,7 @@ describe("Module Helper Puppeteer Tests", () => {
         assert.fail("Text not found " + textTofind);
       }
     }
-  }).timeout(20000);
+  });
 
   it("closePopup: should close popup by text: BonArea - Cookies popup", async () => {
     await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
@@ -82,7 +83,7 @@ describe("Module Helper Puppeteer Tests", () => {
     );
 
     assert.ok(clicked);
-  }).timeout(20000);
+  });
 
   it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
     await reinitBrowser(); // We reinit the browser to make sure that no cookies are set for the page (it could make the tests flaky)
@@ -97,7 +98,7 @@ describe("Module Helper Puppeteer Tests", () => {
 
     // Verify that some text inside that cookies popup is not present anymore
     await assertThatCookiesTextIsNotPresent();
-  }).timeout(20000);
+  });
 
   it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
     // We set up both a wrong text and the css selectors to fully test the method to see if it can be found also
@@ -115,7 +116,7 @@ describe("Module Helper Puppeteer Tests", () => {
 
     // Verify that some text inside that cookies popup is not present anymore
     await assertThatCookiesTextIsNotPresent();
-  }).timeout(20000);
+  });
 
   /* 
 	// This test is failing as there is no cookies pop up anymore. Keeping it here as a reference.
@@ -164,11 +165,11 @@ describe("Module Helper Puppeteer Tests", () => {
 		);
 
 		assert.ok(clicked);
-	}).timeout(20000);
+	});
 	 */
 });
 
-after(async () => {
+afterAll(async () => {
   await closeBrowser();
 });
 

@@ -18,6 +18,6 @@ lint:
 lint-fix:
 	npm run lint:fix
 
-## Run mocha (wrapper). Usage: make mocha PARAMS="-h"
-mocha:
-	./node_modules/.bin/mocha ${PARAMS}
+## Run jest (wrapper). Usage: make jest PARAMS="-h"
+jest:
+	./node_modules/.bin/jest ${PARAMS}

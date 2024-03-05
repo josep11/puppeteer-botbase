@@ -31,7 +31,7 @@ To use and import the BotBase import like so:
 ```js
     const { BotBaseFactory } = require("botbase");
     const BotBase = BotBaseFactory(puppeteer);
-    class Milanuncios extends BotBase { ... }
+    class MyCustomBot extends BotBase {}
 ```
 
 To use the helper class import:

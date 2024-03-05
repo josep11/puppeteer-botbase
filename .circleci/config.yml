@@ -1,6 +1,6 @@
 version: 2.1
-orbs:
-  node: circleci/node@5.1.1
+# orbs:
+#   node: circleci/node@5.2.0
 jobs:
   tests-job:
     docker:
@@ -18,18 +18,22 @@ jobs:
       - run:
           name: Install Dependencies
           command: npm install
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Browsers
+          command: npx puppeteer browsers install chrome
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
           name: Run tests
-          command: make test-ci
+          command: make test
       - run:
           name: Run Linting
           command: make lint
       - store_test_results:
-          path: test-results/mocha/
+          path: test-results/junit/
 workflows:
   tests-workflow:
     jobs:

@@ -6,3 +6,5 @@ playground.js
 build-cdn/
 
 jest.config.js
+
+dist/

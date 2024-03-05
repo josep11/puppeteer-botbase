@@ -1,43 +1,55 @@
 import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
-import { Page } from "puppeteer";
-
+import { Browser, Page } from "puppeteer";
 import path from "path";
-import config from "../config/config.js";
-import { ICookieSaver } from "./ICookieSaver.js";
-import { IScreenshotSaver } from "./IScreenshotSaver.js";
+
 // eslint-disable-next-line no-unused-vars
-import { BrowserLauncher } from "./browser-launcher.js";
-import { MyTimeoutError, NotImplementedError } from "./custom-errors.js";
-import { helper } from "../index.js";
-import { semiRandomiseViewPort } from "./puppeteer-utils.js";
+import {
+  BrowserLauncher,
+  CookieSaverInterface,
+  helper,
+  MyTimeoutError,
+  NotImplementedError,
+  objectArrayToCookieParamArray,
+  ScreenshotSaverInterface,
+  semiRandomiseViewPort,
+} from "../index";
+import BotBaseParams from "./types/BotBaseParams";
 
 const { waitForTimeout } = helper;
 
 // Load the package json
 const packageJsonPath = path.resolve("package.json");
 const pjson = helper.loadJson(packageJsonPath);
+const configJsonPath = path.resolve("config/config.json");
+const config = helper.loadJson(configJsonPath);
 
 export class BotBase {
-  /**
-   * @typedef {Object} BotBaseParams
-   * @property {string} mainUrl
-   * @property {string} basePath
-   * @property {ICookieSaver} cookieSaver the delegate to save cookies
-   * @property {IScreenshotSaver} screenshotSaver the delegate to save the screenshots
-   * @property {BrowserLauncher} browserLauncher class responsible to launch a browser
-   * @property {*} configChild optional
-   * @property {string|null} chromiumExecutablePath
-   */
+  private browser: Browser | null;
+
+  page: Page | null;
+
+  private readonly basePath: string;
+
+  private readonly mainUrl: string;
+
+  private cookieSaver: CookieSaverInterface;
+
+  private screenshotSaver: ScreenshotSaverInterface;
+
+  private browserLauncher: BrowserLauncher;
+
+  private config: any;
+
+  private chromiumExecutablePath: string | null;
 
   /**
    * @param {BotBaseParams} params
    */
   // @ts-ignore
-  constructor(params) {
+  constructor(params: BotBaseParams) {
     this.validateParams(params);
     this.browser = null;
-    /** @type {Page|null} */
     this.page = null;
     this.basePath = params.basePath;
     this.mainUrl = params.mainUrl;
@@ -49,31 +61,14 @@ export class BotBase {
     this.chromiumExecutablePath = params.chromiumExecutablePath;
   }
 
-  validateParams({
-    mainUrl,
-    basePath,
-    cookieSaver,
-    screenshotSaver,
-    browserLauncher,
-  } = {}) {
-    if (!mainUrl || typeof mainUrl !== "string" || !mainUrl.includes("http")) {
+  validateParams(params: BotBaseParams) {
+    const { mainUrl, basePath } = params;
+    if (!mainUrl || !mainUrl.includes("http")) {
       throw new Error("Invalid mainUrl");
     }
 
     if (!basePath) {
       throw new Error("Developer fix this: basePath is undefined");
-    }
-
-    if (!(cookieSaver instanceof ICookieSaver)) {
-      throw new Error("Invalid cookieSaver");
-    }
-
-    if (!(screenshotSaver instanceof IScreenshotSaver)) {
-      throw new Error("Invalid screenshotSaver");
-    }
-
-    if (!(browserLauncher instanceof BrowserLauncher)) {
-      throw new Error("Invalid BrowserLauncher");
     }
   }
 
@@ -91,11 +86,13 @@ export class BotBase {
       chromiumExecutablePath
     );
 
-    [this.page] = await this.browser.pages();
+    [this.page] = await this.browser!.pages();
 
     await semiRandomiseViewPort(
       this.page,
+      // @ts-ignore
       config.settings.width,
+      // @ts-ignore
       config.settings.height
     );
   }
@@ -103,22 +100,24 @@ export class BotBase {
   /**
    * Prevents loading images to save CPU, memory and bandwidth
    * Careful, it will raise an error if another function already intercepted the request like in this issue (https://github.com/berstend/puppeteer-extra/issues/600)
-   * @param {*} page
+   * @param {Page} page
    */
-  async interceptImages(page) {
+  async interceptImages(page: Page) {
     await page.setRequestInterception(true);
     page.on("request", (req) => {
       if (req.resourceType() === "image") {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         req.abort();
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         req.continue();
       }
     });
   }
 
-  /* *************** */
-  /* LOGIN FUNCTIONS */
-  /* *************** */
+  // ********************
+  // BEGIN LOGIN FUNCTIONS
+  // ********************
 
   /**
    * Implementation required
@@ -132,15 +131,14 @@ export class BotBase {
    * Implementation required
    */
   // eslint-disable-next-line no-unused-vars, require-await
-  async loginWithCredentials(username, password) {
+  async loginWithCredentials(username: string, password: string) {
     throw new NotImplementedError("loginWithCredentials not implemented");
   }
 
   /**
    * @throws {Error}
-   * @returns {Page}
    */
-  checkPage() {
+  checkPage(): Page {
     if (!this.page) {
       throw Error("page is not initialised");
     }
@@ -150,15 +148,15 @@ export class BotBase {
   /**
    * Tries to log in using cookies, or otherwise it throws error
    * It depends on implementation of isLoggedIn()
-   * @param {*} cookies
    */
-  async loginWithSession(cookies) {
+  async loginWithSession(cookies: object[]) {
     if (!this.mainUrl) {
       throw new Error("loginWithSession: mainUrl param is not set");
     }
     this.page = this.checkPage();
     console.log(`Logging into ${this.appName()} using cookies`);
-    await this.page.setCookie(...cookies);
+
+    await this.page.setCookie(...objectArrayToCookieParamArray(cookies));
     await this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
     await waitForTimeout(helper.getRandBetween(1500, 4000));
 
@@ -174,10 +172,8 @@ export class BotBase {
    * throws MyTimeoutError, when unable to connect due to timeout or another Error for other ones
    * If login is ok it writes the cookies to the file, if it's not it deletes them
    * Careful this function depends on implementation of isLoggedIn
-   * @param {*} username username for the website
-   * @param {string} password
    */
-  async login(username, password) {
+  async login(username: string, password: string) {
     this.page = this.checkPage();
 
     const cookies = await this.readCookiesFile();
@@ -194,7 +190,7 @@ export class BotBase {
       } else {
         await this.loginWithCredentials(username, password);
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.name.indexOf("TimeoutError") !== -1) {
         throw new MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
       }
@@ -210,7 +206,7 @@ export class BotBase {
       throw error;
     }
 
-    // Save our freshest cookies that contain our Milanuncios session
+    // Save our freshest cookies that contain our target page session
     await this.page.cookies().then(async (freshCookies) => {
       await this.writeCookiesFile(freshCookies);
     });
@@ -218,13 +214,13 @@ export class BotBase {
     console.log("Login ok");
   }
 
-  /* ******************* */
-  /* END LOGIN FUNCTIONS */
-  /* ******************* */
+  // ********************
+  // END LOGIN FUNCTIONS
+  // ********************
 
-  /* ******************* */
-  /* BEGIN I/O FUNCTIONS */
-  /* ******************* */
+  // ********************
+  // BEGIN I/O FUNCTIONS
+  // ********************
 
   /**
    * reads from local filesystem
@@ -233,7 +229,7 @@ export class BotBase {
     return await this.cookieSaver.readCookies();
   }
 
-  async writeCookiesFile(cookiesJson) {
+  async writeCookiesFile(cookiesJson: string | object) {
     await this.cookieSaver.writeCookies(cookiesJson);
   }
 
@@ -242,7 +238,7 @@ export class BotBase {
    * @param {string} filename just the name of the file without extension
    * @returns {Promise<string>} screenshotLocation full screenshot location
    */
-  async takeScreenshot(filename) {
+  async takeScreenshot(filename: string) {
     const type = "jpeg";
     const imageBuffer = await this.page?.screenshot({
       type,
@@ -254,11 +250,11 @@ export class BotBase {
     //     path: screenshotLocation,
     //     fullPage: true
     // });
-    return this.screenshotSaver.saveScreenshot({
-      imageBuffer,
-      filename,
-      type,
-    });
+    if (!imageBuffer) {
+      console.error("cannot take screenshot");
+      return "";
+    }
+    return this.screenshotSaver.saveScreenshot(imageBuffer, type, filename);
   }
 
   async logIP() {
@@ -274,9 +270,9 @@ export class BotBase {
     return ip;
   }
 
-  /* ******************* */
-  /* END I/O FUNCTIONS */
-  /* ******************* */
+  // ********************
+  // END I/O FUNCTIONS
+  // ********************
 
   enabled() {
     return this.config.settings.enabled;
@@ -292,7 +288,8 @@ export class BotBase {
    * @return {string} The version number of the botbase.
    */
   getVersion() {
-    return pjson.version;
+    // @ts-ignore
+    return pjson.version as string;
   }
 
   async shutDown() {

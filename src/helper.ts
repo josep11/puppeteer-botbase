@@ -1,6 +1,12 @@
 // Node.js built-in modules
 import { exec as callbackExec } from "child_process";
-import { existsSync, mkdirSync, promises as fs, readFileSync } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  PathLike,
+  promises as fs,
+  readFileSync,
+} from "fs";
 import path from "path";
 import { promisify } from "util";
 
@@ -9,13 +15,14 @@ import { DateTime, Duration } from "luxon";
 
 // eslint-disable-next-line no-unused-vars
 import UserAgents from "user-agents";
-import { dirname } from "./utils.js";
 
 const exec = promisify(callbackExec);
 
-const __dirname = dirname(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 class Helper {
+  delay: () => Promise<void>;
+
   constructor() {
     /**
      * @param {number} in milliseconds
@@ -30,11 +37,11 @@ class Helper {
     // console.log('---------------------------------------');
   }
 
-  dateFormatForLog() {
+  dateFormatForLog(): string {
     return DateTime.now().toFormat("yyyy-LL-dd_HH.mm.ss");
   }
 
-  consoleListener(message) {
+  consoleListener(message: { type: () => string; text: () => any }) {
     const type = message.type().substring(0, 3).toUpperCase();
     if (type === "WAR" || type === "INF") {
       return;
@@ -45,7 +52,7 @@ class Helper {
   /**
    * @param {number} milliseconds - the number of milliseconds to wait.
    */
-  async waitForTimeout(milliseconds) {
+  async waitForTimeout(milliseconds: number) {
     await new Promise((r) => setTimeout(r, milliseconds));
   }
 
@@ -54,7 +61,7 @@ class Helper {
    * @param {string | Date} pastTime - The past time to compare with the current datetime. It can be either a string in ISO 8601 format or a Date object.
    * @return {number} - The difference in hours between the pastTime and the current datetime.
    */
-  getDiferenceInHours(pastTime) {
+  getDiferenceInHours(pastTime: string | Date): number {
     const now = DateTime.local();
 
     let dateTimeStart;
@@ -70,14 +77,14 @@ class Helper {
   /**
    * Returns date in format YYYY-MM-DD = 2021-10-30
    */
-  getDate() {
+  getDate(): string {
     return DateTime.local().toFormat("yyyy-LL-dd");
   }
 
   /**
    * @return {string} The ISO formatted string representation of now
    */
-  getNow() {
+  getNow(): string {
     return DateTime.local().toISO();
   }
 
@@ -89,7 +96,7 @@ class Helper {
    * @return {string} The ISO formatted string representation of the current date and time
    * minus the specified number of hours.
    */
-  getNowMinus(hoursAgo = 0) {
+  getNowMinus(hoursAgo: number = 0): string {
     const millis = this.hoursToMillis(hoursAgo);
     const duration = Duration.fromMillis(millis);
     return DateTime.local().minus(duration).toISO();
@@ -99,37 +106,41 @@ class Helper {
    * @param {number} hours
    * @return {number} milliseconds
    */
-  hoursToMillis(hours) {
+  hoursToMillis(hours: number): number {
     return hours * 60 * 60 * 1000;
   }
 
-  /**
-   * @param {number} min
-   * @param {number} max
-   */
-  getRandBetween(min, max) {
+  getRandBetween(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   /**
-   * @param {any[]} array
-   * @param {(value: any, index: number, array: any[]) => any} callbackfn
+   * @param array
+   * @param callbackfn
    */
-  mapAsync(array, callbackfn) {
+  mapAsync<T, R>(
+    array: T[],
+    // eslint-disable-next-line no-unused-vars
+    callbackfn: (value: T, index: number, array: T[]) => Promise<R>
+  ): Promise<R[]> {
     return Promise.all(array.map(callbackfn));
   }
 
   /**
    *
-   * @param {array} array array to filter
-   * @param {(value: any, index: number, array: any[]) => any} callbackfn should be a function that returns a Promise
+   * @param array array to filter
+   * @param callbackfn  should be a function that returns a Promise
    * @returns
    */
-  async filterAsync(array, callbackfn) {
-    const filterMap = await this.mapAsync(array, callbackfn);
-    return array.filter((value, index) => filterMap[index]);
+  async filterAsync<T>(
+    array: T[],
+    // eslint-disable-next-line no-unused-vars
+    callbackfn: (value: T, index: number, array: T[]) => Promise<any>
+  ): Promise<T[]> {
+    const filterMap = await this.mapAsync<T, T>(array, callbackfn);
+    return array.filter((_, index) => filterMap[index]);
   }
 
   /**
@@ -138,7 +149,7 @@ class Helper {
    * @param {string} textToFind
    * @returns {number}
    */
-  countStringOccurrences(text, textToFind) {
+  countStringOccurrences(text: string, textToFind: string | RegExp) {
     const re = new RegExp(textToFind, "gi");
     return (text.match(re) || []).length;
   }
@@ -148,7 +159,7 @@ class Helper {
    * @param {string} timeStr
    * @returns {number|null}
    */
-  extractHorasFromString(timeStr) {
+  extractHorasFromString(timeStr: string): number | null {
     // 23 horas
     if (!timeStr) {
       return null;
@@ -173,7 +184,7 @@ class Helper {
     }
   }
 
-  async getIp() {
+  async getIp(): Promise<string> {
     const { stdout, stderr } = await exec(`curl checkip.amazonaws.com`);
     if (!stdout) {
       console.error("IP no trobada a amazon");
@@ -185,17 +196,18 @@ class Helper {
 
   /*****************************************/
   /* BEGIN I/O FUNCTIONS TO THE FILESYSTEM */
+
   /*****************************************/
 
   /**
    * @param {string} ip
    * @param {string} date
-   * @param {string} ipFilePath the file where to save it
+   * @param {PathLike} ipFilePath the file where to save it
    */
-  async writeIPToFile(ip, date, ipFilePath) {
+  async writeIPToFile(ip: string, date: string, ipFilePath: PathLike) {
     try {
       await fs.appendFile(ipFilePath, `Data: ${date}\nIP: ${ip}\n\n`);
-    } catch (err) {
+    } catch (err: any) {
       console.error(`cannot write to file ${ipFilePath}. Error: ${err}`);
       throw Error(`cannot write to file ${ipFilePath}. Error: ${err}`);
     }
@@ -206,7 +218,7 @@ class Helper {
    * @param {string} filename
    * @param {string} content
    */
-  async writeFile(filename, content) {
+  async writeFile(filename: string, content: string) {
     // noinspection UnnecessaryLocalVariableJS
     await fs.writeFile(filename, content);
   }
@@ -217,7 +229,7 @@ class Helper {
    * @param {string} text text to write
    * @returns
    */
-  async appendFile(filename, text) {
+  async appendFile(filename: string, text: string) {
     // noinspection UnnecessaryLocalVariableJS
     await fs.appendFile(filename, text, "utf-8");
   }
@@ -226,13 +238,13 @@ class Helper {
    * @param {string} filename
    * @returns {Promise<string>} the content of the file
    */
-  async readFile(filename) {
+  async readFile(filename: string) {
     const encoding = "utf-8";
     const buffer = await fs.readFile(filename, { encoding });
     return buffer.toString();
   }
 
-  async emptyFile(filename) {
+  async emptyFile(filename: string) {
     return await this.writeFile(filename, "");
   }
 
@@ -241,30 +253,23 @@ class Helper {
    * @return {object} the parsed JSON object.
    * @throws {SyntaxError} when the JSON is malformed
    */
-  loadJson(filePath) {
+  loadJson(filePath: string): object {
     const jsonString = readFileSync(filePath);
     return JSON.parse(jsonString.toString());
   }
 
-  /**
-   * @param {string} dir
-   */
-  createDirIfNotExists(dir) {
+  createDirIfNotExists(dir: string) {
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
     }
   }
 
-  /**
-   *
-   * @param {string} file The file to remove
-   */
-  async rmFileIfExists(file) {
+  async rmFileIfExists(file: string) {
     try {
       await fs.stat(file);
       // console.log(`removing ${file}`);
       await fs.unlink(file);
-    } catch (err) {
+    } catch (err: any) {
       if (err.code === "ENOENT") {
         // console.error(`The file ${file} does not exist`);
       } else {
@@ -277,18 +282,18 @@ class Helper {
    * @param {string} jsonStr
    * @param basePath
    */
-  async logJSONdebug(jsonStr, basePath = __dirname) {
+  async logJSONdebug(jsonStr: string, basePath: string = __dirname) {
     const dir = path.resolve(basePath, `./logs/dataset`);
     this.createDirIfNotExists(dir);
     const filenameFullPath = path.resolve(
       dir,
-      `data_${this.dateFormatForLog()}.json`,
+      `data_${this.dateFormatForLog()}.json`
     );
     try {
       await fs.writeFile(filenameFullPath, jsonStr);
       console.log(`file written successfully to ${filenameFullPath}`);
       return filenameFullPath;
-    } catch (err) {
+    } catch (err: any) {
       console.error(`cannot write to file ${filenameFullPath}. Error: ${err}`);
     }
   }
@@ -301,7 +306,7 @@ class Helper {
   /**
    * Used by the V1 version of user-agents.
    */
-  #getRanomisedUserAgentV1() {
+  protected getRanomisedUserAgentV1() {
     const userAgents = new UserAgents({
       deviceCategory: "desktop",
       platform: "MacIntel", //"Linux x86_64",
@@ -316,7 +321,7 @@ class Helper {
   // }
 
   getRanomisedUserAgent() {
-    return this.#getRanomisedUserAgentV1();
+    return this.getRanomisedUserAgentV1();
   }
 }
 
