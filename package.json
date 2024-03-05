@@ -27,7 +27,6 @@
 		"timeout": 55000
 	},
 	"dependencies": {
-		"@types/jest": "^29.5.12",
 		"deepmerge": "^4.3.1",
 		"fs": "0.0.1-security",
 		"glob": "^10.3.10",
@@ -40,6 +39,7 @@
 		"puppeteer-core": "^22.2.0"
 	},
 	"devDependencies": {
+		"@types/jest": "^29.5.12",
 		"@types/chai": "^4.3.12",
 		"@types/luxon": "^3.4.2",
 		"@types/node": "^20.11.24",
