@@ -2,7 +2,7 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import assert from "assert";
 
-import { HelperPuppeteer } from "../index";
+import { HelperPuppeteer } from "../src";
 
 jest.setTimeout(20000); // globally set timeout for all tests
 

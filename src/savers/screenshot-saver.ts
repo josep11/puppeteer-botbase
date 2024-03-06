@@ -40,7 +40,7 @@ export class ScreenshotSaver implements ScreenshotSaverInterface {
     this._checkType(type);
 
     const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.${type}`;
-    console.log(`Saving screenshot "${filename}" at ${screenshotLocation}`);
+    // console.log(`Saving screenshot "${filename}" at ${screenshotLocation}`);
     fs.writeFileSync(screenshotLocation, imageBuffer);
     return screenshotLocation;
   }

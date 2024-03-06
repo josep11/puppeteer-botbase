@@ -11,7 +11,7 @@ import {
   BrowserLauncher,
   CookieSaver,
   ScreenshotSaver,
-} from "../index";
+} from "../src";
 import BotBaseParams from "../src/types/BotBaseParams";
 
 const mainUrl = "https://sampleurl.com";

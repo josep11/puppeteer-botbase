@@ -1,5 +1,5 @@
 import { CookieParam, Page } from "puppeteer";
-import { helper } from "../index";
+import { helper } from "./index";
 
 export async function semiRandomiseViewPort(
   page: Page,

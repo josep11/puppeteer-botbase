@@ -5,8 +5,12 @@
 ### Changed
 
 - Codebase moved to typescript
+- BotBase constructor params
 - By default, config is expected at `./config/config.json`
 
+### Removed
+
+- `LocalFsCookieSaver` and `LocalFsScreenshotSaver` in favour of `CookieSaver` and `ScreenshotSaver`
 
 ## 8.0.0
 
