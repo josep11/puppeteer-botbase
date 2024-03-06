@@ -29,24 +29,19 @@ export class BotBase {
 
   page: Page | null;
 
-  // TODO: protected
-  private readonly basePath: string;
+  protected readonly basePath: string;
 
-  // TODO: protected
-  private readonly mainUrl: string;
+  protected readonly mainUrl: string;
 
-  // TODO: protected
-  private cookieSaver: CookieSaverInterface;
+  protected cookieSaver: CookieSaverInterface;
 
-  // TODO: protected
-  private screenshotSaver: ScreenshotSaverInterface;
+  protected screenshotSaver: ScreenshotSaverInterface;
 
   private browserLauncher: BrowserLauncher;
 
   private config: any;
 
-  // TODO: protected
-  private chromiumExecutablePath: string | null;
+  protected chromiumExecutablePath: string | null;
 
   /**
    * @param {BotBaseParams} params
