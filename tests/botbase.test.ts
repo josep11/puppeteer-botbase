@@ -6,12 +6,7 @@ import path from "path";
 import puppeteer from "puppeteer";
 
 // Application-specific modules
-import {
-  BotBase,
-  BrowserLauncher,
-  CookieSaver,
-  ScreenshotSaver,
-} from "../src";
+import { BotBase, BrowserLauncher, CookieSaver, ScreenshotSaver } from "../src";
 import BotBaseParams from "../src/types/BotBaseParams";
 
 const mainUrl = "https://sampleurl.com";
