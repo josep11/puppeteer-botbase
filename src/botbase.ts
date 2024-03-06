@@ -37,9 +37,9 @@ export class BotBase {
 
   protected screenshotSaver: ScreenshotSaverInterface;
 
-  private browserLauncher: BrowserLauncher;
+  protected browserLauncher: BrowserLauncher;
 
-  private config: any;
+  protected config: any;
 
   protected chromiumExecutablePath: string | null;
 

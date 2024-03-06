@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { CookieSaverInterface, ScreenshotSaverInterface } from "./index";
+import { BrowserLauncher, CookieSaverInterface, ScreenshotSaverInterface } from "./index";
 import BotBaseParams from "./types/BotBaseParams";
 export declare class BotBase {
     private browser;
@@ -8,8 +8,8 @@ export declare class BotBase {
     protected mainUrl: string;
     protected cookieSaver: CookieSaverInterface;
     protected screenshotSaver: ScreenshotSaverInterface;
-    private browserLauncher;
-    private config;
+    protected browserLauncher: BrowserLauncher;
+    protected config: any;
     protected chromiumExecutablePath: string | null;
     /**
      * @param {BotBaseParams} params
