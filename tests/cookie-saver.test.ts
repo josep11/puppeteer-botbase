@@ -1,5 +1,5 @@
 import assert from "assert";
-import path from "path";
+import { resolve } from "path";
 
 import fs from "fs";
 import { CookieSaverInterface } from "../src/savers/cookie-saver-interface";
@@ -8,7 +8,7 @@ import { CookieSaver } from "../src/savers/cookie-saver";
 
 let cookieSaver: CookieSaverInterface;
 
-const cookiesFilePath = path.resolve("./res/cookies_test.json");
+const cookiesFilePath = resolve("./res/cookies_test.json");
 
 beforeAll(async () => {
   await helper.rmFileIfExists(cookiesFilePath);

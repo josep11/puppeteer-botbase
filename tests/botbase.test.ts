@@ -2,7 +2,7 @@ import assert from "assert";
 import { expect } from "chai";
 import fs from "fs";
 import { glob } from "glob";
-import path from "path";
+import { resolve } from "path";
 import puppeteer from "puppeteer";
 
 // Application-specific modules
@@ -12,15 +12,15 @@ import BotBaseParams from "../src/types/BotBaseParams";
 const mainUrl = "https://sampleurl.com";
 
 // const __dirname = dirname(import.meta.url);
-const basePath = path.resolve(__dirname, "../");
+const basePath = resolve(__dirname, "../");
 
 const browserLauncher = new BrowserLauncher(puppeteer);
 
 const cookieSaver = new CookieSaver(
-  path.resolve(basePath, "./res/cookies.json")
+  resolve(basePath, "./res/cookies.json")
 );
 const screenshotSaver = new ScreenshotSaver(
-  path.resolve(basePath, "./screenshots")
+  resolve(basePath, "./screenshots")
 );
 
 function buildBotBaseParams(

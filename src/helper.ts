@@ -7,7 +7,7 @@ import {
   promises as fs,
   readFileSync,
 } from "fs";
-import path from "path";
+import { resolve } from "path";
 import { promisify } from "util";
 
 // Third-party libraries
@@ -283,9 +283,9 @@ class Helper {
    * @param basePath
    */
   async logJSONdebug(jsonStr: string, basePath: string = __dirname) {
-    const dir = path.resolve(basePath, `./logs/dataset`);
+    const dir = resolve(basePath, `./logs/dataset`);
     this.createDirIfNotExists(dir);
-    const filenameFullPath = path.resolve(
+    const filenameFullPath = resolve(
       dir,
       `data_${this.dateFormatForLog()}.json`
     );
