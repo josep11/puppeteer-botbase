@@ -1,4 +1,3 @@
-import assert from "assert";
 import { expect } from "chai";
 import fs, { promises as pfs } from "fs";
 import { tmpdir } from "os";
@@ -9,10 +8,9 @@ import { helper } from "../src";
 describe("Module Helper Tests", () => {
   let filePath: fs.PathLike;
 
-  // This will run after each test in the "Module Helper Tests" block
   afterEach(async function () {
     if (fs.existsSync(filePath)) {
-      await pfs.unlink(filePath); // Delete file
+      await pfs.unlink(filePath);
     }
   });
 
@@ -28,54 +26,46 @@ describe("Module Helper Tests", () => {
     }
 
     const filteredArr = await helper.filterAsync(arr, isThreeAsync);
-    assert.strictEqual(filteredArr.length, 1);
-    assert.strictEqual(filteredArr[0], 3);
+    expect(filteredArr).to.be.an('array').that.has.lengthOf(1);
+    expect(filteredArr[0]).to.equal(3);
   });
 
   it("should be 0 hours difference", () => {
     const res = helper.getDiferenceInHours(helper.getNow());
-    assert.strictEqual(Math.round(res), 0);
+    expect(Math.round(res)).to.equal(0);
   });
+
   it("should be 15 hours difference", () => {
     const d = new Date();
     d.setHours(d.getHours() - 15);
-    assert.strictEqual(Math.round(helper.getDiferenceInHours(d)), 15);
+    expect(Math.round(helper.getDiferenceInHours(d))).to.equal(15);
   });
+
   it("should be 24 hours difference", () => {
     const d = new Date();
     d.setDate(d.getDate() - 1);
-    assert.strictEqual(Math.round(helper.getDiferenceInHours(d)), 24);
+    expect(Math.round(helper.getDiferenceInHours(d))).to.equal(24);
   });
 
   it("should test getNowMinus: substract hours", () => {
     const hours = 1;
     const nowMinusMom = helper.getNowMinus(hours);
-    assert.strictEqual(
-      Math.round(helper.getDiferenceInHours(nowMinusMom)),
-      hours
-    );
+    expect(Math.round(helper.getDiferenceInHours(nowMinusMom))).to.equal(hours);
   });
 
   it("should get the ip address", async () => {
     let ip = await helper.getIp();
-    // console.log(`ip: ${ip}`);
-
-    assert.ok(ip);
-    assert.match(
-      ip,
-      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-    );
+    expect(ip).to.exist;
+    expect(ip).to.match(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);
   });
 
   it("should wait 10ms", async () => {
-    // noinspection JSCheckFunctionSignatures
-    // @ts-ignore
     await helper.delay(10);
   });
 
   it("should get randomised user agent", () => {
     const ua = helper.getRanomisedUserAgent();
-    expect(ua).to.be.a.string;
+    expect(ua).to.be.a('string');
   });
 
   it('dateFormatForLog: should return date in the format "yyyy-MM-DD_HH.mm.ss"', function () {
