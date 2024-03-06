@@ -19,7 +19,7 @@
 		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "npm run lint -- --fix",
 		"prebuild": "rm -rf dist/*",
-		"build": "tsc",
+		"build": "tsc -p tsconfig.prod.json",
 		"build-watch": "tsc --watch"
 	},
 	"dependencies": {
