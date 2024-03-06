@@ -31,7 +31,7 @@ export class BotBase {
 
   protected readonly basePath: string;
 
-  protected readonly mainUrl: string;
+  protected mainUrl: string;
 
   protected cookieSaver: CookieSaverInterface;
 
