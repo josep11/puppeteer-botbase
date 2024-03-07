@@ -1,8 +1,7 @@
 /// <reference types="node" />
 import { PathLike } from "fs";
-import UserAgents from "user-agents";
 declare class Helper {
-    delay: () => Promise<void>;
+    delay: (millis: number) => Promise<void>;
     constructor();
     printDate(channel?: {
         (...data: any[]): void;
@@ -117,8 +116,8 @@ declare class Helper {
     /**
      * Used by the V1 version of user-agents.
      */
-    protected getRanomisedUserAgentV1(): UserAgents;
-    getRanomisedUserAgent(): UserAgents;
+    protected getRanomisedUserAgentV1(): string;
+    getRanomisedUserAgent(): string;
 }
 export declare const helper: Helper;
 export {};
