@@ -1,10 +1,10 @@
 // Node.js built-in modules
 import { exec as callbackExec } from "child_process";
 import {
-  existsSync,
-  mkdirSync,
   PathLike,
+  existsSync,
   promises as fs,
+  mkdirSync,
   readFileSync,
 } from "fs";
 import { resolve } from "path";
@@ -13,15 +13,15 @@ import { promisify } from "util";
 // Third-party libraries
 import { DateTime, Duration } from "luxon";
 
-// eslint-disable-next-line no-unused-vars
-import UserAgents from "user-agents";
+import UserAgent from "user-agents";
 
 const exec = promisify(callbackExec);
 
 // const __dirname = path.dirname(__filename);
 
 class Helper {
-  delay: () => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  delay: (millis: number) => Promise<void>;
 
   constructor() {
     /**
@@ -306,13 +306,13 @@ class Helper {
   /**
    * Used by the V1 version of user-agents.
    */
-  protected getRanomisedUserAgentV1() {
-    const userAgents = new UserAgents({
+  protected getRanomisedUserAgentV1(): string {
+    let userAgent = new UserAgent({
       deviceCategory: "desktop",
       platform: "MacIntel", //"Linux x86_64",
       vendor: "Google Inc.",
     });
-    return userAgents.random();
+    return userAgent.random().toString();
   }
 
   // #getRanomisedUserAgentV0() {

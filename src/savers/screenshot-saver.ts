@@ -1,8 +1,8 @@
 import { dirname } from "path";
-import fs from "fs";
 
 import { ScreenshotSaverInterface } from "./screenshot-saver-interface";
 import { helper } from "../helper";
+import { writeFileSync } from "fs";
 
 export class ScreenshotSaver implements ScreenshotSaverInterface {
   private readonly screenshotBasepath: string;
@@ -41,7 +41,7 @@ export class ScreenshotSaver implements ScreenshotSaverInterface {
 
     const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.${type}`;
     // console.log(`Saving screenshot "${filename}" at ${screenshotLocation}`);
-    fs.writeFileSync(screenshotLocation, imageBuffer);
+    writeFileSync(screenshotLocation, imageBuffer);
     return screenshotLocation;
   }
 }

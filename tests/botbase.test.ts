@@ -1,5 +1,3 @@
-import assert from "assert";
-import { expect } from "chai";
 import fs from "fs";
 import { glob } from "glob";
 import { resolve } from "path";
@@ -17,16 +15,16 @@ const basePath = resolve(__dirname, "../");
 const browserLauncher = new BrowserLauncher(puppeteer);
 
 const cookieSaver = new CookieSaver(
-  resolve(basePath, "./res/cookies.json")
+  resolve(basePath, "./res/cookies.json"),
 );
 const screenshotSaver = new ScreenshotSaver(
-  resolve(basePath, "./screenshots")
+  resolve(basePath, "./screenshots"),
 );
 
 function buildBotBaseParams(
   mainUrl: string,
   basePath: string,
-  configChild: object = {}
+  configChild: object = {},
 ) {
   return new BotBaseParams(
     mainUrl,
@@ -34,7 +32,7 @@ function buildBotBaseParams(
     cookieSaver,
     screenshotSaver,
     browserLauncher,
-    configChild
+    configChild,
   );
 }
 
@@ -55,59 +53,60 @@ describe("Botbase Tests", () => {
   it("should intantiate BotBase", () => {
     const botBaseParams = buildBotBaseParams(mainUrl, basePath);
     botbase = new BotBase(botBaseParams);
-    assert.ok(botbase);
+    expect(botbase).toBeTruthy();
   });
 
   it("should get enabled true as default option", () => {
-    assert.ok(botbase);
-    const enabled = botbase.enabled();
-    assert.ok(enabled);
+    expect(botbase).toBeTruthy();
+    const enabled = botbase?.enabled();
+    expect(enabled).toBeTruthy();
   });
 
   it("should get enabled false as default option for child class", () => {
     const myChildCls = new ExampleChild("example/base/path");
     const enabled = myChildCls.enabled();
-    assert.strictEqual(false, enabled);
+    expect(enabled).toEqual(false);
   });
 
   it("should override default config properties", () => {
     const myChildCls = new ExampleChild("example/base/path");
     const config = myChildCls.getConfig();
-    const errMsg =
-      "it didnt override config properties rather deconste the previous ones";
-    assert.ok(config, errMsg);
-    assert.ok(config.settings, errMsg);
-    assert.ok(config.settings.width, errMsg);
+    try {
+      expect(config).toBeTruthy();
+      expect(config.settings).toBeTruthy();
+      expect(config.settings.width).toBeTruthy();
+    } catch (e) {
+      throw new Error("it didnt override config properties rather deconste the previous ones");
+    }
   });
 
   it("should get the version", () => {
-    assert.ok(botbase);
-    const version = botbase.getVersion();
-    expect(version).to.have.lengthOf.at.least(3);
+    expect(botbase).toBeTruthy();
+    const version = botbase?.getVersion();
+    expect(version?.length).toBeGreaterThanOrEqual(3);
   });
 
   it("should call successfully initialise", async () => {
-    assert.ok(botbase);
-    await botbase.initialize();
+    expect(botbase).toBeTruthy();
+    await botbase?.initialize();
   });
 
   it("should log ip to text file", async () => {
-    assert.ok(botbase);
-    await botbase.logIP();
+    expect(botbase).toBeTruthy();
+    await botbase?.logIP();
   });
 
   it("should get a sample website with puppeteer", async () => {
-    assert.ok(botbase);
-    await botbase.initialize({
+    expect(botbase).toBeTruthy();
+    await botbase?.initialize({
       headless: "new",
       devtools: false,
       ignoreHTTPSErrors: true,
       // slowMo: 50,
       // args: ['--disable-gpu', '--no-sandbox', '--no-zygote', '--disable-setuid-sandbox', '--disable-accelerated-2d-canvas', '--disable-dev-shm-usage', "--proxy-server='direct://'", "--proxy-bypass-list=*"]
     });
-
-    assert.ok(botbase.page);
-    await botbase.page.goto("https://bot.sannysoft.com", {
+    expect(botbase?.page).toBeTruthy();
+    await botbase?.page?.goto("https://bot.sannysoft.com", {
       waitUntil: "networkidle2",
     });
   });
@@ -121,20 +120,20 @@ describe("Botbase Tests", () => {
       cookieSaver,
       screenshotSaver,
       browserLauncher,
-      {}
+      {},
     );
     let botbase = new BotBase(botBaseParams);
 
     let screenshotPath;
-    await botbase.initialize();
-    assert.ok(botbase.page);
-    await botbase.page.goto(mainUrl, { waitUntil: "domcontentloaded" });
+    await botbase?.initialize();
+    expect(botbase?.page).toBeTruthy();
+    await botbase?.page?.goto(mainUrl, { waitUntil: "domcontentloaded" });
     try {
-      screenshotPath = await botbase.takeScreenshot("tests");
-      assert.equal(typeof screenshotPath, "string");
+      screenshotPath = await botbase?.takeScreenshot("tests");
+      expect(typeof screenshotPath).toEqual("string");
     } catch (err: any) {
       console.error(err);
-      assert.fail("screenshot not successful");
+      fail("screenshot not successful");
     } finally {
       await botbase?.shutDown();
     }
@@ -143,7 +142,7 @@ describe("Botbase Tests", () => {
       fs.statSync(screenshotPath);
     } catch (err: any) {
       if (err.code === "ENOENT") {
-        assert.fail(`The file "${screenshotPath}" does not exist`);
+        fail(`The file "${screenshotPath}" does not exist`);
       } else {
         throw err;
       }
