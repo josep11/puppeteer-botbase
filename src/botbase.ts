@@ -82,7 +82,7 @@ export class BotBase {
     // Use BrowserLauncher to initialize the browser.
     this.browser = await this.browserLauncher.launch(
       opts,
-      chromiumExecutablePath,
+      chromiumExecutablePath
     );
 
     [this.page] = await this.browser!.pages();
@@ -92,7 +92,7 @@ export class BotBase {
       // @ts-ignore
       defaultConfig.settings.width,
       // @ts-ignore
-      defaultConfig.settings.height,
+      defaultConfig.settings.height
     );
   }
 
@@ -261,7 +261,7 @@ export class BotBase {
 
     await this.page.goto("https://checkip.amazonaws.com/");
     const ip = await this.page.evaluate(
-      () => document.body.textContent?.trim() || "",
+      () => document.body.textContent?.trim() || ""
     );
 
     const ipFilePath = join(this.basePath, "/logs/ip.txt");

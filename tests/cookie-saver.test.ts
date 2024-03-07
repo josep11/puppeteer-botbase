@@ -20,8 +20,10 @@ describe("CookieSaver Tests", () => {
   it("should throw an error on constructor because of first param type style", () => {
     try {
       new CookieSaver("");
-      fail('did not throw')
+      // eslint-disable-next-line no-undef
+      fail("did not throw");
     } catch (e) {
+      /* empty */
     }
   });
 
@@ -39,6 +41,7 @@ describe("CookieSaver Tests", () => {
     try {
       await cookieSaver.readCookies();
     } catch (e) {
+      // eslint-disable-next-line no-undef
       fail("Error reading cookies: " + e);
     }
   });
@@ -47,6 +50,7 @@ describe("CookieSaver Tests", () => {
     try {
       await cookieSaver.removeCookies();
     } catch (e) {
+      // eslint-disable-next-line no-undef
       fail("Error removing cookies: " + e);
     }
   });

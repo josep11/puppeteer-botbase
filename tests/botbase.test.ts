@@ -14,17 +14,13 @@ const basePath = resolve(__dirname, "../");
 
 const browserLauncher = new BrowserLauncher(puppeteer);
 
-const cookieSaver = new CookieSaver(
-  resolve(basePath, "./res/cookies.json"),
-);
-const screenshotSaver = new ScreenshotSaver(
-  resolve(basePath, "./screenshots"),
-);
+const cookieSaver = new CookieSaver(resolve(basePath, "./res/cookies.json"));
+const screenshotSaver = new ScreenshotSaver(resolve(basePath, "./screenshots"));
 
 function buildBotBaseParams(
   mainUrl: string,
   basePath: string,
-  configChild: object = {},
+  configChild: object = {}
 ) {
   return new BotBaseParams(
     mainUrl,
@@ -32,7 +28,7 @@ function buildBotBaseParams(
     cookieSaver,
     screenshotSaver,
     browserLauncher,
-    configChild,
+    configChild
   );
 }
 
@@ -76,7 +72,9 @@ describe("Botbase Tests", () => {
       expect(config.settings).toBeTruthy();
       expect(config.settings.width).toBeTruthy();
     } catch (e) {
-      throw new Error("it didnt override config properties rather deconste the previous ones");
+      throw new Error(
+        "it didnt override config properties rather deconste the previous ones"
+      );
     }
   });
 
@@ -120,7 +118,7 @@ describe("Botbase Tests", () => {
       cookieSaver,
       screenshotSaver,
       browserLauncher,
-      {},
+      {}
     );
     let botbase = new BotBase(botBaseParams);
 
@@ -133,6 +131,7 @@ describe("Botbase Tests", () => {
       expect(typeof screenshotPath).toEqual("string");
     } catch (err: any) {
       console.error(err);
+      // eslint-disable-next-line no-undef
       fail("screenshot not successful");
     } finally {
       await botbase?.shutDown();
@@ -142,6 +141,7 @@ describe("Botbase Tests", () => {
       fs.statSync(screenshotPath);
     } catch (err: any) {
       if (err.code === "ENOENT") {
+        // eslint-disable-next-line no-undef
         fail(`The file "${screenshotPath}" does not exist`);
       } else {
         throw err;

@@ -56,7 +56,9 @@ describe("Module Helper Tests", () => {
   it("should get the ip address", async () => {
     const ip = await helper.getIp();
     expect(ip).toBeDefined();
-    expect(ip).toMatch(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);
+    expect(ip).toMatch(
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+    );
   });
 
   it("should wait 10ms", async () => {
@@ -65,7 +67,7 @@ describe("Module Helper Tests", () => {
 
   it("should get randomised user agent", () => {
     const ua = helper.getRanomisedUserAgent();
-    expect(typeof ua).toEqual('string');
+    expect(typeof ua).toEqual("string");
   });
 
   it('dateFormatForLog: should return date in the format "yyyy-MM-DD_HH.mm.ss"', function () {
