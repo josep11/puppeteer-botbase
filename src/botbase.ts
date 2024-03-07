@@ -1,7 +1,6 @@
 import deepmerge from "deepmerge";
 // eslint-disable-next-line no-unused-vars
 import { Browser, Page } from "puppeteer";
-import path from "path";
 
 // eslint-disable-next-line no-unused-vars
 import {
@@ -15,14 +14,14 @@ import {
   semiRandomiseViewPort,
 } from "./index";
 import BotBaseParams from "./types/BotBaseParams";
+import { defaultConfig } from "./defaultConfig";
+import { resolve, join } from "path";
 
 const { waitForTimeout } = helper;
 
 // Load the package json
-const packageJsonPath = path.resolve("package.json");
+const packageJsonPath = resolve("package.json");
 const pjson = helper.loadJson(packageJsonPath);
-const configJsonPath = path.resolve("config/config.json");
-const config = helper.loadJson(configJsonPath);
 
 export class BotBase {
   private browser: Browser | null;
@@ -57,7 +56,7 @@ export class BotBase {
     this.screenshotSaver = params.screenshotSaver;
     this.browserLauncher = params.browserLauncher;
     const configChild = params.configChild || {};
-    this.config = deepmerge(config, configChild);
+    this.config = deepmerge(defaultConfig, configChild);
     this.chromiumExecutablePath = params.chromiumExecutablePath;
   }
 
@@ -91,9 +90,9 @@ export class BotBase {
     await semiRandomiseViewPort(
       this.page,
       // @ts-ignore
-      config.settings.width,
+      defaultConfig.settings.width,
       // @ts-ignore
-      config.settings.height
+      defaultConfig.settings.height
     );
   }
 
@@ -265,7 +264,7 @@ export class BotBase {
       () => document.body.textContent?.trim() || ""
     );
 
-    const ipFilePath = path.join(this.basePath, "/logs/ip.txt");
+    const ipFilePath = join(this.basePath, "/logs/ip.txt");
     await helper.writeIPToFile(ip, helper.dateFormatForLog(), ipFilePath);
     return ip;
   }

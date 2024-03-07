@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { dirname } from "path";
-import fs from "fs";
 import { helper } from "../helper";
+import { writeFileSync } from "fs";
 export class ScreenshotSaver {
     constructor(screenshotBasepath) {
         if (!screenshotBasepath) {
@@ -35,7 +35,7 @@ export class ScreenshotSaver {
             this._checkType(type);
             const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.${type}`;
             // console.log(`Saving screenshot "${filename}" at ${screenshotLocation}`);
-            fs.writeFileSync(screenshotLocation, imageBuffer);
+            writeFileSync(screenshotLocation, imageBuffer);
             return screenshotLocation;
         });
     }

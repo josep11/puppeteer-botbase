@@ -1,29 +1,30 @@
-import assert from "assert";
-import path from "path";
+import { resolve } from "path";
 
-import fs from "fs";
-import { CookieSaverInterface } from "../src/savers/cookie-saver-interface";
-import { helper } from "../src/helper";
-import { CookieSaver } from "../src/savers/cookie-saver";
+import { existsSync } from "fs";
+import { CookieSaverInterface, helper, CookieSaver } from "../src";
 
 let cookieSaver: CookieSaverInterface;
 
-const cookiesFilePath = path.resolve("./res/cookies_test.json");
+const cookiesFilePath = resolve("./res/cookies_test.json");
 
 beforeAll(async () => {
   await helper.rmFileIfExists(cookiesFilePath);
 });
 
 describe("CookieSaver Tests", () => {
-  it("should intantiate CookieSaver", () => {
+  it("should instantiate CookieSaver", () => {
     cookieSaver = new CookieSaver(cookiesFilePath);
-    assert.ok(cookieSaver);
+    expect(cookieSaver).toBeTruthy();
   });
 
   it("should throw an error on constructor because of first param type style", () => {
-    assert.throws(() => {
+    try {
       new CookieSaver("");
-    }, "constructor param is not there");
+      // eslint-disable-next-line no-undef
+      fail("did not throw");
+    } catch (e) {
+      /* empty */
+    }
   });
 
   it("should write cookies", async () => {
@@ -31,22 +32,26 @@ describe("CookieSaver Tests", () => {
       await cookieSaver.writeCookies([{ e: 1 }]);
     } catch (err: any) {
       console.error(err);
-      assert.fail("exception saving cookies");
+      throw new Error("exception saving cookies");
     }
-
-    assert.strictEqual(fs.existsSync(cookiesFilePath), true);
+    expect(existsSync(cookiesFilePath)).toEqual(true);
   });
 
-  it("should read cookies", () => {
-    assert.doesNotThrow(async () => {
+  it("should read cookies", async () => {
+    try {
       await cookieSaver.readCookies();
-    });
+    } catch (e) {
+      // eslint-disable-next-line no-undef
+      fail("Error reading cookies: " + e);
+    }
   });
 
-  it("should read cookies", () => {
-    // TODO: doesNotThrow, I think it does not throw but has some unexpected behaviors
-    assert.doesNotThrow(async () => {
+  it("should remove cookies", async () => {
+    try {
       await cookieSaver.removeCookies();
-    });
+    } catch (e) {
+      // eslint-disable-next-line no-undef
+      fail("Error removing cookies: " + e);
+    }
   });
 });

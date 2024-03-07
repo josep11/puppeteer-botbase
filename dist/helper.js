@@ -9,13 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // Node.js built-in modules
 import { exec as callbackExec } from "child_process";
-import { existsSync, mkdirSync, promises as fs, readFileSync, } from "fs";
-import path from "path";
+import { existsSync, promises as fs, mkdirSync, readFileSync, } from "fs";
+import { resolve } from "path";
 import { promisify } from "util";
 // Third-party libraries
 import { DateTime, Duration } from "luxon";
-// eslint-disable-next-line no-unused-vars
-import UserAgents from "user-agents";
+import UserAgent from "user-agents";
 const exec = promisify(callbackExec);
 // const __dirname = path.dirname(__filename);
 class Helper {
@@ -269,9 +268,9 @@ class Helper {
      */
     logJSONdebug(jsonStr, basePath = __dirname) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dir = path.resolve(basePath, `./logs/dataset`);
+            const dir = resolve(basePath, `./logs/dataset`);
             this.createDirIfNotExists(dir);
-            const filenameFullPath = path.resolve(dir, `data_${this.dateFormatForLog()}.json`);
+            const filenameFullPath = resolve(dir, `data_${this.dateFormatForLog()}.json`);
             try {
                 yield fs.writeFile(filenameFullPath, jsonStr);
                 console.log(`file written successfully to ${filenameFullPath}`);
@@ -289,12 +288,12 @@ class Helper {
      * Used by the V1 version of user-agents.
      */
     getRanomisedUserAgentV1() {
-        const userAgents = new UserAgents({
+        let userAgent = new UserAgent({
             deviceCategory: "desktop",
             platform: "MacIntel", //"Linux x86_64",
             vendor: "Google Inc.",
         });
-        return userAgents.random();
+        return userAgent.random().toString();
     }
     // #getRanomisedUserAgentV0() {
     //   const userAgents = require("user-agents");

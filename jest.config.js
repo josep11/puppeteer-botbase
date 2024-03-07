@@ -1,5 +1,9 @@
 export default {
-  transform: { "^.+\\.ts?$": "ts-jest" },
+  transform: { 
+    "^.+\\.ts?$": [ "ts-jest", {
+      tsconfig: './tsconfig.prod.json'
+    }]
+  },
   testEnvironment: "node",
   reporters: [
     "default",

@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import puppeteer, { Browser, Page } from "puppeteer";
-import assert from "assert";
 
 import { HelperPuppeteer } from "../src";
 
@@ -45,7 +44,7 @@ async function verifyTextIsNotPresent(page: Page, text: string) {
 
 describe("Module Helper Puppeteer Tests", () => {
   it("should import helper puppeteer", () => {
-    assert.ok(HelperPuppeteer);
+    expect(HelperPuppeteer).toBeTruthy();
   });
 
   /* 
@@ -66,7 +65,7 @@ describe("Module Helper Puppeteer Tests", () => {
 
     for (const textTofind of textsTofind) {
       if (!(await HelperPuppeteer.isTextPresentOnWebpage(page, textTofind))) {
-        assert.fail("Text not found " + textTofind);
+        throw new Error("Text not found " + textTofind);
       }
     }
   });
@@ -82,7 +81,7 @@ describe("Module Helper Puppeteer Tests", () => {
       POPUP_ACCEPT_COOKIES_BUTTON_ELEMENT_TYPE
     );
 
-    assert.ok(clicked);
+    expect(clicked).toBeTruthy();
   });
 
   it("tryToClickElementByTextOrCssSelectors: should click pop up button by text: BonArea - Cookies popup", async () => {
@@ -180,5 +179,5 @@ async function assertThatCookiesTextIsNotPresent() {
     page,
     textThatShouldNotBeFound
   );
-  assert.equal(textNotFound, true);
+  expect(textNotFound).toEqual(true);
 }

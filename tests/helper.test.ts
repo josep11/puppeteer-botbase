@@ -1,18 +1,15 @@
-import assert from "assert";
-import { expect } from "chai";
-import fs, { promises as pfs } from "fs";
+import { existsSync, PathLike, promises as pfs } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
 import { helper } from "../src";
 
 describe("Module Helper Tests", () => {
-  let filePath: fs.PathLike;
+  let filePath: PathLike;
 
-  // This will run after each test in the "Module Helper Tests" block
   afterEach(async function () {
-    if (fs.existsSync(filePath)) {
-      await pfs.unlink(filePath); // Delete file
+    if (existsSync(filePath)) {
+      await pfs.unlink(filePath);
     }
   });
 
@@ -28,54 +25,49 @@ describe("Module Helper Tests", () => {
     }
 
     const filteredArr = await helper.filterAsync(arr, isThreeAsync);
-    assert.strictEqual(filteredArr.length, 1);
-    assert.strictEqual(filteredArr[0], 3);
+    expect(Array.isArray(filteredArr)).toBe(true);
+    expect(filteredArr).toHaveLength(1);
+    expect(filteredArr[0]).toEqual(3);
   });
 
   it("should be 0 hours difference", () => {
     const res = helper.getDiferenceInHours(helper.getNow());
-    assert.strictEqual(Math.round(res), 0);
+    expect(Math.round(res)).toEqual(0);
   });
+
   it("should be 15 hours difference", () => {
     const d = new Date();
     d.setHours(d.getHours() - 15);
-    assert.strictEqual(Math.round(helper.getDiferenceInHours(d)), 15);
+    expect(Math.round(helper.getDiferenceInHours(d))).toEqual(15);
   });
+
   it("should be 24 hours difference", () => {
     const d = new Date();
     d.setDate(d.getDate() - 1);
-    assert.strictEqual(Math.round(helper.getDiferenceInHours(d)), 24);
+    expect(Math.round(helper.getDiferenceInHours(d))).toEqual(24);
   });
 
   it("should test getNowMinus: substract hours", () => {
     const hours = 1;
     const nowMinusMom = helper.getNowMinus(hours);
-    assert.strictEqual(
-      Math.round(helper.getDiferenceInHours(nowMinusMom)),
-      hours
-    );
+    expect(Math.round(helper.getDiferenceInHours(nowMinusMom))).toEqual(hours);
   });
 
   it("should get the ip address", async () => {
-    let ip = await helper.getIp();
-    // console.log(`ip: ${ip}`);
-
-    assert.ok(ip);
-    assert.match(
-      ip,
+    const ip = await helper.getIp();
+    expect(ip).toBeDefined();
+    expect(ip).toMatch(
       /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
     );
   });
 
   it("should wait 10ms", async () => {
-    // noinspection JSCheckFunctionSignatures
-    // @ts-ignore
     await helper.delay(10);
   });
 
   it("should get randomised user agent", () => {
     const ua = helper.getRanomisedUserAgent();
-    expect(ua).to.be.a.string;
+    expect(typeof ua).toEqual("string");
   });
 
   it('dateFormatForLog: should return date in the format "yyyy-MM-DD_HH.mm.ss"', function () {
@@ -97,7 +89,7 @@ describe("Module Helper Tests", () => {
       "." +
       pad(date.getSeconds());
 
-    expect(result).to.equal(expectedFormat);
+    expect(result).toEqual(expectedFormat);
   });
 
   it("should read file content", async () => {
@@ -110,7 +102,7 @@ describe("Module Helper Tests", () => {
 
     const fileContent = await helper.readFile(filePath);
 
-    expect(fileContent).to.equal(expectedContent);
+    expect(fileContent).toEqual(expectedContent);
   });
 
   it("should write the ip address to a file", async () => {
@@ -124,6 +116,6 @@ describe("Module Helper Tests", () => {
 
     const fileContent = await helper.readFile(filePath);
 
-    expect(fileContent).to.contain(expectedContentToContain);
+    expect(fileContent).toContain(expectedContentToContain);
   });
 });

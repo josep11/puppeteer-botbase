@@ -8,15 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import deepmerge from "deepmerge";
-import path from "path";
 // eslint-disable-next-line no-unused-vars
 import { helper, MyTimeoutError, NotImplementedError, objectArrayToCookieParamArray, semiRandomiseViewPort, } from "./index";
+import { defaultConfig } from "./defaultConfig";
+import { resolve, join } from "path";
 const { waitForTimeout } = helper;
 // Load the package json
-const packageJsonPath = path.resolve("package.json");
+const packageJsonPath = resolve("package.json");
 const pjson = helper.loadJson(packageJsonPath);
-const configJsonPath = path.resolve("config/config.json");
-const config = helper.loadJson(configJsonPath);
 export class BotBase {
     /**
      * @param {BotBaseParams} params
@@ -32,7 +31,7 @@ export class BotBase {
         this.screenshotSaver = params.screenshotSaver;
         this.browserLauncher = params.browserLauncher;
         const configChild = params.configChild || {};
-        this.config = deepmerge(config, configChild);
+        this.config = deepmerge(defaultConfig, configChild);
         this.chromiumExecutablePath = params.chromiumExecutablePath;
     }
     validateParams(params) {
@@ -56,9 +55,9 @@ export class BotBase {
             [this.page] = yield this.browser.pages();
             yield semiRandomiseViewPort(this.page, 
             // @ts-ignore
-            config.settings.width, 
+            defaultConfig.settings.width, 
             // @ts-ignore
-            config.settings.height);
+            defaultConfig.settings.height);
         });
     }
     /**
@@ -228,7 +227,7 @@ export class BotBase {
             this.page = this.checkPage();
             yield this.page.goto("https://checkip.amazonaws.com/");
             const ip = yield this.page.evaluate(() => { var _a; return ((_a = document.body.textContent) === null || _a === void 0 ? void 0 : _a.trim()) || ""; });
-            const ipFilePath = path.join(this.basePath, "/logs/ip.txt");
+            const ipFilePath = join(this.basePath, "/logs/ip.txt");
             yield helper.writeIPToFile(ip, helper.dateFormatForLog(), ipFilePath);
             return ip;
         });
