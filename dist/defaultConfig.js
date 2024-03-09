@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultConfig = void 0;
-exports.defaultConfig = {
+export const defaultConfig = {
     settings: {
         enabled: true,
         width: 1200,

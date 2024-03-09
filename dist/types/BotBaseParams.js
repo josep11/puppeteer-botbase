@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 class BotBaseParams {
     constructor(mainUrl, basePath, cookieSaver, screenshotSaver, browserLauncher, configChild, chromiumExecutablePath) {
         this.mainUrl = mainUrl;
@@ -11,4 +9,4 @@ class BotBaseParams {
         this.chromiumExecutablePath = chromiumExecutablePath || null;
     }
 }
-exports.default = BotBaseParams;
+export default BotBaseParams;

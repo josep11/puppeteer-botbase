@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,10 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HelperPuppeteer = void 0;
-const index_1 = require("./index");
-class HelperPuppeteer {
+import { helper } from "./index";
+export class HelperPuppeteer {
     /**
      * The same as closePopup but the text will also be found on child elements. Warning: will click only the first element found, so it may be the parent if more than one node matching is found.
      * That's why it is recommended to set the @elementType param to narrow down the search
@@ -30,7 +27,7 @@ class HelperPuppeteer {
             }
             try {
                 yield btn.click();
-                yield index_1.helper.waitForTimeout(1500);
+                yield helper.waitForTimeout(1500);
                 return true;
             }
             catch (err) {
@@ -58,7 +55,7 @@ class HelperPuppeteer {
                 yield btn.click();
                 clicked = true;
                 // TODO: parametrise timeout as optional param defaulting to 1500
-                yield index_1.helper.waitForTimeout(1500);
+                yield helper.waitForTimeout(1500);
             }
             catch (err) {
                 console.error(`error clicking popup button. '${elementText}' (element="${elementType}"). Continuing ...`);
@@ -161,7 +158,7 @@ class HelperPuppeteer {
     static dumpPageContentToFile(page, filename) {
         return __awaiter(this, void 0, void 0, function* () {
             const content = yield page.content();
-            yield index_1.helper.writeFile(filename, content);
+            yield helper.writeFile(filename, content);
         });
     }
     /**
@@ -172,9 +169,8 @@ class HelperPuppeteer {
     static typeDelayed(page, selector, text) {
         return __awaiter(this, void 0, void 0, function* () {
             yield page.type(selector, text, {
-                delay: index_1.helper.getRandBetween(10, 20),
+                delay: helper.getRandBetween(10, 20),
             });
         });
     }
 }
-exports.HelperPuppeteer = HelperPuppeteer;
