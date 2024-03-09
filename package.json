@@ -1,10 +1,9 @@
 {
 	"name": "botbase",
-	"version": "9.0.6-rc3",
+	"version": "9.0.6-rc4",
 	"description": "",
 	"author": "Josep Alsina",
 	"license": "ISC",
-	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"repository": {
