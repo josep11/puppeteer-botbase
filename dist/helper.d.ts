@@ -110,7 +110,7 @@ declare class Helper {
      * @param {string} jsonStr
      * @param basePath
      */
-    logJSONdebug(jsonStr: string, basePath?: string): Promise<string | undefined>;
+    logJSONdebug(jsonStr: string, basePath?: string): Promise<string>;
     /***************************************/
     /***************************************/
     /**
