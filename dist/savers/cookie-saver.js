@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,16 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import fs from "fs";
-import { dirname } from "path";
-import { helper } from "../helper";
-export class CookieSaver {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CookieSaver = void 0;
+const fs_1 = __importDefault(require("fs"));
+const path_1 = require("path");
+const helper_1 = require("../helper");
+class CookieSaver {
     constructor(cookiesFilePath) {
         this.cookiesFilePath = cookiesFilePath;
         if (!cookiesFilePath.length) {
             throw new Error("cookiesFilePath is invalid");
         }
-        helper.createDirIfNotExists(dirname(this.cookiesFilePath));
+        helper_1.helper.createDirIfNotExists((0, path_1.dirname)(this.cookiesFilePath));
     }
     /**
      *
@@ -26,7 +32,7 @@ export class CookieSaver {
     readCookies() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const cookies = helper.loadJson(this.cookiesFilePath);
+                const cookies = helper_1.helper.loadJson(this.cookiesFilePath);
                 // Check if cookies is an array
                 if (!(cookies instanceof Array)) {
                     // noinspection ExceptionCaughtLocallyJS
@@ -58,7 +64,7 @@ export class CookieSaver {
             else {
                 cookiesText = cookies;
             }
-            fs.writeFileSync(this.cookiesFilePath, cookiesText);
+            fs_1.default.writeFileSync(this.cookiesFilePath, cookiesText);
         });
     }
     /**
@@ -70,3 +76,4 @@ export class CookieSaver {
         });
     }
 }
+exports.CookieSaver = CookieSaver;

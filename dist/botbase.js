@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,16 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import deepmerge from "deepmerge";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BotBase = void 0;
+const deepmerge_1 = __importDefault(require("deepmerge"));
 // eslint-disable-next-line no-unused-vars
-import { helper, MyTimeoutError, NotImplementedError, objectArrayToCookieParamArray, semiRandomiseViewPort, } from "./index";
-import { defaultConfig } from "./defaultConfig";
-import { resolve, join } from "path";
-const { waitForTimeout } = helper;
+const index_1 = require("./index");
+const defaultConfig_1 = require("./defaultConfig");
+const path_1 = require("path");
+const { waitForTimeout } = index_1.helper;
 // Load the package json
-const packageJsonPath = resolve("package.json");
-const pjson = helper.loadJson(packageJsonPath);
-export class BotBase {
+const packageJsonPath = (0, path_1.resolve)("package.json");
+const pjson = index_1.helper.loadJson(packageJsonPath);
+class BotBase {
     /**
      * @param {BotBaseParams} params
      */
@@ -31,7 +37,7 @@ export class BotBase {
         this.screenshotSaver = params.screenshotSaver;
         this.browserLauncher = params.browserLauncher;
         const configChild = params.configChild || {};
-        this.config = deepmerge(defaultConfig, configChild);
+        this.config = (0, deepmerge_1.default)(defaultConfig_1.defaultConfig, configChild);
         this.chromiumExecutablePath = params.chromiumExecutablePath;
     }
     validateParams(params) {
@@ -53,11 +59,11 @@ export class BotBase {
             // Use BrowserLauncher to initialize the browser.
             this.browser = yield this.browserLauncher.launch(opts, chromiumExecutablePath);
             [this.page] = yield this.browser.pages();
-            yield semiRandomiseViewPort(this.page, 
+            yield (0, index_1.semiRandomiseViewPort)(this.page, 
             // @ts-ignore
-            defaultConfig.settings.width, 
+            defaultConfig_1.defaultConfig.settings.width, 
             // @ts-ignore
-            defaultConfig.settings.height);
+            defaultConfig_1.defaultConfig.settings.height);
         });
     }
     /**
@@ -89,7 +95,7 @@ export class BotBase {
     // eslint-disable-next-line require-await
     isLoggedIn() {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new NotImplementedError("isLoggedIn not implemented");
+            throw new index_1.NotImplementedError("isLoggedIn not implemented");
         });
     }
     /**
@@ -98,7 +104,7 @@ export class BotBase {
     // eslint-disable-next-line no-unused-vars, require-await
     loginWithCredentials(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new NotImplementedError("loginWithCredentials not implemented");
+            throw new index_1.NotImplementedError("loginWithCredentials not implemented");
         });
     }
     /**
@@ -121,9 +127,9 @@ export class BotBase {
             }
             this.page = this.checkPage();
             console.log(`Logging into ${this.appName()} using cookies`);
-            yield this.page.setCookie(...objectArrayToCookieParamArray(cookies));
+            yield this.page.setCookie(...(0, index_1.objectArrayToCookieParamArray)(cookies));
             yield this.page.goto(this.mainUrl, { waitUntil: "networkidle2" });
-            yield waitForTimeout(helper.getRandBetween(1500, 4000));
+            yield waitForTimeout(index_1.helper.getRandBetween(1500, 4000));
             yield this.isLoggedIn().catch((error) => __awaiter(this, void 0, void 0, function* () {
                 console.error(`App is not logged into ${this.appName()}`);
                 yield this.writeCookiesFile([]); //deteling cookies file
@@ -157,7 +163,7 @@ export class BotBase {
             }
             catch (error) {
                 if (error.name.indexOf("TimeoutError") !== -1) {
-                    throw new MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
+                    throw new index_1.MyTimeoutError("Connexió lenta, no s'ha pogut fer login");
                 }
                 throw error;
             }
@@ -227,8 +233,8 @@ export class BotBase {
             this.page = this.checkPage();
             yield this.page.goto("https://checkip.amazonaws.com/");
             const ip = yield this.page.evaluate(() => { var _a; return ((_a = document.body.textContent) === null || _a === void 0 ? void 0 : _a.trim()) || ""; });
-            const ipFilePath = join(this.basePath, "/logs/ip.txt");
-            yield helper.writeIPToFile(ip, helper.dateFormatForLog(), ipFilePath);
+            const ipFilePath = (0, path_1.join)(this.basePath, "/logs/ip.txt");
+            yield index_1.helper.writeIPToFile(ip, index_1.helper.dateFormatForLog(), ipFilePath);
             return ip;
         });
     }
@@ -266,3 +272,4 @@ export class BotBase {
         return "SHOULD OVERRIDE ¯_(ツ)_/¯ SHOULD OVERRIDE";
     }
 }
+exports.BotBase = BotBase;
