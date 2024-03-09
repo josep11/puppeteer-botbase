@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,15 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.helper = void 0;
 // Node.js built-in modules
-import { exec as callbackExec } from "child_process";
-import { existsSync, promises as fs, mkdirSync, readFileSync, } from "fs";
-import { resolve } from "path";
-import { promisify } from "util";
+const child_process_1 = require("child_process");
+const fs_1 = require("fs");
+const path_1 = require("path");
+const util_1 = require("util");
 // Third-party libraries
-import { DateTime, Duration } from "luxon";
-import UserAgent from "user-agents";
-const exec = promisify(callbackExec);
+const luxon_1 = require("luxon");
+const user_agents_1 = __importDefault(require("user-agents"));
+const exec = (0, util_1.promisify)(child_process_1.exec);
 // const __dirname = path.dirname(__filename);
 class Helper {
     constructor() {
@@ -23,7 +29,7 @@ class Helper {
          * @param {number} in milliseconds
          * @returns {function}
          */
-        this.delay = promisify(setTimeout);
+        this.delay = (0, util_1.promisify)(setTimeout);
     }
     printDate(channel = console.log) {
         // console.log('---------------------------------------');
@@ -31,7 +37,7 @@ class Helper {
         // console.log('---------------------------------------');
     }
     dateFormatForLog() {
-        return DateTime.now().toFormat("yyyy-LL-dd_HH.mm.ss");
+        return luxon_1.DateTime.now().toFormat("yyyy-LL-dd_HH.mm.ss");
     }
     consoleListener(message) {
         const type = message.type().substring(0, 3).toUpperCase();
@@ -54,27 +60,27 @@ class Helper {
      * @return {number} - The difference in hours between the pastTime and the current datetime.
      */
     getDiferenceInHours(pastTime) {
-        const now = DateTime.local();
+        const now = luxon_1.DateTime.local();
         let dateTimeStart;
         if (typeof pastTime === "string") {
-            dateTimeStart = DateTime.fromISO(pastTime);
+            dateTimeStart = luxon_1.DateTime.fromISO(pastTime);
         }
         else {
-            dateTimeStart = DateTime.fromJSDate(pastTime);
+            dateTimeStart = luxon_1.DateTime.fromJSDate(pastTime);
         }
-        return Duration.fromMillis(now.diff(dateTimeStart).valueOf()).as("hours");
+        return luxon_1.Duration.fromMillis(now.diff(dateTimeStart).valueOf()).as("hours");
     }
     /**
      * Returns date in format YYYY-MM-DD = 2021-10-30
      */
     getDate() {
-        return DateTime.local().toFormat("yyyy-LL-dd");
+        return luxon_1.DateTime.local().toFormat("yyyy-LL-dd");
     }
     /**
      * @return {string} The ISO formatted string representation of now
      */
     getNow() {
-        return DateTime.local().toISO();
+        return luxon_1.DateTime.local().toISO();
     }
     /**
      * Returns the ISO formatted string representation of the current date and time
@@ -86,8 +92,8 @@ class Helper {
      */
     getNowMinus(hoursAgo = 0) {
         const millis = this.hoursToMillis(hoursAgo);
-        const duration = Duration.fromMillis(millis);
-        return DateTime.local().minus(duration).toISO();
+        const duration = luxon_1.Duration.fromMillis(millis);
+        return luxon_1.DateTime.local().minus(duration).toISO();
     }
     /**
      * @param {number} hours
@@ -184,7 +190,7 @@ class Helper {
     writeIPToFile(ip, date, ipFilePath) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield fs.appendFile(ipFilePath, `Data: ${date}\nIP: ${ip}\n\n`);
+                yield fs_1.promises.appendFile(ipFilePath, `Data: ${date}\nIP: ${ip}\n\n`);
             }
             catch (err) {
                 console.error(`cannot write to file ${ipFilePath}. Error: ${err}`);
@@ -200,7 +206,7 @@ class Helper {
     writeFile(filename, content) {
         return __awaiter(this, void 0, void 0, function* () {
             // noinspection UnnecessaryLocalVariableJS
-            yield fs.writeFile(filename, content);
+            yield fs_1.promises.writeFile(filename, content);
         });
     }
     /**
@@ -212,7 +218,7 @@ class Helper {
     appendFile(filename, text) {
         return __awaiter(this, void 0, void 0, function* () {
             // noinspection UnnecessaryLocalVariableJS
-            yield fs.appendFile(filename, text, "utf-8");
+            yield fs_1.promises.appendFile(filename, text, "utf-8");
         });
     }
     /**
@@ -222,7 +228,7 @@ class Helper {
     readFile(filename) {
         return __awaiter(this, void 0, void 0, function* () {
             const encoding = "utf-8";
-            const buffer = yield fs.readFile(filename, { encoding });
+            const buffer = yield fs_1.promises.readFile(filename, { encoding });
             return buffer.toString();
         });
     }
@@ -237,20 +243,20 @@ class Helper {
      * @throws {SyntaxError} when the JSON is malformed
      */
     loadJson(filePath) {
-        const jsonString = readFileSync(filePath);
+        const jsonString = (0, fs_1.readFileSync)(filePath);
         return JSON.parse(jsonString.toString());
     }
     createDirIfNotExists(dir) {
-        if (!existsSync(dir)) {
-            mkdirSync(dir, { recursive: true });
+        if (!(0, fs_1.existsSync)(dir)) {
+            (0, fs_1.mkdirSync)(dir, { recursive: true });
         }
     }
     rmFileIfExists(file) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield fs.stat(file);
+                yield fs_1.promises.stat(file);
                 // console.log(`removing ${file}`);
-                yield fs.unlink(file);
+                yield fs_1.promises.unlink(file);
             }
             catch (err) {
                 if (err.code === "ENOENT") {
@@ -268,11 +274,11 @@ class Helper {
      */
     logJSONdebug(jsonStr, basePath = __dirname) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dir = resolve(basePath, `./logs/dataset`);
+            const dir = (0, path_1.resolve)(basePath, `./logs/dataset`);
             this.createDirIfNotExists(dir);
-            const filenameFullPath = resolve(dir, `data_${this.dateFormatForLog()}.json`);
+            const filenameFullPath = (0, path_1.resolve)(dir, `data_${this.dateFormatForLog()}.json`);
             try {
-                yield fs.writeFile(filenameFullPath, jsonStr);
+                yield fs_1.promises.writeFile(filenameFullPath, jsonStr);
                 console.log(`file written successfully to ${filenameFullPath}`);
                 return filenameFullPath;
             }
@@ -288,7 +294,7 @@ class Helper {
      * Used by the V1 version of user-agents.
      */
     getRanomisedUserAgentV1() {
-        let userAgent = new UserAgent({
+        let userAgent = new user_agents_1.default({
             deviceCategory: "desktop",
             platform: "MacIntel", //"Linux x86_64",
             vendor: "Google Inc.",
@@ -303,4 +309,4 @@ class Helper {
         return this.getRanomisedUserAgentV1();
     }
 }
-export const helper = new Helper();
+exports.helper = new Helper();

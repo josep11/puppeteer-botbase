@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,10 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { dirname } from "path";
-import { helper } from "../helper";
-import { writeFileSync } from "fs";
-export class ScreenshotSaver {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ScreenshotSaver = void 0;
+const path_1 = require("path");
+const helper_1 = require("../helper");
+const fs_1 = require("fs");
+class ScreenshotSaver {
     constructor(screenshotBasepath) {
         if (!screenshotBasepath) {
             throw new Error("screenshotBasepath parameter not defined");
@@ -18,7 +21,7 @@ export class ScreenshotSaver {
         this.screenshotBasepath = screenshotBasepath;
         this.allowedTypes = ["jpg", "jpeg", "png"];
         //check that the screenshotBasepath exists or create it
-        helper.createDirIfNotExists(dirname(this.screenshotBasepath));
+        helper_1.helper.createDirIfNotExists((0, path_1.dirname)(this.screenshotBasepath));
     }
     _checkType(type) {
         if (!type) {
@@ -33,10 +36,11 @@ export class ScreenshotSaver {
         return __awaiter(this, void 0, void 0, function* () {
             //check for errors
             this._checkType(type);
-            const screenshotLocation = `${this.screenshotBasepath}/${helper.dateFormatForLog()}_${filename}.${type}`;
+            const screenshotLocation = `${this.screenshotBasepath}/${helper_1.helper.dateFormatForLog()}_${filename}.${type}`;
             // console.log(`Saving screenshot "${filename}" at ${screenshotLocation}`);
-            writeFileSync(screenshotLocation, imageBuffer);
+            (0, fs_1.writeFileSync)(screenshotLocation, imageBuffer);
             return screenshotLocation;
         });
     }
 }
+exports.ScreenshotSaver = ScreenshotSaver;
